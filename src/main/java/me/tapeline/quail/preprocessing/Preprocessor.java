@@ -6,6 +6,7 @@ import me.tapeline.quail.preprocessing.directives.ScannedDirective;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Preprocessor {
 
@@ -68,16 +69,22 @@ public class Preprocessor {
     }
 
     private Object getArgument(DirectiveArgument argument) throws PreprocessorException {
+        while (peek() == ' ') next();
         if (argument == DirectiveArgument.CODE) {
-            while (peek() == ' ') next();
             return code.substring(pos);
         }
         String argumentRepr = consumeArgument();
+        String clearedArg = argumentRepr
+                .replace("\n", "")
+                .replace("\t", "")
+                .replace(" ", "");
         switch (argument) {
             case INT:
-                return Integer.parseInt(argumentRepr);
+                return Integer.parseInt(clearedArg);
             case BOOL:
-                return argumentRepr.equals("true");
+                return clearedArg.equalsIgnoreCase("true") ||
+                        clearedArg.equalsIgnoreCase("1") ||
+                        clearedArg.equalsIgnoreCase("enable");
             case STRING:
                 return argumentRepr;
         }
@@ -92,21 +99,26 @@ public class Preprocessor {
         String[] lines = code.split("\n");
         List<String> directives = new ArrayList<>();
         StringBuilder filteredCode = new StringBuilder();
-        for (int i = 0; i < lines.length; i++) {
+        for (int i = 0; i < lines.length; ) {
             if (lines[i].trim().startsWith("#:") &&
                 lines[i].trim().endsWith("\\")) {
                 String line = lines[i].trim();
                 StringBuilder directive = new StringBuilder();
-                for (; line.endsWith("\\"); i++) {
-                    line = lines[i].trim();
-                    directive.append(line, 0, line.length() - 1);
+                while (line.endsWith("\\")) {
+                    line = lines[i++].trim();
+                    if (line.endsWith("\\"))
+                        directive.append(line, 0, line.length() - 1).append("\n");
+                    else
+                        directive.append(line);
                 }
                 directives.add(directive.toString());
             } else if (lines[i].trim().startsWith("#:")) {
                 directives.add(lines[i].trim());
+                i++;
             } else {
                 filteredCode.append(lines[i]);
                 if (i + 1 < lines.length) filteredCode.append("\n");
+                i++;
             }
         }
         return new PreprocessingFilteringResult(directives, filteredCode.toString());

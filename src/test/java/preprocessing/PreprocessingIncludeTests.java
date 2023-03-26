@@ -12,6 +12,7 @@ public class PreprocessingIncludeTests {
 
     @BeforeAll
     public static void prepare() {
+        Preprocessor.registeredDirectives.clear();
         Preprocessor.registeredDirectives.add(new AliasDirective());
         Preprocessor.registeredDirectives.add(new IncludeDirective());
     }
