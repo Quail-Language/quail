@@ -11,6 +11,7 @@ public class PreprocessingAliasTests {
 
     @BeforeAll
     public static void prepare() {
+        Preprocessor.registeredDirectives.clear();
         Preprocessor.registeredDirectives.add(new AliasDirective());
     }
 
