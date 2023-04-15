@@ -1,9 +1,9 @@
 package preprocessing;
 
-import me.tapeline.quail.preprocessing.Preprocessor;
-import me.tapeline.quail.preprocessing.PreprocessorException;
-import me.tapeline.quail.preprocessing.directives.AliasDirective;
-import me.tapeline.quail.preprocessing.directives.IncludeDirective;
+import me.tapeline.quailj.preprocessing.Preprocessor;
+import me.tapeline.quailj.preprocessing.PreprocessorException;
+import me.tapeline.quailj.preprocessing.directives.AliasDirective;
+import me.tapeline.quailj.preprocessing.directives.IncludeDirective;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

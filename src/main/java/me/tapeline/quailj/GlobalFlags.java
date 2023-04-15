@@ -1,4 +1,4 @@
-package me.tapeline.quail;
+package me.tapeline.quailj;
 
 public class GlobalFlags {
 

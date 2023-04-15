@@ -1,4 +1,4 @@
-package me.tapeline.quail.lexing;
+package me.tapeline.quailj.lexing;
 
 public class Token {
 

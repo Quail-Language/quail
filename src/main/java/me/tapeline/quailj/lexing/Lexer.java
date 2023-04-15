@@ -1,9 +1,9 @@
-package me.tapeline.quail.lexing;
+package me.tapeline.quailj.lexing;
 
 import java.util.ArrayList;
 import java.util.List;
-import static me.tapeline.quail.lexing.TokenModifier.*;
-import static me.tapeline.quail.lexing.TokenType.*;
+import static me.tapeline.quailj.lexing.TokenModifier.*;
+import static me.tapeline.quailj.lexing.TokenType.*;
 
 public class Lexer {
 

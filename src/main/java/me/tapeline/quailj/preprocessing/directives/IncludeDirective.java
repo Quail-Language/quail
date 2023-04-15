@@ -1,7 +1,7 @@
-package me.tapeline.quail.preprocessing.directives;
+package me.tapeline.quailj.preprocessing.directives;
 
-import me.tapeline.quail.GlobalFlags;
-import me.tapeline.quail.preprocessing.StringBoundariesMap;
+import me.tapeline.quailj.GlobalFlags;
+import me.tapeline.quailj.preprocessing.StringBoundariesMap;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

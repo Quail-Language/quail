@@ -1,6 +1,6 @@
-package me.tapeline.quail.preprocessing.directives;
+package me.tapeline.quailj.preprocessing.directives;
 
-import me.tapeline.quail.preprocessing.StringBoundariesMap;
+import me.tapeline.quailj.preprocessing.StringBoundariesMap;
 
 public abstract class ScannedDirective {
 

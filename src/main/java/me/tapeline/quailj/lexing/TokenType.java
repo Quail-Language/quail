@@ -1,7 +1,7 @@
-package me.tapeline.quail.lexing;
+package me.tapeline.quailj.lexing;
 
-import me.tapeline.quail.utils.Dict;
-import me.tapeline.quail.utils.Pair;
+import me.tapeline.quailj.utils.Dict;
+import me.tapeline.quailj.utils.Pair;
 
 import java.util.HashMap;
 

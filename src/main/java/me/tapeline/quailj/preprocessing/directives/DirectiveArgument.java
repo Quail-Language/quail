@@ -1,4 +1,4 @@
-package me.tapeline.quail.preprocessing.directives;
+package me.tapeline.quailj.preprocessing.directives;
 
 public enum DirectiveArgument {
     

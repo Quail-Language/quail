@@ -1,4 +1,4 @@
-package me.tapeline.quail.utils;
+package me.tapeline.quailj.utils;
 
 import java.util.HashMap;
 

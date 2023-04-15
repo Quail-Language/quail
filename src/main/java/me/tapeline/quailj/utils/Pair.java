@@ -1,4 +1,4 @@
-package me.tapeline.quail.utils;
+package me.tapeline.quailj.utils;
 
 public class Pair<A, B> {
 

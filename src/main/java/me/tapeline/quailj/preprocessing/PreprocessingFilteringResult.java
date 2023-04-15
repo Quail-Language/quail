@@ -1,4 +1,4 @@
-package me.tapeline.quail.preprocessing;
+package me.tapeline.quailj.preprocessing;
 
 import java.util.ArrayList;
 import java.util.List;

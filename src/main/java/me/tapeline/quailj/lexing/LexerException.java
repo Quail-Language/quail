@@ -1,6 +1,6 @@
-package me.tapeline.quail.lexing;
+package me.tapeline.quailj.lexing;
 
-import me.tapeline.quail.utils.PositionedException;
+import me.tapeline.quailj.utils.PositionedException;
 
 public class LexerException extends PositionedException {
 

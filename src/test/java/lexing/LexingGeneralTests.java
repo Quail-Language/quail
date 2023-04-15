@@ -1,8 +1,8 @@
 package lexing;
 
-import me.tapeline.quail.lexing.Lexer;
-import me.tapeline.quail.lexing.LexerException;
-import me.tapeline.quail.lexing.Token;
+import me.tapeline.quailj.lexing.Lexer;
+import me.tapeline.quailj.lexing.LexerException;
+import me.tapeline.quailj.lexing.Token;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

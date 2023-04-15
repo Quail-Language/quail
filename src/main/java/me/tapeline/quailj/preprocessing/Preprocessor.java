@@ -1,12 +1,11 @@
-package me.tapeline.quail.preprocessing;
+package me.tapeline.quailj.preprocessing;
 
-import me.tapeline.quail.preprocessing.directives.AbstractDirective;
-import me.tapeline.quail.preprocessing.directives.DirectiveArgument;
-import me.tapeline.quail.preprocessing.directives.ScannedDirective;
+import me.tapeline.quailj.preprocessing.directives.AbstractDirective;
+import me.tapeline.quailj.preprocessing.directives.DirectiveArgument;
+import me.tapeline.quailj.preprocessing.directives.ScannedDirective;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class Preprocessor {
 
