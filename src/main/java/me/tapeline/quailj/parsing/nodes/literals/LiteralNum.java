@@ -7,9 +7,9 @@ public class LiteralNum extends Node {
 
     public double value;
 
-    public LiteralNum(Token token, double value) {
+    public LiteralNum(Token token) {
         super(token);
-        this.value = value;
+        this.value = Double.parseDouble(token.getLexeme());
     }
 
 }

@@ -308,7 +308,7 @@ public class Lexer {
         while (isAlphaNumeric(peek())) next();
         String text = sourceCode.substring(start, current);
         TokenType type = keywords.get(text);
-        if (type == null) type = ID;
+        if (type == null) type = VAR;
         addToken(type);
     }
 

@@ -33,7 +33,7 @@ public enum TokenType {
     TYPE_CLASS,
     TYPE_VOID,
 
-    MOD_REQUIRE,
+    MOD_REQUIRED,
     MOD_ANYOF,
     MOD_LOCAL,
     MOD_FINAL,
@@ -69,6 +69,9 @@ public enum TokenType {
     RANGE_INCLUDE,
     NOT,
 
+    SHIFT_LEFT,
+    SHIFT_RIGHT,
+
     SHORT_PLUS,
     SHORT_MINUS,
     SHORT_MULTIPLY,
@@ -103,7 +106,7 @@ public enum TokenType {
     PILLAR,
     COMMA,
     DOT,
-    ID,
+    VAR,
     IN,
     INSTANCEOF,
     LIKE,
@@ -165,7 +168,7 @@ public enum TokenType {
             new Pair<>("anyof", MOD_ANYOF),
             new Pair<>("local", MOD_LOCAL),
             new Pair<>("final", MOD_FINAL),
-            new Pair<>("require", MOD_REQUIRE),
+            new Pair<>("required", MOD_REQUIRED),
             new Pair<>("static", MOD_STATIC),
 
             new Pair<>("has", LCPAR),

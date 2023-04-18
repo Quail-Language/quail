@@ -56,4 +56,8 @@ public class Token {
         return mod;
     }
 
+    public Token derivativeFor(TokenType type, String lexeme) {
+        return new Token(mod, type, lexeme, line, character, length);
+    }
+
 }
