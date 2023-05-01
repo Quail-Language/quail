@@ -5,54 +5,116 @@ import java.util.List;
 import static me.tapeline.quailj.lexing.TokenModifier.*;
 import static me.tapeline.quailj.lexing.TokenType.*;
 
+/**
+ * A lexical analyzer. Scans provided source code and retrieves
+ * tokens from it by defined grammar rules.
+ * @author Tapeline
+ */
 public class Lexer {
 
+    /**
+     * Source code for scan
+     */
     private final String sourceCode;
+
+    /**
+     * List of scanned tokens
+     */
     private final List<Token> tokens = new ArrayList<>();
+
+    /**
+     * Character index of start of currently scanning token
+     */
     private int start = 0;
+
+    /**
+     * Current character index
+     */
     private int current = 0;
+
+    /**
+     * Index of character that starts current line
+     */
     private int startOfCurrentLine = 0;
+
+    /**
+     * Current line
+     * */
     private int line = 1;
 
+    /**
+     * Constructs a new Lexer for provided source code
+     * @param code source code
+     */
     public Lexer(String code) {
         sourceCode = code;
     }
 
+    /**
+     * Assembles and throws a LexerException with current positions and given message
+     * @param message error message
+     * @throws LexerException assembled exception
+     * @see LexerException
+     */
     private void error(String message) throws LexerException {
         throw new LexerException(
                 message,
                 line - 1,
                 start,
                 current - start,
-                message
+                sourceCode
         );
     }
 
+    /**
+     * @return whether lexer reached end of code
+     */
     private boolean reachedEnd() {
         return current >= sourceCode.length();
     }
 
+    /**
+     * Get current char and move current pos forward
+     * @return current char
+     */
     private char next() {
         return sourceCode.charAt(current++);
     }
 
+    /**
+     * Adds given token
+     * @param type token that should be added
+     */
     private void addToken(TokenType type) {
         String text = sourceCode.substring(start, current);
         tokens.add(new Token(type, text, line, start - startOfCurrentLine, current - start));
     }
 
+    /**
+     * Adds given token with matrix modifier
+     * @param type token that should be added
+     */
     private void addMatrixToken(TokenType type) {
         String text = sourceCode.substring(start, current);
         tokens.add(new Token(MATRIX_MOD,
                 type, text, line, start - startOfCurrentLine, current - start));
     }
 
+    /**
+     * Adds given token with array modifier
+     * @param type token that should be added
+     */
     private void addArrayToken(TokenType type) {
         String text = sourceCode.substring(start, current);
         tokens.add(new Token(ARRAY_MOD,
                 type, text, line, start - startOfCurrentLine, current - start));
     }
 
+    /**
+     * Matches expected character in code from current position
+     * @param expected expected character
+     * @return whether code from current position starts with expected character
+     */
     private boolean match(char expected) {
         if (reachedEnd()) return false;
         if (sourceCode.charAt(current) != expected) return false;
@@ -61,6 +123,11 @@ public class Lexer {
         return true;
     }
 
+    /**
+     * Matches expected string in code from current position
+     * @param expected expected string
+     * @return whether code from current position starts with expected string
+     */
     private boolean match(String expected) {
         if (reachedEnd()) return false;
 
@@ -70,30 +137,54 @@ public class Lexer {
         return true;
     }
 
+    /**
+     * Gets current character
+     * @return \0 if current char is out of code bounds. If not - target char
+     */
     private char peek() {
         if (reachedEnd()) return '\0';
         return sourceCode.charAt(current);
     }
 
+    /**
+     * Gets next character
+     * @return \0 if next char is out of code bounds. If not - target char
+     */
     private char peekNext() {
         if (current + 1 >= sourceCode.length()) return '\0';
         return sourceCode.charAt(current + 1);
     }
 
+    /**
+     * @param c target character
+     * @return whether the character is a digit
+     */
     private boolean isDigit(char c) {
         return c >= '0' && c <= '9';
     }
 
+    /**
+     * @param c target character
+     * @return whether the character is alphabetical
+     */
     private boolean isAlpha(char c) {
         return (c >= 'a' && c <= 'z') ||
                 (c >= 'A' && c <= 'Z') ||
                 c == '_';
     }
 
+    /**
+     * @param c target character
+     * @return whether the character is alphanumeric
+     */
     private boolean isAlphaNumeric(char c) {
         return isAlpha(c) || isDigit(c);
     }
 
+    /**
+     * Checks for short assign operators and adds binary op token
+     * @param type binary operator token
+     */
     private void addBinaryOp(TokenType type) {
         if (match('=')) {
             String text = sourceCode.substring(start, current);
@@ -115,7 +206,8 @@ public class Lexer {
      * throws an exception if there is a
      * syntax error.
      *
-     * @return List<Token>
+     * @return scanned tokens
+     * @throws LexerException if any grammatical mistakes are in code
      */
     public List<Token> scan() throws LexerException {
         while (!reachedEnd()) {
@@ -125,6 +217,10 @@ public class Lexer {
         return tokens;
     }
 
+    /**
+     * Scans, identifies and adds one token
+     * @throws LexerException if token is unknown
+     */
     private void scanToken() throws LexerException {
         char c = next();
         switch (c) {
@@ -241,6 +337,9 @@ public class Lexer {
         }
     }
 
+    /**
+     * Scans for square [ bracket and array operators
+     */
     private void scanBracket() {
         String currentOp = null;
         for (String op : ops)
@@ -256,6 +355,9 @@ public class Lexer {
         }
     }
 
+    /**
+     * Scans for curly { brace and matrix operators
+     */
     private void scanCurlyBrace() {
         String currentOp = null;
         for (String op : ops)
@@ -271,12 +373,18 @@ public class Lexer {
         }
     }
 
-
+    /**
+     * Scans a comment
+     */
     private void scanComment() {
         while (peek() != '\n' && !reachedEnd())
             next();
     }
 
+    /**
+     * Scans a string
+     * @throws LexerException if string has not been closed properly
+     */
     private void scanString() throws LexerException {
         while (peek() != '"' && !reachedEnd()) {
             if (peek() == '\n') {
@@ -293,6 +401,9 @@ public class Lexer {
         addToken(LITERAL_STR);
     }
 
+    /**
+     * Scans a number token
+     */
     private void scanNumber() {
         while (isDigit(peek())) next();
 
@@ -304,6 +415,9 @@ public class Lexer {
         addToken(LITERAL_NUM);
     }
 
+    /**
+     * Scans keyword or identifier
+     */
     private void scanId() {
         while (isAlphaNumeric(peek())) next();
         String text = sourceCode.substring(start, current);

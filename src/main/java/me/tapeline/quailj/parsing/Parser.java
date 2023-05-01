@@ -7,11 +7,15 @@ import me.tapeline.quailj.parsing.nodes.effects.AsyncNode;
 import me.tapeline.quailj.parsing.nodes.expression.*;
 import me.tapeline.quailj.parsing.nodes.generators.*;
 import me.tapeline.quailj.parsing.nodes.literals.*;
+import me.tapeline.quailj.parsing.nodes.sections.BlockNode;
+import me.tapeline.quailj.parsing.nodes.sections.IfNode;
+import me.tapeline.quailj.parsing.nodes.sections.WhileNode;
 import me.tapeline.quailj.parsing.nodes.utils.IncompleteModifierNode;
 import me.tapeline.quailj.parsing.nodes.variable.VariableNode;
 import me.tapeline.quailj.typing.modifiers.ModifierConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -226,7 +230,58 @@ public class Parser {
         return shortOp;
     }
 
-    private Node parseStatement() {
+    private BlockNode parseBlockUntil(Token beginning, TokenType... until) throws ParserException {
+        BlockNode block = new BlockNode(beginning, new ArrayList<>());
+        match(LCPAR);
+        while (true) {
+            for (TokenType end : until) if (match(end) != null) return block;
+            block.nodes.add(parseStatement());
+        }
+    }
+
+    private Node parseStatement() throws ParserException {
+        if (match(LCPAR) != null) {
+            Token brace = getPrevious();
+            List<Node> nodes = new ArrayList<>();
+            while (match(RCPAR) == null)
+                nodes.add(parseStatement());
+            return new BlockNode(brace, nodes);
+        }
+        if (match(CONTROL_IF) != null) {
+            Token ifToken = getPrevious();
+            Node ifBranchCondition = parseExpression(null);
+            BlockNode ifBranchCode;
+            if (match(LCPAR) != null) {
+                ifBranchCode = parseBlockUntil(getPrevious(), CONTROL_ELSEIF, CONTROL_ELSE, RCPAR);
+                match(RCPAR);
+            } else
+                ifBranchCode = new BlockNode(current(), Collections.singletonList(parseStatement()));
+            IfNode ifNode = new IfNode(ifToken, ifBranchCondition, ifBranchCode);
+            while (match(CONTROL_ELSEIF) != null) {
+                Node elseIfBranchCondition = parseExpression(null);
+                if (elseIfBranchCondition == null) error("Null elseif condition");
+                BlockNode elseIfCode;
+                if (match(LCPAR) != null) {
+                    elseIfCode = parseBlockUntil(getPrevious(), CONTROL_ELSEIF, CONTROL_ELSE, RCPAR);
+                    match(RCPAR);
+                } else
+                    elseIfCode = new BlockNode(current(), Collections.singletonList(parseStatement()));
+                ifNode.conditions.add(elseIfBranchCondition);
+                ifNode.branches.add(elseIfCode);
+                match(RCPAR);
+            }
+            if (match(CONTROL_ELSE) != null)
+                if (match(LCPAR) != null) {
+                    ifNode.elseBranch = parseBlockUntil(getPrevious(), RCPAR);
+                    match(RCPAR);
+                } else
+                    ifNode.elseBranch = new BlockNode(current(), Collections.singletonList(parseStatement()));
+            return ifNode;
+        }
+        if (match(CONTROL_WHILE) != null) {
+            Token whileToken = getPrevious();
+            return new WhileNode(whileToken, parseExpression(null), parseStatement());
+        }
         return new Node(Token.UNDEFINED);
     }
 
