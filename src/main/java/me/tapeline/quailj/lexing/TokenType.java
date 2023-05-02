@@ -5,6 +5,10 @@ import me.tapeline.quailj.utils.Pair;
 
 import java.util.HashMap;
 
+/**
+ * Definitions for keywords, symbols, etc.
+ * @author Tapeline
+ */
 public enum TokenType {
 
     CONTROL_THROUGH,
@@ -114,6 +118,9 @@ public enum TokenType {
     TAB,
     EOL;
 
+    /**
+     * Keywords and matching TokenTypes
+     */
     public static final HashMap<String, TokenType> keywords = Dict.make(
             new Pair<>("while", CONTROL_WHILE),
             new Pair<>("catch", CONTROL_CATCH),
@@ -186,6 +193,9 @@ public enum TokenType {
 
     );
 
+    /**
+     * Shortened operators (e.g. +=) and matching full operators
+     */
     public static final HashMap<TokenType, TokenType> shortToNormal = Dict.make(
             new Pair<>(SHORT_DIVIDE, DIVIDE),
             new Pair<>(SHORT_MODULO, MODULO),
@@ -196,6 +206,9 @@ public enum TokenType {
             new Pair<>(SHORT_PLUS, PLUS)
     );
 
+    /**
+     * Operators and matching TokenTypes
+     */
     public static final HashMap<String, TokenType> stringToOps = Dict.make(
             new Pair<>("+", PLUS),
             new Pair<>("-", MINUS),
@@ -216,6 +229,10 @@ public enum TokenType {
             new Pair<>("<=", LESS_EQUAL)
     );
 
+    /**
+     * All operators that could be matrix and array
+     * (e.g. a [+] b, c {>>} d)
+     */
     public static final String[] ops = {
             "+",
             "-",
@@ -234,7 +251,6 @@ public enum TokenType {
             ">=",
             "<",
             "<=",
-            "#",
             ">>",
             "<<"
     };

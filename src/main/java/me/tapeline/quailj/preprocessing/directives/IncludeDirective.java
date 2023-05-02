@@ -9,6 +9,11 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Include directive. Inserts content of given file at the top of code
+ * Learn more at Quail Specification Chapter III
+ * @author Tapelines
+ */
 public class IncludeDirective extends AbstractDirective {
 
     @Override

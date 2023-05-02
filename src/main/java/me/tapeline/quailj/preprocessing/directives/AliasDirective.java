@@ -8,6 +8,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Aliasing directive. Replaces all regex occurrences
+ * in code according to given arguments. Omits occurrences
+ * in strings.
+ * Learn more at Quail Specification Chapter III
+ * @author Tapeline
+ */
 public class AliasDirective extends AbstractDirective {
 
     @Override
