@@ -407,7 +407,7 @@ public class Parser {
         }
         if (matchMultiple(EFFECT_ASSERT, EFFECT_IMPORT, EFFECT_THROW, EFFECT_STRIKE) != null) {
             Token effectToken = getPrevious();
-            return new ReturnNode(effectToken, parseExpression(null));
+            return new EffectNode(effectToken, parseExpression(null));
         }
         if (match(EFFECT_USE) != null) {
             Token effectToken = getPrevious();
@@ -687,6 +687,8 @@ public class Parser {
 
     private List<Node> parseArgs(ParsingPolicy policy, boolean requireLeft) throws ParserException {
         if (requireLeft) require(LPAR);
+        if (match(RPAR) != null)
+            return new ArrayList<>();
         List<Node> args = new ArrayList<>();
         do {
             args.add(parseExpression(null));

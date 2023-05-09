@@ -91,6 +91,15 @@ public class Lexer {
     }
 
     /**
+     * Adds given string token with given data
+     * @param contents string contents
+     */
+    private void addStringToken(String contents) {
+        tokens.add(new Token(LITERAL_STR, contents, line,
+                start - startOfCurrentLine, current - start));
+    }
+
+    /**
      * Adds given token with matrix modifier
      * @param type token that should be added
      */
@@ -386,19 +395,41 @@ public class Lexer {
      * @throws LexerException if string has not been closed properly
      */
     private void scanString() throws LexerException {
+        StringBuilder content = new StringBuilder();
         while (peek() != '"' && !reachedEnd()) {
+            if (match("\\\\")) {
+                content.append('\\');
+                continue;
+            }
+            if (match("\\\"")) {
+                content.append("\"");
+                continue;
+            }
+            if (match("\\n")) {
+                content.append("\n");
+                continue;
+            }
+            if (match("\\t")) {
+                content.append("\t");
+                continue;
+            }
+            if (match("\\r")) {
+                content.append("\r");
+                continue;
+            }
             if (peek() == '\n') {
                 line++;
                 startOfCurrentLine = current;
+                content.append('\n');
             }
-            next();
+            content.append(next());
         }
         if (reachedEnd()) {
             error("Unexpected string end");
             return;
         }
         next();
-        addToken(LITERAL_STR);
+        addStringToken(content.toString());
     }
 
     /**

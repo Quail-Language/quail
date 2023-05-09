@@ -21,7 +21,7 @@ public class ReturnNode extends Node {
 
     @Override
     public String stringRepr() {
-        return "return{" + value.stringRepr() + "}";
+        return "return{" + (value != null? value.stringRepr() : "null") + "}";
     }
 
 }
