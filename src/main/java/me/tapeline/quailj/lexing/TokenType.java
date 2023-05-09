@@ -255,4 +255,29 @@ public enum TokenType {
             "<<"
     };
 
+    /**
+     * Overridable operators and their override names
+     */
+    public static final HashMap<TokenType, String> overrideOps = Dict.make(
+            new Pair<>(PLUS, "_add"),
+            new Pair<>(MINUS, "_sub"),
+            new Pair<>(INTDIV, "_intdiv"),
+            new Pair<>(DIVIDE, "_div"),
+            new Pair<>(MULTIPLY, "_mul"),
+            new Pair<>(POWER, "_pow"),
+            new Pair<>(MODULO, "_mod"),
+            new Pair<>(EQUALS, "_eq"),
+            new Pair<>(NOT_EQUALS, "_neq"),
+            new Pair<>(LESS_EQUAL, "_cmple"),
+            new Pair<>(GREATER_EQUAL, "_cmpge"),
+            new Pair<>(GREATER, "_cmpg"),
+            new Pair<>(LESS, "_cmpl"),
+            new Pair<>(TYPE_STRING, "_tostring"),
+            new Pair<>(TYPE_NUM, "_tonumber"),
+            new Pair<>(TYPE_BOOL, "_tobool"),
+            new Pair<>(NOT, "_not"),
+            new Pair<>(SHIFT_LEFT, "_shr"),
+            new Pair<>(SHIFT_RIGHT, "_shl")
+    );
+
 }

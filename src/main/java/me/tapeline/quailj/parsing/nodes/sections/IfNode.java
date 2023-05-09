@@ -2,6 +2,7 @@ package me.tapeline.quailj.parsing.nodes.sections;
 
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.parsing.nodes.Node;
+import me.tapeline.quailj.utils.TextUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +32,14 @@ public class IfNode extends Node {
         this.branches = Collections.singletonList(branch);
         this.elseBranch = elseBranch;
         this.conditions = Collections.singletonList(condition);
+    }
+
+    @Override
+    public String stringRepr() {
+        return "if{" +
+                TextUtils.nodeListToStringRepr(conditions) + " " +
+                TextUtils.blockListToStringRepr(branches) + " " +
+                elseBranch.stringRepr() + "}";
     }
 
 }

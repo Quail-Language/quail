@@ -16,4 +16,10 @@ public class IndexSetNode extends Node {
         this.value = value;
     }
 
+    @Override
+    public String stringRepr() {
+        return "index set{" + collection.stringRepr() + " " + index.stringRepr() +
+                " " + value.stringRepr() + "}";
+    }
+
 }

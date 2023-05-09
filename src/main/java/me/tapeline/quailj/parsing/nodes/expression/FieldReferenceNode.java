@@ -14,4 +14,9 @@ public class FieldReferenceNode extends Node {
         this.value = value;
     }
 
+    @Override
+    public String stringRepr() {
+        return "field{" + parent.stringRepr() + " " + value + "}";
+    }
+
 }

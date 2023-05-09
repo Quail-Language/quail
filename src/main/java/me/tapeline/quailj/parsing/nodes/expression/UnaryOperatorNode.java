@@ -18,4 +18,9 @@ public class UnaryOperatorNode extends Node {
         this.op = token.getType();
     }
 
+    @Override
+    public String stringRepr() {
+        return "op{" + op.toString() + " " + op.toString() + "}";
+    }
+
 }

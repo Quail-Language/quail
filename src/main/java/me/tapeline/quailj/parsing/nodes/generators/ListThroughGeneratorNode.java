@@ -23,4 +23,12 @@ public class ListThroughGeneratorNode extends Node {
         this.condition = condition;
     }
 
+    @Override
+    public String stringRepr() {
+        return "genlist{" + value.stringRepr() + " " +
+                iterator + " " +
+                range.stringRepr() + " " +
+                (condition != null? condition.stringRepr() : "null") + "}";
+    }
+
 }

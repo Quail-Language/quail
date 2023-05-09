@@ -2,6 +2,7 @@ package me.tapeline.quailj.parsing.nodes.literals;
 
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.parsing.nodes.Node;
+import me.tapeline.quailj.utils.TextUtils;
 
 import java.util.List;
 
@@ -14,6 +15,12 @@ public class LiteralDict extends Node {
         super(token);
         this.keys = keys;
         this.values = values;
+    }
+
+    @Override
+    public String stringRepr() {
+        return "dict{" + TextUtils.nodeListToStringRepr(keys) + " " +
+                TextUtils.nodeListToStringRepr(values) + "}";
     }
 
 }

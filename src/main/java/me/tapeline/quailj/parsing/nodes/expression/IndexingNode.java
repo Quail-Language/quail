@@ -14,4 +14,9 @@ public class IndexingNode extends Node {
         this.index = index;
     }
 
+    @Override
+    public String stringRepr() {
+        return "index{" + collection.stringRepr() + " " + index.stringRepr() + "}";
+    }
+
 }

@@ -61,4 +61,13 @@ public class PositionedException extends Exception {
         this.length = length;
     }
 
+    @Override
+    public String toString() {
+        return "PositionedException{" +
+                "character=" + character +
+                ", line=" + line +
+                ", length=" + length +
+                "} " + getMessage();
+    }
+
 }

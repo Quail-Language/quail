@@ -20,4 +20,13 @@ public class SubscriptNode extends Node {
         this.step = step;
     }
 
+    @Override
+    public String stringRepr() {
+        return "sub{" + collection.stringRepr() + " " +
+                (start != null? start.stringRepr() : "null") + " " +
+                (end != null? end.stringRepr() : "null") + " " +
+                (step != null? step.stringRepr() : "null") + " " +
+                "}";
+    }
+
 }

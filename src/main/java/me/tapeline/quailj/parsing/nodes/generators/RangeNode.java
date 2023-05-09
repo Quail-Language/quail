@@ -17,4 +17,11 @@ public class RangeNode extends Node {
         this.rangeStep = rangeStep;
     }
 
+    @Override
+    public String stringRepr() {
+        return "range{" + rangeStart.stringRepr() + " " +
+                rangeEnd.stringRepr() + " " +
+                (rangeStart != null? rangeStart.stringRepr() : "null") + "}";
+    }
+
 }

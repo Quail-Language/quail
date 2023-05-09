@@ -3,18 +3,17 @@ package me.tapeline.quailj.parsing.nodes.effects;
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.parsing.nodes.Node;
 
-public class AsyncNode extends Node {
+import java.util.Locale;
 
-    public Node expression;
+public class InstructionNode extends Node {
 
-    public AsyncNode(Token token, Node expression) {
+    public InstructionNode(Token token) {
         super(token);
-        this.expression = expression;
     }
 
     @Override
     public String stringRepr() {
-        return "async{" + expression.stringRepr() + "}";
+        return token.getLexeme().toLowerCase(Locale.ROOT);
     }
 
 }

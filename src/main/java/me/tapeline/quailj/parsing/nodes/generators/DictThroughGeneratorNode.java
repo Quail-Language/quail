@@ -4,6 +4,7 @@ import com.sun.istack.internal.Nullable;
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.parsing.nodes.Node;
 import me.tapeline.quailj.parsing.nodes.variable.VariableNode;
+import me.tapeline.quailj.utils.TextUtils;
 
 
 public class DictThroughGeneratorNode extends Node {
@@ -25,4 +26,14 @@ public class DictThroughGeneratorNode extends Node {
         this.range = range;
         this.condition = condition;
     }
+
+    @Override
+    public String stringRepr() {
+        return "gendict{" + key.stringRepr() + " " +
+                value.stringRepr() + " " +
+                iterator + " " +
+                range.stringRepr() + " " +
+                (condition != null? condition.stringRepr() : "null") + "}";
+    }
+
 }

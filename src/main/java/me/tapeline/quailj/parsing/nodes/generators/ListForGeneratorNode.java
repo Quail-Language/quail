@@ -4,6 +4,7 @@ import com.sun.istack.internal.Nullable;
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.parsing.nodes.Node;
 import me.tapeline.quailj.parsing.nodes.variable.VariableNode;
+import me.tapeline.quailj.utils.TextUtils;
 
 import java.util.List;
 
@@ -24,4 +25,13 @@ public class ListForGeneratorNode extends Node {
         this.iterable = iterable;
         this.condition = condition;
     }
+
+    @Override
+    public String stringRepr() {
+        return "genlist{" + value.stringRepr() + " " +
+                TextUtils.iteratorsToStringRepr(iterators) + " " +
+                iterable.stringRepr() + " " +
+                (condition != null? condition.stringRepr() : "null") + "}";
+    }
+
 }

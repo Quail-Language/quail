@@ -15,5 +15,10 @@ public class FieldSetNode extends Node {
         this.field = field;
         this.value = value;
     }
+
+    @Override
+    public String stringRepr() {
+        return "field set{" + parent.stringRepr() + " " + field + " " + value.stringRepr() + "}";
+    }
     
 }

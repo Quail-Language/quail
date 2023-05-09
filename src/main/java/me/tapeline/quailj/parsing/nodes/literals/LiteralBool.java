@@ -12,4 +12,9 @@ public class LiteralBool extends Node {
         this.value = value;
     }
 
+    @Override
+    public String stringRepr() {
+        return Boolean.toString(value);
+    }
+
 }

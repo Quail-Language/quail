@@ -2,6 +2,7 @@ package me.tapeline.quailj.parsing.nodes.expression;
 
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.parsing.nodes.Node;
+import me.tapeline.quailj.utils.TextUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,11 @@ public class CallNode extends Node {
         this.callee = callee;
         this.args = args;
         this.kwargs = kwargs;
+    }
+
+    @Override
+    public String stringRepr() {
+        return "call{" + callee.stringRepr() + " " + TextUtils.nodeListToStringRepr(args) + "}";
     }
 
 }

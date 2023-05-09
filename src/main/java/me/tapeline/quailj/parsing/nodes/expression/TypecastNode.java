@@ -14,4 +14,9 @@ public class TypecastNode extends Node {
         this.expr = expr;
     }
 
+    @Override
+    public String stringRepr() {
+        return "cast{" + cast + " " + expr.stringRepr() + "}";
+    }
+
 }

@@ -3,16 +3,15 @@ package me.tapeline.quailj.parsing;
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.lexing.TokenType;
 import me.tapeline.quailj.parsing.nodes.Node;
-import me.tapeline.quailj.parsing.nodes.effects.AsyncNode;
+import me.tapeline.quailj.parsing.nodes.effects.*;
 import me.tapeline.quailj.parsing.nodes.expression.*;
 import me.tapeline.quailj.parsing.nodes.generators.*;
 import me.tapeline.quailj.parsing.nodes.literals.*;
-import me.tapeline.quailj.parsing.nodes.sections.BlockNode;
-import me.tapeline.quailj.parsing.nodes.sections.IfNode;
-import me.tapeline.quailj.parsing.nodes.sections.WhileNode;
+import me.tapeline.quailj.parsing.nodes.sections.*;
 import me.tapeline.quailj.parsing.nodes.utils.IncompleteModifierNode;
 import me.tapeline.quailj.parsing.nodes.variable.VariableNode;
 import me.tapeline.quailj.typing.modifiers.ModifierConstants;
+import me.tapeline.quailj.utils.IntFlags;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,9 +32,14 @@ public class Parser {
     }
 
     private void error(String message) throws ParserException {
+        if (!reachedEnd())
+            throw new ParserException(
+                    message,
+                    tokens.get(pos)
+            );
         throw new ParserException(
                 message,
-                tokens.get(pos)
+                tokens.get(tokens.size() - 1)
         );
     }
 
@@ -196,7 +200,7 @@ public class Parser {
         else if (token == null && getNext() != null)
             error(message == null? "Expected " + type.toString() +
                     " but found " + getNext().getType() : message);
-        else
+        else if (token == null)
             error(message == null? "Expected " + type.toString() + " but found none" : message);
         return token;
     }
@@ -239,7 +243,40 @@ public class Parser {
         }
     }
 
+    private int consumeTabs() {
+        int tabCount = 0;
+        for (; matchExactly(TAB) != null; tabCount++);
+        return tabCount;
+    }
+
+    private BlockNode parsePythonBlock() throws ParserException {
+        int tabCount = consumeTabs();
+        pos -= tabCount;
+        BlockNode block = new BlockNode(getPrevious(), new ArrayList<>());
+        while (true) {
+            int currentLineTabs = consumeTabs();
+            if (currentLineTabs != tabCount) {
+                pos -= currentLineTabs;
+                return block;
+            }
+            block.nodes.add(parseStatement());
+        }
+    }
+
+    public BlockNode parse() throws ParserException {
+        BlockNode statements = new BlockNode(current(), new ArrayList<>());
+        while (toNextSignificant() != null)
+            statements.nodes.add(parseStatement());
+        return statements;
+    }
+
     private Node parseStatement() throws ParserException {
+        if (forseePattern(RANGE, EOL)) {
+            match(RANGE);
+            match(EOL);
+            return parsePythonBlock();
+        }
+
         if (match(LCPAR) != null) {
             Token brace = getPrevious();
             List<Node> nodes = new ArrayList<>();
@@ -282,7 +319,190 @@ public class Parser {
             Token whileToken = getPrevious();
             return new WhileNode(whileToken, parseExpression(null), parseStatement());
         }
-        return new Node(Token.UNDEFINED);
+        if (match(CONTROL_LOOP) != null) {
+            Token loopToken = getPrevious();
+            matchSameLine(LCPAR);
+            List<Node> nodes = new ArrayList<>();
+            while (matchMultiple(RCPAR, CONTROL_STOP_WHEN) != null)
+                nodes.add(parseStatement());
+            match(CONTROL_STOP_WHEN);
+            Node condition = parseExpression(null);
+            return new LoopStopNode(loopToken, condition, new BlockNode(loopToken, nodes));
+        }
+        if (match(CONTROL_THROUGH) != null) {
+            Token throughToken = getPrevious();
+            Node range = parseRange(null);
+            if (!(range instanceof RangeNode))
+                error("Through range should be range");
+            require(AS);
+            Token iterator = require(VAR);
+            Node code = parseStatement();
+            return new ThroughNode(
+                    throughToken,
+                    ((RangeNode) range).rangeStart,
+                    ((RangeNode) range).rangeEnd,
+                    ((RangeNode) range).rangeStep,
+                    iterator.getLexeme(),
+                    code
+            );
+        }
+        if (matchMultiple(CONTROL_FOR, CONTROL_EVERY) != null) {
+            Token forToken = getPrevious();
+            List<String> iterators = new ArrayList<>();
+            do {
+                Token iterator = require(VAR);
+                iterators.add(iterator.getLexeme());
+            } while (match(COMMA) != null);
+            require(IN);
+            Node iterable = parseExpression(null);
+            Node code = parseStatement();
+            return new ForNode(forToken, iterators, iterable, code);
+        }
+        if (match(CONTROL_TRY) != null) {
+            Token tryToken = getPrevious();
+            matchSameLine(LCPAR);
+            List<Node> nodes = new ArrayList<>();
+            while (matchMultiple(RCPAR, CONTROL_CATCH) != null)
+                nodes.add(parseStatement());
+            List<CatchClause> catchClauses = new ArrayList<>();
+            while (match(CONTROL_CATCH) != null) {
+                Token catchToken = getPrevious();
+                Node instance = null;
+                if (!forseeToken(AS))
+                    instance = parseExpression(null);
+                require(AS);
+                String var = require(VAR).getLexeme();
+                matchSameLine(LCPAR);
+                List<Node> catchNodes = new ArrayList<>();
+                while (matchMultiple(RCPAR, CONTROL_CATCH) != null)
+                    catchNodes.add(parseStatement());
+                pos--;
+                match(RCPAR);
+                catchClauses.add(new CatchClause(instance, var,
+                        new BlockNode(catchToken, catchNodes)));
+            }
+            return new TryNode(tryToken, new BlockNode(tryToken, nodes), catchClauses);
+        }
+        if (matchMultiple(INSTRUCTION_BREAK, INSTRUCTION_CONTINUE) != null)
+            return new InstructionNode(getPrevious());
+
+        Node effect = parseEffect();
+        if (effect != null) return effect;
+
+        Node function = parseFunction();
+        if (function != null) return function;
+
+        Node klass = parseClass();
+        if (klass != null) return klass;
+
+        return parseExpression(null);
+    }
+
+    private Node parseEffect() throws ParserException {
+        if (match(EFFECT_RETURN) != null) {
+            Token effectToken = getPrevious();
+            if (matchSameLine(EOL) != null)
+                return new ReturnNode(effectToken);
+            return new ReturnNode(effectToken, parseExpression(null));
+        }
+        if (matchMultiple(EFFECT_ASSERT, EFFECT_IMPORT, EFFECT_THROW, EFFECT_STRIKE) != null) {
+            Token effectToken = getPrevious();
+            return new ReturnNode(effectToken, parseExpression(null));
+        }
+        if (match(EFFECT_USE) != null) {
+            Token effectToken = getPrevious();
+            String path = require(LITERAL_STR).getLexeme();
+            require(ASSIGN);
+            String var = require(VAR).getLexeme();
+            return new UseNode(effectToken, path, var);
+        }
+        return null;
+    }
+
+    private Node parseFunction() throws ParserException {
+        if (forseePattern(MOD_STATIC, TYPE_METHOD) ||
+            forseePattern(MOD_STATIC, TYPE_FUNCTION)) {
+            require(MOD_STATIC);
+            Token funcToken = match(TYPE_METHOD);
+            if (funcToken == null)
+                funcToken = require(TYPE_FUNCTION);
+            Token name = require(VAR);
+            List<LiteralFunction.Argument> args = convertDefinedArguments(parseArgs(null, true));
+            Node statement = parseStatement();
+            return new LiteralFunction(funcToken, name.getLexeme(), args, statement);
+        }
+        if (matchMultiple(TYPE_METHOD, TYPE_FUNCTION) != null) {
+            Token funcToken = getPrevious();
+            Token name = require(VAR);
+            List<LiteralFunction.Argument> args = convertDefinedArguments(parseArgs(null, true));
+            Node statement = parseStatement();
+            return new LiteralFunction(funcToken, name.getLexeme(), args, statement);
+        }
+        if (match(GETS) != null) {
+            Token funcToken = getPrevious();
+            Token name = require(VAR);
+            List<LiteralFunction.Argument> args = convertDefinedArguments(parseArgs(null, true));
+            Node statement = parseStatement();
+            return new LiteralFunction(funcToken, "_get_" + name.getLexeme(), args, statement);
+        }
+        if (match(SETS) != null) {
+            Token funcToken = getPrevious();
+            Token name = require(VAR);
+            List<LiteralFunction.Argument> args = convertDefinedArguments(parseArgs(null, true));
+            Node statement = parseStatement();
+            return new LiteralFunction(funcToken, "_set_" + name.getLexeme(), args, statement);
+        }
+        if (match(OVERRIDE) != null) {
+            Token funcToken = getPrevious();
+            Token name = consumeSignificant();
+            if (name == null) error("Unexpected end");
+            String functionName = overrideOps.get(name.getType());
+            if (name.getLexeme().equals("index"))
+                functionName = "_index";
+            else if (name.getLexeme().equals("setIndex"))
+                functionName = "_setIndex";
+            else if (name.getLexeme().equals("call"))
+                functionName = "_call";
+            List<LiteralFunction.Argument> args = convertDefinedArguments(parseArgs(null, true));
+            Node statement = parseStatement();
+            return new LiteralFunction(funcToken, functionName, args, statement);
+        }
+        if (match(CONSTRUCTOR) != null) {
+            Token funcToken = getPrevious();
+            List<LiteralFunction.Argument> args = convertDefinedArguments(parseArgs(null, true));
+            Node statement = parseStatement();
+            return new LiteralFunction(funcToken, "_constructor", args, statement);
+        }
+        return null;
+    }
+
+    private Node parseClass() throws ParserException {
+        if (match(TYPE_CLASS) != null) {
+            Token classToken = getPrevious();
+            Token className = require(VAR);
+            Node like = null;
+            if (match(LIKE) != null)
+                like = parseOr(null);
+            match(LCPAR);
+            HashMap<String, Node> contents = new HashMap<>();
+            HashMap<String, LiteralFunction> methods = new HashMap<>();
+            List<Node> initialize = new ArrayList<>();
+            while (match(RCPAR) == null) {
+                Node expr = parseStatement();
+                if (expr instanceof AssignNode)
+                    contents.put(((AssignNode) expr).variable.getToken().getLexeme(),
+                            ((AssignNode) expr).value);
+                else if (expr instanceof VariableNode)
+                    contents.put(((VariableNode) expr).name,
+                            getDefaultNodeFor(((VariableNode) expr).modifiers));
+                else if (expr instanceof LiteralFunction)
+                    methods.put(((LiteralFunction) expr).name, ((LiteralFunction) expr));
+                else
+                    initialize.add(expr);
+            }
+            return new LiteralClass(classToken, className.getLexeme(), like, contents, methods, initialize);
+        }
+        return null;
     }
 
     private Node parseExpression(ParsingPolicy policy) throws ParserException {
@@ -454,7 +674,7 @@ public class Parser {
         Token leftBracket = getPrevious();
         List<Node> arguments = new ArrayList<>();
         HashMap<String, Node> keywordArguments = new HashMap<>();
-        List<Node> args = parseArgs(null);
+        List<Node> args = parseArgs(null, false);
         for (Node argument : args)
             if (argument instanceof AssignNode &&
                     ((AssignNode) argument).variable instanceof VariableNode)
@@ -462,12 +682,11 @@ public class Parser {
                         ((AssignNode) argument).value);
             else
                 arguments.add(argument);
-        require(TokenType.RPAR, "Expected closing bracket");
         return new CallNode(leftBracket, callee, arguments, keywordArguments);
     }
 
-    private List<Node> parseArgs(ParsingPolicy policy) throws ParserException {
-        require(LPAR);
+    private List<Node> parseArgs(ParsingPolicy policy, boolean requireLeft) throws ParserException {
+        if (requireLeft) require(LPAR);
         List<Node> args = new ArrayList<>();
         do {
             args.add(parseExpression(null));
@@ -603,7 +822,7 @@ public class Parser {
         if (match(TYPE_FUNCTION) != null && match(LPAR) != null) {
             pos--;
             Token func = getPrevious();
-            List<Node> args = parseArgs(null);
+            List<Node> args = parseArgs(null, true);
             Node statement = parseStatement();
             return new LiteralLambda(func, args, statement);
         }
@@ -614,11 +833,40 @@ public class Parser {
         if (modifiersResult != null) {
             IncompleteModifierNode modifier = (IncompleteModifierNode) modifiersResult;
             Token variable = require(VAR);
-            return new VariableNode(variable, modifier.modifiers);
+            boolean isArgConsumer = false, isKwargConsumer = false;
+            if (match(CONSUMER) != null)
+                isArgConsumer = true;
+            else if (match(KWARG_CONSUMER) != null)
+                isKwargConsumer = true;
+            return new VariableNode(variable, modifier.modifiers, isArgConsumer, isKwargConsumer);
         }
-        if (match(VAR) != null) return new VariableNode(getPrevious());
+        if (match(VAR) != null) {
+            Token variable = getPrevious();
+            boolean isArgConsumer = false, isKwargConsumer = false;
+            if (match(CONSUMER) != null)
+                isArgConsumer = true;
+            else if (match(KWARG_CONSUMER) != null)
+                isKwargConsumer = true;
+            return new VariableNode(variable, new int[0], isArgConsumer, isKwargConsumer);
+        }
         error("Unparseable expression or statement");
         return null;
+    }
+
+    private List<LiteralFunction.Argument> convertDefinedArguments(List<Node> argumentNodes)
+            throws ParserException {
+        List<LiteralFunction.Argument> arguments = new ArrayList<>();
+        for (Node argumentNode : argumentNodes) {
+            if (argumentNode instanceof VariableNode)
+                arguments.add(LiteralFunction.Argument.fromVariable((VariableNode) argumentNode));
+            else if (argumentNode instanceof AssignNode) {
+                if (!(((AssignNode) argumentNode).variable instanceof VariableNode))
+                    error("Invalid argument definition");
+                arguments.add(LiteralFunction.Argument.fromAssignment((AssignNode) argumentNode));
+            } else
+                error("Invalid argument");
+        }
+        return arguments;
     }
 
     private Node parseModifiers(ParsingPolicy policy) throws ParserException {
@@ -637,9 +885,14 @@ public class Parser {
             }
             if (forseePattern(VAR, LPAR)) {
                 Token functionName = require(VAR);
-                List<Node> args = parseArgs(null);
+                List<Node> args = parseArgs(null, true);
                 Node statement = parseStatement();
-                return new LiteralFunction(functionName, functionName.getLexeme(), args, statement);
+                return new LiteralFunction(
+                        functionName,
+                        functionName.getLexeme(),
+                        convertDefinedArguments(args),
+                        statement
+                );
             }
             if (forseeToken(VAR)) {
                 int[] modifiersArray = new int[modifiers.size()];
@@ -676,6 +929,21 @@ public class Parser {
             }
         } else return null;
         return currentModifier;
+    }
+
+    public static Node getDefaultNodeFor(int[] modifiers) {
+        if (modifiers.length != 1) return new LiteralNull(Token.UNDEFINED);
+        if (IntFlags.check(modifiers[0], ModifierConstants.BOOL))
+            return new LiteralBool(Token.UNDEFINED, false);
+        if (IntFlags.check(modifiers[0], ModifierConstants.DICT))
+            return new LiteralDict(Token.UNDEFINED, new ArrayList<>(), new ArrayList<>());
+        if (IntFlags.check(modifiers[0], ModifierConstants.LIST))
+            return new LiteralList(Token.UNDEFINED, new ArrayList<>());
+        if (IntFlags.check(modifiers[0], ModifierConstants.NUM))
+            return new LiteralNum(Token.UNDEFINED, 0);
+        if (IntFlags.check(modifiers[0], ModifierConstants.STR))
+            return new LiteralStr(Token.UNDEFINED, "");
+        return new LiteralNull(Token.UNDEFINED);
     }
 
 }

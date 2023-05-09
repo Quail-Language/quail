@@ -2,7 +2,7 @@ package me.tapeline.quailj.parsing.nodes;
 
 import me.tapeline.quailj.lexing.Token;
 
-public class Node {
+public abstract class Node {
 
     protected Token token;
 
@@ -13,5 +13,7 @@ public class Node {
     public Token getToken() {
         return token;
     }
+
+    public abstract String stringRepr();
 
 }

@@ -12,4 +12,10 @@ public class IncompleteModifierNode extends Node {
         this.modifiers = modifiers;
     }
 
+
+    @Override
+    public String stringRepr() {
+        return "incompletemodifiernode";
+    }
+
 }
