@@ -178,13 +178,29 @@ public class Parser {
         return current;
     }
 
+    private int nextSignificantIndex() {
+        if (reachedEnd()) return -1;
+        int increment = 0;
+        while (true) {
+            Token next = getNext(increment);
+            if (next == null) return -1;
+            if (next.getType() == EOL || next.getType() == TAB) increment++;
+            else break;
+        }
+        Token current = getNext(increment);
+        if (current == null) return -1;
+        return increment;
+    }
+
     private boolean forseeToken(TokenType type) {
-        return getNext() != null && getNext().getType() == type;
+        int signIndex = nextSignificantIndex();
+        return getNext(signIndex) != null && getNext(signIndex).getType() == type;
     }
 
     private boolean forseePattern(TokenType... pattern) {
+        int signIndex = nextSignificantIndex();
         for (int i = 0; i < pattern.length; i++)
-            if (getNext(i) == null || getNext(i).getType() != pattern[i])
+            if (getNext(signIndex + i) == null || getNext(signIndex + i).getType() != pattern[i])
                 return false;
         return true;
     }
@@ -194,10 +210,10 @@ public class Parser {
     }
 
     private Token require(TokenType type, String message) throws ParserException {
-        Token token = match(type);
         if (reachedEnd())
             error(message == null? "Expected " + type.toString() + " but file ended" : message);
-        else if (token == null && getNext() != null)
+        Token token = match(type);
+        if (token == null && getNext() != null)
             error(message == null? "Expected " + type.toString() +
                     " but found " + getNext().getType() : message);
         else if (token == null)
@@ -250,12 +266,14 @@ public class Parser {
     }
 
     private BlockNode parsePythonBlock() throws ParserException {
+        Token blockToken = getPrevious();
+        matchExactly(EOL);
         int tabCount = consumeTabs();
         pos -= tabCount;
-        BlockNode block = new BlockNode(getPrevious(), new ArrayList<>());
+        BlockNode block = new BlockNode(blockToken, new ArrayList<>());
         while (true) {
             int currentLineTabs = consumeTabs();
-            if (currentLineTabs != tabCount) {
+            if (currentLineTabs < tabCount) {
                 pos -= currentLineTabs;
                 return block;
             }
@@ -323,9 +341,9 @@ public class Parser {
             Token loopToken = getPrevious();
             matchSameLine(LCPAR);
             List<Node> nodes = new ArrayList<>();
-            while (matchMultiple(RCPAR, CONTROL_STOP_WHEN) != null)
+            while (match(RCPAR) == null && !forseeToken(CONTROL_STOP_WHEN))
                 nodes.add(parseStatement());
-            match(CONTROL_STOP_WHEN);
+            require(CONTROL_STOP_WHEN);
             Node condition = parseExpression(null);
             return new LoopStopNode(loopToken, condition, new BlockNode(loopToken, nodes));
         }
@@ -362,7 +380,7 @@ public class Parser {
             Token tryToken = getPrevious();
             matchSameLine(LCPAR);
             List<Node> nodes = new ArrayList<>();
-            while (matchMultiple(RCPAR, CONTROL_CATCH) != null)
+            while (match(RCPAR) == null && !forseeToken(CONTROL_CATCH))
                 nodes.add(parseStatement());
             List<CatchClause> catchClauses = new ArrayList<>();
             while (match(CONTROL_CATCH) != null) {
@@ -374,7 +392,7 @@ public class Parser {
                 String var = require(VAR).getLexeme();
                 matchSameLine(LCPAR);
                 List<Node> catchNodes = new ArrayList<>();
-                while (matchMultiple(RCPAR, CONTROL_CATCH) != null)
+                while (match(RCPAR) == null && !forseeToken(CONTROL_CATCH))
                     catchNodes.add(parseStatement());
                 pos--;
                 match(RCPAR);
@@ -563,6 +581,7 @@ public class Parser {
 
     private Node parseComparison(ParsingPolicy policy) throws ParserException {
         Node left = parseRange(policy);
+        if (policy != null && policy.excludeComparison) return left;
         while (matchMultiple(LESS, LESS_EQUAL, GREATER, GREATER_EQUAL) != null) {
             Token token = getPrevious();
             if (match(LESS) != null)
@@ -579,6 +598,9 @@ public class Parser {
 
     private Node parseRange(ParsingPolicy policy) throws ParserException {
         Node left = parseTerm(policy);
+        if (policy != null && policy.excludeRange) return left;
+        if (forseePattern(RANGE, EOL))
+            return left;
         if (matchMultiple(RANGE, RANGE_INCLUDE) != null) {
             Token rangeToken = getPrevious();
             Node rangeY = parseTerm(policy);
@@ -628,45 +650,51 @@ public class Parser {
                 Token dot = getPrevious();
                 Token name = require(VAR, "Expected id");
                 left = new FieldReferenceNode(dot, left, name.getLexeme());
+            } else if (matchSameLine(TokenType.LSPAR) != null) {
+                Token leftBracket = getPrevious();
+                Node start = null, end = null, step = null;
+                boolean isSubscript = true;
+                if (match(RANGE) != null) { // [:x] [:x:y] [::x] [:] [::]
+                    if (forseeToken(RSPAR)) {// [:]
+                        match(RANGE);
+                        end = null;
+                    } else if (match(RANGE) != null) {
+                        if (forseeToken(RSPAR)) { // [::]
+                            match(RANGE);
+                            end = null;
+                        } else
+                            step = parseOr(ParsingPolicy.noRange()); // [::x]
+                    } else {
+                        end = parseOr(ParsingPolicy.noRange()); // [:x]
+                        if (match(RANGE) != null) {
+                            step = parseOr(ParsingPolicy.noRange()); // [:x:y]
+                        }
+                    }
+                } else { // [x:y] [x::y] [x:y:z] [x:+y] [x:+y:z]
+                    start = parseOr(ParsingPolicy.noRange());
+                    if (matchMultiple(RANGE, RANGE_INCLUDE) != null) {
+                        if (match(RANGE) != null) {
+                            step = parseOr(ParsingPolicy.noRange()); // [x::y]
+                        } else if (match(RSPAR) != null) {
+                            pos--; // [x:]
+                        } else {
+                            end = parseOr(ParsingPolicy.noRange()); // [x:y] [x:+y]
+                            if (matchMultiple(RANGE) != null) {
+                                step = parseOr(ParsingPolicy.noRange()); // [x:y:z] [x:+y:z]
+                            }
+                        }
+                    } else isSubscript = false;
+                }
+                require(RSPAR, "Expected ] to close indexing");
+                if (isSubscript)
+                    left = new SubscriptNode(leftBracket, left, start, end, step);
+                else
+                    left = new IndexingNode(leftBracket, left, start);
             } else {
                 break;
             }
         }
 
-        while (matchSameLine(TokenType.LSPAR) != null) {
-            Token leftBracket = getPrevious();
-            Node start = null, end = null, step = null;
-            boolean isSubscript = true;
-            if (match(RANGE) != null) { // [:x] [:x:y] [::x]
-                if (match(RANGE) != null) {
-                    step = parseOr(ParsingPolicy.noRange()); // [::x]
-                } else {
-                    end = parseOr(ParsingPolicy.noRange()); // [:x]
-                    if (match(RANGE) != null) {
-                        step = parseOr(ParsingPolicy.noRange()); // [:x:y]
-                    }
-                }
-            } else { // [x:y] [x::y] [x:y:z] [x:+y] [x:+y:z]
-                start = parseOr(ParsingPolicy.noRange());
-                if (matchMultiple(RANGE, RANGE_INCLUDE) != null) {
-                    if (match(RANGE) != null) {
-                        step = parseOr(ParsingPolicy.noRange()); // [x::y]
-                    } else if (match(RSPAR) != null) {
-                        pos--; // [x:]
-                    } else {
-                        end = parseOr(ParsingPolicy.noRange()); // [x:y] [x:+y]
-                        if (matchMultiple(RANGE) != null) {
-                            step = parseOr(ParsingPolicy.noRange()); // [x:y:z] [x:+y:z]
-                        }
-                    }
-                } else isSubscript = false;
-            }
-            require(RSPAR, "Expected ] to close indexing");
-            if (isSubscript)
-                left = new SubscriptNode(leftBracket, left, start, end, step);
-            else
-                left = new IndexingNode(leftBracket, left, start);
-        }
         return left;
     }
 
@@ -876,9 +904,9 @@ public class Parser {
         Integer currentModifier = ModifierConstants.UNCLARIFIED;
         do {
             if (modifiers == null) modifiers = new ArrayList<>();
-            else modifiers.add(currentModifier);
             currentModifier = parseModifier();
             if (currentModifier == null) return null;
+            modifiers.add(currentModifier);
             if (match(LPAR) != null) {
                 Token parent = getPrevious();
                 Node expr = parseExpression(null);

@@ -19,7 +19,7 @@ public class LiteralLambda extends Node {
 
     @Override
     public String stringRepr() {
-        return "lambda{" + TextUtils.nodeListToStringRepr(args) + " " + statement.toString() + "}";
+        return "lambda{" + TextUtils.nodeListToStringRepr(args) + " " + statement.stringRepr() + "}";
     }
 
 }

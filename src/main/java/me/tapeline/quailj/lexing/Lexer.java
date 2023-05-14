@@ -452,6 +452,11 @@ public class Lexer {
     private void scanId() {
         while (isAlphaNumeric(peek())) next();
         String text = sourceCode.substring(start, current);
+        if (text.equals("stop"))
+            if (match(" when")) {
+                addToken(CONTROL_STOP_WHEN);
+                return;
+            }
         TokenType type = keywords.get(text);
         if (type == null) type = VAR;
         addToken(type);

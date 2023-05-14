@@ -82,7 +82,7 @@ public class LiteralFunction extends Node {
     @Override
     public String stringRepr() {
         return "function{" + name + " " + TextUtils.argumentListToStringRepr(args)
-                + " " + code.toString() + "}";
+                + " " + code.stringRepr() + "}";
     }
 
 }

@@ -20,7 +20,7 @@ public class UnaryOperatorNode extends Node {
 
     @Override
     public String stringRepr() {
-        return "op{" + op.toString() + " " + op.toString() + "}";
+        return "op{" + op.toString() + " " + value.stringRepr() + "}";
     }
 
 }

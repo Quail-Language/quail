@@ -47,7 +47,7 @@ public class TextUtils {
         List<String> keys = new ArrayList<>(nodes.keySet());
         keys.sort(String::compareTo);
         for (int i = 0; i < keys.size(); i++) {
-            sb.append(nodes.get(keys.get(i)).stringRepr());
+            sb.append(keys.get(i)).append("=").append(nodes.get(keys.get(i)).stringRepr());
             if (i + 1 < keys.size())
                 sb.append(" ");
         }
@@ -59,7 +59,7 @@ public class TextUtils {
         List<String> keys = new ArrayList<>(nodes.keySet());
         keys.sort(String::compareTo);
         for (int i = 0; i < keys.size(); i++) {
-            sb.append(nodes.get(keys.get(i)).stringRepr());
+            sb.append(keys.get(i)).append("=").append(nodes.get(keys.get(i)).stringRepr());
             if (i + 1 < keys.size())
                 sb.append(" ");
         }

@@ -25,7 +25,7 @@ public class SubscriptNode extends Node {
         return "sub{" + collection.stringRepr() + " " +
                 (start != null? start.stringRepr() : "null") + " " +
                 (end != null? end.stringRepr() : "null") + " " +
-                (step != null? step.stringRepr() : "null") + " " +
+                (step != null? step.stringRepr() : "null") +
                 "}";
     }
 

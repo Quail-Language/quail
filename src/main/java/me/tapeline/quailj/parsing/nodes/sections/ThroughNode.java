@@ -30,7 +30,7 @@ public class ThroughNode extends Node {
     public String stringRepr() {
         return "through{" + rangeStart.stringRepr() + " " +
                 rangeEnd.stringRepr() + " " +
-                (rangeStart != null? rangeStart.stringRepr() : "null") +
+                (rangeStep != null? rangeStep.stringRepr() : "null") +
                 " " + iterator + " " + code.stringRepr() + "}";
     }
 

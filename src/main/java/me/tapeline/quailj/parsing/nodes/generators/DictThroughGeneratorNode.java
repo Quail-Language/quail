@@ -31,7 +31,7 @@ public class DictThroughGeneratorNode extends Node {
     public String stringRepr() {
         return "gendict{" + key.stringRepr() + " " +
                 value.stringRepr() + " " +
-                iterator + " " +
+                iterator.stringRepr() + " " +
                 range.stringRepr() + " " +
                 (condition != null? condition.stringRepr() : "null") + "}";
     }

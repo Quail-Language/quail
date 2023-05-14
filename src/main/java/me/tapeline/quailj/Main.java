@@ -12,16 +12,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws LexerException, ParserException {
-        String code = "" +
-        "print(\"Hello, World\")\n" +
-        "a = 2\n" +
-        "for b in 1:30:\n" +
-        "\ta //= b\n" +
-        "    print(b)\n" +
-        "assert a == 2\n" +
-        "use \"lang/math\" = math\n" +
-        "function fact(x) math.product(1:+x)\n" +
-        "print(fact(5))\n";
+        String code = "s[x::y]\n";
         Lexer lexer = new Lexer(code);
         List<Token> tokens = lexer.scan();
         StringBuilder builder = new StringBuilder();

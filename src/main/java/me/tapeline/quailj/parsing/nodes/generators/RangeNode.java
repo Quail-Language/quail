@@ -21,7 +21,7 @@ public class RangeNode extends Node {
     public String stringRepr() {
         return "range{" + rangeStart.stringRepr() + " " +
                 rangeEnd.stringRepr() + " " +
-                (rangeStart != null? rangeStart.stringRepr() : "null") + "}";
+                (rangeStep != null? rangeStep.stringRepr() : "null") + "}";
     }
 
 }

@@ -39,7 +39,7 @@ public class IfNode extends Node {
         return "if{" +
                 TextUtils.nodeListToStringRepr(conditions) + " " +
                 TextUtils.blockListToStringRepr(branches) + " " +
-                elseBranch.stringRepr() + "}";
+                (elseBranch != null? elseBranch.stringRepr() : "null") + "}";
     }
 
 }

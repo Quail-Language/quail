@@ -127,4 +127,109 @@ public class ParserPartialExpressionTests {
         );
     }
 
+    @Test
+    public void testIndexing() throws LexerException, ParserException {
+        String code = "" +
+                "i[f]\n" +
+                "i[f]()\n" +
+                "f()[f]\n";
+        Lexer lexer = new Lexer(code);
+        List<Token> tokens = lexer.scan();
+        Parser parser = new Parser(code, tokens);
+        Node node = parser.parse();
+        System.out.println(node.stringRepr());
+        Assertions.assertEquals(
+                "block[" +
+                        "index{i f} " +
+                        "call{index{i f} []} " +
+                        "index{call{f []} f}" +
+                        "]",
+                node.stringRepr()
+        );
+    }
+
+    @Test
+    public void testIndexSet() throws LexerException, ParserException {
+        String code = "" +
+                "i[f] = v\n" +
+                "f()[f] = v\n";
+        Lexer lexer = new Lexer(code);
+        List<Token> tokens = lexer.scan();
+        Parser parser = new Parser(code, tokens);
+        Node node = parser.parse();
+        System.out.println(node.stringRepr());
+        Assertions.assertEquals(
+                "block[" +
+                        "index set{i f v} " +
+                        "index set{call{f []} f v}" +
+                        "]",
+                node.stringRepr()
+        );
+    }
+
+    @Test
+    public void testSubscript() throws LexerException, ParserException {
+        String code = "" +
+                "s[::]\n" +
+                "s[:x]\n" +
+                "s[:x:y]\n" +
+                "s[::x]\n" +
+                "s[x:y]\n" +
+                "s[x::y]\n" +
+                "s[x:y:z]\n" +
+                "s[x:+y]\n" +
+                "s[x:+y:z]\n";
+        Lexer lexer = new Lexer(code);
+        List<Token> tokens = lexer.scan();
+        Parser parser = new Parser(code, tokens);
+        Node node = parser.parse();
+        System.out.println(node.stringRepr());
+        Assertions.assertEquals(
+                "block[" +
+                        "sub{s null null null} " +
+                        "sub{s null x null} " +
+                        "sub{s null x y} " +
+                        "sub{s null null x} " +
+                        "sub{s x y null} " +
+                        "sub{s x null y} " +
+                        "sub{s x y z} " +
+                        "sub{s x y null} " +
+                        "sub{s x y z}" +
+                        "]",
+                node.stringRepr()
+        );
+    }
+
+    @Test
+    public void testTypecast() throws LexerException, ParserException {
+        String code = "" +
+                "string(3)\n";
+        Lexer lexer = new Lexer(code);
+        List<Token> tokens = lexer.scan();
+        Parser parser = new Parser(code, tokens);
+        Node node = parser.parse();
+        System.out.println(node.stringRepr());
+        Assertions.assertEquals(
+                "block[cast{512 3.0}]",
+                node.stringRepr()
+        );
+    }
+
+    @Test
+    public void testUnary() throws LexerException, ParserException {
+        String code = "" +
+                "-3\n" +
+                "!false\n" +
+                "not false\n";
+        Lexer lexer = new Lexer(code);
+        List<Token> tokens = lexer.scan();
+        Parser parser = new Parser(code, tokens);
+        Node node = parser.parse();
+        System.out.println(node.stringRepr());
+        Assertions.assertEquals(
+                "block[op{MINUS 3.0} op{NOT false} op{NOT false}]",
+                node.stringRepr()
+        );
+    }
+
 }
