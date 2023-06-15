@@ -1,5 +1,7 @@
 package me.tapeline.quailj.typing.modifiers;
 
+import me.tapeline.quailj.typing.classes.QObject;
+
 public class ModifierConstants {
 
     public static final int UNCLARIFIED = 0;
@@ -16,5 +18,10 @@ public class ModifierConstants {
     public static final int FUNC        = 1024;
     public static final int OBJ         = 2048;
     public static final int VOID        = 8192;
+    public static final int FINAL_ASSIGNED = 16384;
+
+    public static boolean matchesOnAssign(int flags, QObject value) {
+        return false; // TODO
+    }
 
 }
