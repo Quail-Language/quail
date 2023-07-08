@@ -4,9 +4,7 @@ import me.tapeline.quailj.runtime.Runtime;
 import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.runtime.Table;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class QObject {
 
@@ -36,8 +34,6 @@ public class QObject {
 
     protected boolean isPrototype;
     protected boolean isInheritable = true;
-
-    protected Set<String> iter;
 
     public QObject(Table table, String className, QObject parent, boolean isPrototype) {
         this.table = table;
@@ -106,6 +102,12 @@ public class QObject {
         return new QObject(new Table(), className, this, true);
     }
 
+    public QObject newObject(Runtime runtime, List<QObject> args) throws RuntimeStriker {
+        QObject blank = derive();
+        blank = blank.callFromThis(runtime, "_constructor", args, new HashMap<>());
+        return blank;
+    }
+
     public QObject copy() {
         QObject copy = new QObject(table, className, parent, isPrototype);
         copy.setInheritableFlag(isInheritable);
@@ -144,17 +146,55 @@ public class QObject {
         table.put(name, value);
     }
 
-    public void set(String name, QObject value, Integer[] modifiers) {
+    public void set(String name, QObject value, int[] modifiers) {
         table.put(name, value, modifiers);
     }
 
     public void forceSet(String name, QObject value) {
-        table.put(name, value, new Integer[0]);
+        table.put(name, value, new int[0]);
     }
 
-    public QObject getOverridable(String name) {
+    public QObject getOverridable(Runtime runtime, String name) throws RuntimeStriker {
         QObject getter = get("_get");
+        if (getter instanceof QFunc)
+            return callFromThis(
+                    runtime,
+                    getter,
+                    Collections.singletonList(QObject.Val(name)),
+                    new HashMap<>()
+            );
         return getter;
+    }
+
+    public final QObject callFromThis(Runtime runtime, QObject func, List<QObject> args,
+                                      HashMap<String, QObject> kwargs) throws RuntimeStriker {
+        if (!isPrototype())
+            args.add(0, this);
+        return func.call(runtime, args, kwargs);
+    }
+
+    public final QObject callFromThis(Runtime runtime, String func, List<QObject> args,
+                                      HashMap<String, QObject> kwargs) throws RuntimeStriker {
+        return callFromThis(runtime, get(func), args, kwargs);
+    }
+
+    // Actions
+
+    public QObject call(Runtime runtime, List<QObject> args, HashMap<String, QObject> kwargs)
+            throws RuntimeStriker {
+        if (isPrototype()) {
+            QObject newObject = derive();
+            return newObject.callFromThis(runtime, "_constructor", args, kwargs);
+        }
+        if (table.containsKey("_call"))
+            return callFromThis(
+                    runtime,
+                    "_call",
+                    Arrays.asList(QObject.Val(args), QObject.Val(kwargs)),
+                    new HashMap<>()
+            );
+        Runtime.error(getClassName() + " is not callable");
+        return Val();
     }
 
 }

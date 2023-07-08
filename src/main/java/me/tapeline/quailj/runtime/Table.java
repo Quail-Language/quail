@@ -11,7 +11,7 @@ import java.util.function.BiConsumer;
 public class Table {
 
     private final HashMap<String, QObject> values = new HashMap<>();
-    private final HashMap<String, Integer[]> modifiers = new HashMap<>();
+    private final HashMap<String, int[]> modifiers = new HashMap<>();
 
     public Table() { }
 
@@ -19,18 +19,18 @@ public class Table {
         this.values.putAll(values);
     }
 
-    public Table(HashMap<String, QObject> values, HashMap<String, Integer[]> modifiers) {
+    public Table(HashMap<String, QObject> values, HashMap<String, int[]> modifiers) {
         this(values);
         this.modifiers.putAll(modifiers);
     }
 
     public void put(String name, QObject value) throws RuntimeStriker {
         if (modifiers.containsKey(name)) {
-            Integer[] modifier = modifiers.get(name);
+            int[] modifier = modifiers.get(name);
             boolean hadMatch = false;
             if (modifier.length == 1) hadMatch = ModifierConstants.matchesOnAssign(modifier[0], value);
             else for (Integer flags : modifier)
-                if (ModifierConstants.matchesOnAssign(flags, value)) {
+               if (ModifierConstants.matchesOnAssign(flags, value)) {
                     hadMatch = true;
                     break;
                 }
@@ -41,7 +41,7 @@ public class Table {
         }
     }
 
-    public void put(String name, QObject value, Integer[] modifier) {
+    public void put(String name, QObject value, int[] modifier) {
         values.put(name, value);
         modifiers.put(name, modifier);
     }
@@ -70,7 +70,7 @@ public class Table {
         return values;
     }
 
-    public Integer[] getModifiersFor(String key) {
+    public int[] getModifiersFor(String key) {
         return modifiers.get(key);
     }
 

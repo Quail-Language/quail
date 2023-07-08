@@ -1,5 +1,9 @@
 package me.tapeline.quailj.parsing;
 
+/**
+ * Determines which parsing methods should be skipped
+ * @author Tapeline
+ */
 public class ParsingPolicy {
 
     public boolean excludeComparison = false;

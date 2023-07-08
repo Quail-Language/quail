@@ -18,7 +18,7 @@ public class QException extends QObject {
                             new Pair<>(MESSAGE_FIELD, QObject.Val("Unknown error"))
                     ),
                     Dict.make(
-                            new Pair<>(MESSAGE_FIELD, new Integer[] {ModifierConstants.STR})
+                            new Pair<>(MESSAGE_FIELD, new int[] {ModifierConstants.STR})
                     )
             ),
             "Exception",

@@ -37,7 +37,7 @@ public class Memory {
         } else table.put(id, value);
     }
 
-    public void set(String id, QObject value, Integer[] modifiers) {
+    public void set(String id, QObject value, int[] modifiers) {
         table.put(id, value, modifiers);
     }
 
@@ -49,7 +49,7 @@ public class Memory {
 
         if (value == null) {
             value = QObject.Val();
-            table.put(id, value, new Integer[0]);
+            table.put(id, value, new int[0]);
         }
         return value;
     }
@@ -73,7 +73,7 @@ public class Memory {
                 else if (IntFlags.check(node.modifiers[0], ModifierConstants.DICT))
                     newObject = QObject.Val(new HashMap<>());
             }
-            table.put(id, newObject, Arrays.stream(node.modifiers).boxed().toArray(Integer[]::new));
+            table.put(id, newObject, node.modifiers);
             return newObject;
         } else return alreadyUsed;
     }

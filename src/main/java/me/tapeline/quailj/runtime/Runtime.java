@@ -6,6 +6,7 @@ import me.tapeline.quailj.parsing.nodes.effects.AsyncNode;
 import me.tapeline.quailj.typing.classes.QObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Runtime {
@@ -14,7 +15,7 @@ public class Runtime {
     private final Node root;
     private final boolean doProfile;
     public IO io;
-//    public Memory memory;
+    public Memory memory;
 //    public EmbedIntegrator embedIntegrator;
 //    public static LibraryRegistry libraryRegistry = new LibraryRegistry();
 //    public List<AsyncRuntimeWorker> asyncRuntimeWorkers = new ArrayList<>();
@@ -64,6 +65,10 @@ public class Runtime {
     }
 
     public QObject run(Node node) throws RuntimeStriker {
+        return run(node, memory);
+    }
+
+    public QObject run(Node node, Memory memory) throws RuntimeStriker {
         return null;
     }
 

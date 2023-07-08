@@ -20,10 +20,26 @@ import java.util.List;
 
 import static me.tapeline.quailj.lexing.TokenType.*;
 
+/**
+ * Parser. Accepts a list of tokens, parses constructions and
+ * constructs an abstract syntax tree (AST)
+ * @author Tapeline
+ */
 public class Parser {
 
+    /**
+     * Token list
+     */
     private final List<Token> tokens;
+
+    /**
+     * Source code from which token are generated
+     */
     private final String sourceCode;
+
+    /**
+     * Current caret position
+     */
     private int pos = 0;
 
     public Parser(String code, List<Token> tokens) {
@@ -31,6 +47,11 @@ public class Parser {
         this.sourceCode = code;
     }
 
+    /**
+     * Throws a ParserException with given message
+     * @param message error message
+     * @throws ParserException constructed exception
+     */
     private void error(String message) throws ParserException {
         if (!reachedEnd())
             throw new ParserException(
@@ -43,6 +64,11 @@ public class Parser {
         );
     }
 
+    /**
+     * Throws a ParserException with given message
+     * @param message error message
+     * @throws ParserException constructed exception
+     */
     private void error(Token token, String message) throws ParserException {
         throw new ParserException(
                 message,
@@ -50,33 +76,61 @@ public class Parser {
         );
     }
 
+    /**
+     * @return has caret reached end
+     */
     private boolean reachedEnd() {
         return pos >= tokens.size();
     }
 
+    /**
+     * @param pos target position
+     * @return if target position is out of token ist bounds
+     */
     private boolean reachedEndAt(int pos) {
         return pos >= tokens.size();
     }
 
+    /**
+     * @param offset offset
+     * @return has offsetted position reached end
+     */
     private boolean reachedEndOffset(int offset) {
         return reachedEndAt(pos + offset);
     }
 
+    /**
+     * @return gets the token under current caret position
+     */
     private Token current() {
         if (reachedEnd()) return null;
         return tokens.get(pos);
     }
 
+    /**
+     * @return get the token next after current caret position
+     */
     private Token getNext() {
         if (reachedEndOffset(1)) return null;
         return tokens.get(pos + 1);
     }
 
+    /**
+     * @return gets the token which is offsetted after current caret position
+     */
     private Token getNext(int offset) {
         if (reachedEndOffset(offset)) return null;
         return tokens.get(pos + offset);
     }
 
+    /**
+     * Tries to match current token with given type.
+     * If matches - moves caret and returns token.
+     * If not - caret holds still, returns null.
+     * Ignores whitespaces, newlines and tabs
+     * @param type matching type
+     * @return matched token
+     */
     private Token match(TokenType type) {
         if (reachedEnd()) return null;
         int increment = 0;
@@ -95,6 +149,12 @@ public class Parser {
         return null;
     }
 
+    /**
+     * Acts like {@link #match(TokenType)}, but does not ignore tabs and newlines.
+     * They are treated as individual tokens
+     * @param type matching type
+     * @return matched token
+     */
     private Token matchExactly(TokenType type) {
         if (reachedEnd()) return null;
         Token current = tokens.get(pos);
@@ -105,6 +165,12 @@ public class Parser {
         return null;
     }
 
+    /**
+     * Acts like {@link #match(TokenType)}, but searches for any token
+     * in given list. Matches first occurrence
+     * @param types matching types
+     * @return matched token
+     */
     private Token matchMultiple(TokenType... types) {
         if (reachedEnd()) return null;
         int increment = 0;
@@ -125,6 +191,13 @@ public class Parser {
         return null;
     }
 
+    /**
+     * Acts like {@link #match(TokenType)} but matches only tokens
+     * on this line by not ignoring newline tokens. Tabs are still
+     * ignored
+     * @param type matching type
+     * @return matched token
+     */
     private Token matchSameLine(TokenType type) {
         if (reachedEnd()) return null;
         int increment = 0;
@@ -143,11 +216,20 @@ public class Parser {
         return null;
     }
 
+    /**
+     * Gets current token and moves caret forward
+     * @return token
+     */
     private Token consumeAny() {
         if (reachedEnd()) return null;
         return tokens.get(pos++);
     }
 
+    /**
+     * Gets nearest significant token (ignores tabs and newlines)
+     * and moves caret forward to next token
+     * @return
+     */
     private Token consumeSignificant() {
         if (reachedEnd()) return null;
         int increment = 0;
@@ -163,6 +245,11 @@ public class Parser {
         return current;
     }
 
+    /**
+     * Rolls the caret to next significant token
+     * and returns it
+     * @return next significant token
+     */
     private Token toNextSignificant() {
         if (reachedEnd()) return null;
         int increment = 0;
