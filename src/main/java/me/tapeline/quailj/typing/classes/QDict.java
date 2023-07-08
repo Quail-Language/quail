@@ -4,58 +4,62 @@ import me.tapeline.quailj.runtime.Runtime;
 import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.runtime.Table;
 
-public class QBool extends QObject {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-    public static QBool prototype = new QBool(
+public class QDict extends QObject {
+
+    public static QDict prototype = new QDict(
             new Table(),
-            "Bool",
+            "Dict",
             QObject.superObject,
             true
     );
 
-    protected boolean value;
+    protected HashMap<String, QObject> values;
 
-    public QBool(Table table, String className, QObject parent, boolean isPrototype) {
+    public QDict(Table table, String className, QObject parent, boolean isPrototype) {
         super(table, className, parent, isPrototype);
     }
 
-    public QBool(Table table, String className, QObject parent, boolean isPrototype, boolean value) {
+    public QDict(Table table, String className, QObject parent, boolean isPrototype, HashMap<String, QObject> values) {
         super(table, className, parent, isPrototype);
-        this.value = value;
+        this.values = values;
     }
 
-    public QBool(boolean value) {
+    public QDict(HashMap<String, QObject> values) {
         this(new Table(), prototype.className, prototype, false);
-        this.value = value;
+        this.values = values;
     }
 
     @Override
     public QObject derive() throws RuntimeStriker {
         if (!isPrototype)
             Runtime.error("Attempt to inherit from non-prototype value");
-        return new QBool(new Table(), className, this, false, value);
+        return new QDict(new Table(), className, this, false, values);
     }
 
     @Override
     public QObject extendAs(String className) throws RuntimeStriker {
         if (!isPrototype)
             Runtime.error("Attempt to inherit from non-prototype value");
-        return new QBool(new Table(), className, this, true, value);
+        return new QDict(new Table(), className, this, true, values);
     }
 
     @Override
     public QObject copy() {
-        QObject copy = new QBool(table, className, parent, isPrototype, value);
+        QObject copy = new QDict(table, className, parent, isPrototype, new HashMap<>(values));
         copy.setInheritableFlag(isInheritable);
         return copy;
     }
 
-    public boolean getValue() {
-        return value;
+    public HashMap<String, QObject> getValues() {
+        return values;
     }
 
-    public void setValue(boolean value) {
-        this.value = value;
+    public void setValues(HashMap<String, QObject> values) {
+        this.values = values;
     }
 
 }

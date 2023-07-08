@@ -1,9 +1,11 @@
 package me.tapeline.quailj.runtime;
 
+import me.tapeline.quailj.io.DefaultIO;
 import me.tapeline.quailj.io.IO;
 import me.tapeline.quailj.parsing.nodes.Node;
 import me.tapeline.quailj.parsing.nodes.effects.AsyncNode;
 import me.tapeline.quailj.typing.classes.QObject;
+import me.tapeline.quailj.typing.classes.errors.QException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,6 +33,11 @@ public class Runtime {
 //    public static QObject boolPrototype = new QObject("Bool", null, new HashMap<>());
 //    public static QObject funcPrototype = new QObject("Func", null, new HashMap<>());
 
+
+    public Runtime() {
+        this(new File(""), null, new DefaultIO(), new String[0], false);
+    }
+
     public Runtime(File file, Node root, IO io, String[] consoleArgs, boolean doProfile) {
         this.scriptHome = file;
         this.root = root;
@@ -53,6 +60,13 @@ public class Runtime {
                         message
                 )*/
                 message
+        );
+    }
+
+    public static void error(QException error) throws RuntimeStriker {
+        throw new RuntimeStriker(
+                RuntimeStriker.Type.EXCEPTION,
+                error
         );
     }
 
