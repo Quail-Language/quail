@@ -2,6 +2,7 @@ package me.tapeline.quailj.preprocessing.directives;
 
 import me.tapeline.quailj.preprocessing.StringBoundariesMap;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -25,11 +26,13 @@ public abstract class AbstractDirective {
      * Executes all actions related to directive behaviour
      * and return modified code.
      * @param code source code to be modified
+     * @param scriptHome script's parent directory
      * @param boundaries map of all strings in code
      * @param arguments arguments provided to directive
      * @return modified code
      */
     public abstract String applyDirective(String code,
+                                          File scriptHome,
                                           StringBoundariesMap boundaries,
                                           Object... arguments);
 

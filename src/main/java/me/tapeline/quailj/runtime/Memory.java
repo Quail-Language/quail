@@ -6,7 +6,6 @@ import me.tapeline.quailj.typing.modifiers.ModifierConstants;
 import me.tapeline.quailj.utils.IntFlags;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class Memory {
@@ -33,8 +32,8 @@ public class Memory {
             if (enclosing.contains(id))
                 enclosing.set(runtime, id, value);
             else
-                table.put(id, value);
-        } else table.put(id, value);
+                table.put(runtime, id, value);
+        } else table.put(runtime, id, value);
     }
 
     public void set(String id, QObject value, int[] modifiers) {

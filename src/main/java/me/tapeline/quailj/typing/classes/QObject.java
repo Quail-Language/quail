@@ -21,13 +21,16 @@ public class QObject {
     public static QString Val(String value) {
         return new QString(value);
     }
-    public static QObject Val(List<QObject> value) {
+    public static QList Val(List<QObject> value) {
         return new QList(value);
     }
-    public static QObject Val(HashMap<String, QObject> value) {
+    public static QDict Val(HashMap<String, QObject> value) {
         return new QDict(value);
     }
     public static QObject superObject = new QObject(new Table(), "Object", null, true);
+    public static QObject nullSafe(QObject object) {
+        return object == null? Val() : object;
+    }
 
     protected Table table = new Table();
     protected String className;
@@ -91,20 +94,20 @@ public class QObject {
         return isPrototype? this : parent;
     }
 
-    public QObject derive() throws RuntimeStriker {
+    public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
-            Runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error("Attempt to inherit from non-prototype value");
         return new QObject(new Table(), className, this, false);
     }
 
-    public QObject extendAs(String className) throws RuntimeStriker {
+    public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
-            Runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error("Attempt to inherit from non-prototype value");
         return new QObject(new Table(), className, this, true);
     }
 
     public QObject newObject(Runtime runtime, List<QObject> args) throws RuntimeStriker {
-        QObject blank = derive();
+        QObject blank = derive(runtime);
         blank = blank.callFromThis(runtime, "_constructor", args, new HashMap<>());
         return blank;
     }
@@ -143,8 +146,8 @@ public class QObject {
             return new QNull();
     }
 
-    public void set(String name, QObject value) throws RuntimeStriker {
-        table.put(name, value);
+    public void set(Runtime runtime, String name, QObject value) throws RuntimeStriker {
+        table.put(runtime, name, value);
     }
 
     public void set(String name, QObject value, int[] modifiers) {
@@ -156,15 +159,19 @@ public class QObject {
     }
 
     public QObject getOverridable(Runtime runtime, String name) throws RuntimeStriker {
-        QObject getter = get("_get");
-        if (getter instanceof QFunc)
-            return callFromThis(
-                    runtime,
-                    getter,
-                    Collections.singletonList(QObject.Val(name)),
-                    new HashMap<>()
-            );
-        return getter;
+        if (table.containsKey("_get"))
+            return callFromThis(runtime, "_get", Collections.singletonList(Val(name)), new HashMap<>());
+        if (table.containsKey("_get_" + name))
+            return callFromThis(runtime, "_get_" + name, new ArrayList<>(), new HashMap<>());
+        return get(name);
+    }
+
+    public final void setOverridable(Runtime runtime, String name, QObject value) throws RuntimeStriker {
+        if (table.containsKey("_set"))
+            callFromThis(runtime, "_set", Arrays.asList(QObject.Val(name), value), new HashMap<>());
+        else if (table.containsKey("_set_" + name))
+            callFromThis(runtime, "_set_" + name, Collections.singletonList(value), new HashMap<>());
+        else set(runtime, name, value);
     }
 
     public final QObject callFromThis(Runtime runtime, QObject func, List<QObject> args,
@@ -237,6 +244,18 @@ public class QObject {
         return false;
     }
 
+    public final boolean isTrue() {
+        if (this instanceof QBool)
+            return ((QBool) this).getValue();
+        return false;
+    }
+
+    public final boolean isFalse() {
+        if (this instanceof QBool)
+            return !((QBool) this).getValue();
+        return false;
+    }
+
     public final String strValue() {
         if (this instanceof QString)
             return ((QString) this).getValue();
@@ -260,7 +279,7 @@ public class QObject {
     public QObject call(Runtime runtime, List<QObject> args, HashMap<String, QObject> kwargs)
             throws RuntimeStriker {
         if (isPrototype()) {
-            QObject newObject = derive();
+            QObject newObject = derive(runtime);
             return newObject.callFromThis(runtime, "_constructor", args, kwargs);
         }
         if (table.containsKey("_call"))
@@ -270,7 +289,7 @@ public class QObject {
                     Arrays.asList(QObject.Val(args), QObject.Val(kwargs)),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedUnaryOperationException(this, "call"));
+        runtime.error(new QUnsupportedUnaryOperationException(this, "call"));
         return Val();
     }
 
@@ -282,7 +301,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedOperationException(this, "+", other));
+        runtime.error(new QUnsupportedOperationException(this, "+", other));
         return Val();
     }
 
@@ -294,7 +313,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedOperationException(this, "-", other));
+        runtime.error(new QUnsupportedOperationException(this, "-", other));
         return Val();
     }
 
@@ -306,7 +325,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedOperationException(this, "*", other));
+        runtime.error(new QUnsupportedOperationException(this, "*", other));
         return Val();
     }
 
@@ -318,7 +337,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedOperationException(this, "/", other));
+        runtime.error(new QUnsupportedOperationException(this, "/", other));
         return Val();
     }
 
@@ -330,7 +349,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedOperationException(this, "//", other));
+        runtime.error(new QUnsupportedOperationException(this, "//", other));
         return Val();
     }
 
@@ -342,7 +361,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedOperationException(this, "%", other));
+        runtime.error(new QUnsupportedOperationException(this, "%", other));
         return Val();
     }
 
@@ -354,7 +373,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedOperationException(this, "^", other));
+        runtime.error(new QUnsupportedOperationException(this, "^", other));
         return Val();
     }
 
@@ -366,7 +385,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedOperationException(this, "<<", other));
+        runtime.error(new QUnsupportedOperationException(this, "<<", other));
         return Val();
     }
 
@@ -378,7 +397,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedOperationException(this, ">>", other));
+        runtime.error(new QUnsupportedOperationException(this, ">>", other));
         return Val();
     }
 
@@ -412,7 +431,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedOperationException(this, ">", other));
+        runtime.error(new QUnsupportedOperationException(this, ">", other));
         return Val();
     }
 
@@ -424,7 +443,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedOperationException(this, ">=", other));
+        runtime.error(new QUnsupportedOperationException(this, ">=", other));
         return Val();
     }
 
@@ -436,7 +455,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedOperationException(this, "<", other));
+        runtime.error(new QUnsupportedOperationException(this, "<", other));
         return Val();
     }
 
@@ -448,7 +467,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedOperationException(this, "<=", other));
+        runtime.error(new QUnsupportedOperationException(this, "<=", other));
         return Val();
     }
 
@@ -460,11 +479,11 @@ public class QObject {
                     new ArrayList<>(),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedUnaryOperationException(this, "!"));
+        runtime.error(new QUnsupportedUnaryOperationException(this, "!"));
         return Val();
     }
 
-    public QObject minus(Runtime runtime) throws RuntimeStriker {
+    public QObject negate(Runtime runtime) throws RuntimeStriker {
         if (table.containsKey("_neg"))
             return callFromThis(
                     runtime,
@@ -472,7 +491,7 @@ public class QObject {
                     new ArrayList<>(),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedUnaryOperationException(this, "-"));
+        runtime.error(new QUnsupportedUnaryOperationException(this, "-"));
         return Val();
     }
 
@@ -484,7 +503,7 @@ public class QObject {
                     new ArrayList<>(),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedConversionException(this, "string"));
+        runtime.error(new QUnsupportedConversionException(this, "string"));
         return Val();
     }
 
@@ -496,7 +515,7 @@ public class QObject {
                     new ArrayList<>(),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedConversionException(this, "bool"));
+        runtime.error(new QUnsupportedConversionException(this, "bool"));
         return Val();
     }
 
@@ -508,7 +527,7 @@ public class QObject {
                     new ArrayList<>(),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedConversionException(this, "num"));
+        runtime.error(new QUnsupportedConversionException(this, "num"));
         return Val();
     }
 
@@ -520,7 +539,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedOperationException(this, "and", other));
+        runtime.error(new QUnsupportedOperationException(this, "and", other));
         return Val();
     }
 
@@ -532,7 +551,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedOperationException(this, "or", other));
+        runtime.error(new QUnsupportedOperationException(this, "or", other));
         return Val();
     }
 
@@ -555,7 +574,7 @@ public class QObject {
                     Arrays.asList(index, value),
                     new HashMap<>()
             );
-        set(index.toString(), value);
+        set(runtime, index.toString(), value);
         return Val();
     }
 
@@ -567,7 +586,7 @@ public class QObject {
                     Arrays.asList(start, end),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedSubscriptException(this));
+        runtime.error(new QUnsupportedSubscriptException(this));
         return Val();
     }
 
@@ -580,7 +599,7 @@ public class QObject {
                     Arrays.asList(start, end, step),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedStepSubscriptException(this));
+        runtime.error(new QUnsupportedStepSubscriptException(this));
         return Val();
     }
 
@@ -592,7 +611,7 @@ public class QObject {
                     new ArrayList<>(),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedIterationException(this));
+        runtime.error(new QUnsupportedIterationException(this));
         return Val();
     }
 
@@ -604,8 +623,13 @@ public class QObject {
                     new ArrayList<>(),
                     new HashMap<>()
             );
-        Runtime.error(new QUnsupportedIterationException(this));
+        runtime.error(new QUnsupportedIterationException(this));
         return Val();
+    }
+
+    @Override
+    public String toString() {
+        return "<instance of " + className + ">";
     }
 
 }

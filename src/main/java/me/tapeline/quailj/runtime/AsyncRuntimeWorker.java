@@ -5,9 +5,9 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class AsyncRuntimeWorker extends Thread {
 
-    public Node node;
-    public Runtime runtime;
-    public Memory scope;
+    private Node node;
+    private Runtime runtime;
+    private Memory scope;
 
     public AsyncRuntimeWorker(Node node, Runtime runtime, Memory scope) {
         this.node = node;
@@ -17,14 +17,12 @@ public class AsyncRuntimeWorker extends Thread {
 
     @Override
     public void run() {
-        /*try {
+        try {
             runtime.run(node, scope);
         } catch (RuntimeStriker striker) {
-            if (striker.type == RuntimeStriker.Type.EXCEPTION ||
-                    striker.type == RuntimeStriker.Type.EXIT) {
-                System.err.println(striker.error.toString());
-            }
-        }*/
+            if (striker.getType() == RuntimeStriker.Type.EXCEPTION)
+                System.err.println(striker.formatError(runtime.getCode()));
+        }
     }
 
 }

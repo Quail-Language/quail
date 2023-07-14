@@ -4,6 +4,7 @@ import me.tapeline.quailj.preprocessing.directives.AbstractDirective;
 import me.tapeline.quailj.preprocessing.directives.DirectiveArgument;
 import me.tapeline.quailj.preprocessing.directives.ScannedDirective;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +14,14 @@ public class Preprocessor {
 
     private int pos;
     private String code;
+    private File scriptHome;
 
-    public Preprocessor(String code) {
+    public Preprocessor(String code, File scriptHome) {
         this.code = code;
+        this.scriptHome = scriptHome;
     }
 
-    public boolean checkPrefix() {
+    private boolean checkPrefix() {
         return code.substring(pos).startsWith("#:");
     }
 
@@ -174,7 +177,7 @@ public class Preprocessor {
     private String executeDirectives(List<ScannedDirective> directives, String code,
                                      StringBoundariesMap boundaries) {
         for (ScannedDirective directive : directives) {
-            code = directive.apply(code, boundaries);
+            code = directive.apply(code, scriptHome, boundaries);
         }
         return code;
     }

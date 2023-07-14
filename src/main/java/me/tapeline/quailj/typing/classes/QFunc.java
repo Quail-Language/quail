@@ -11,6 +11,7 @@ import me.tapeline.quailj.typing.utils.AlternativeCall;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 import me.tapeline.quailj.utils.TextUtils;
 
+import javax.xml.soap.Text;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,9 +63,10 @@ public class QFunc extends QObject {
         this.closure = closure;
     }
 
-    protected Memory mapArguments(List<FuncArgument> arguments,
-                               List<QObject> args,
-                               HashMap<String, QObject> kwargs) throws RuntimeStriker {
+    protected Memory mapArguments(Runtime runtime,
+                                  List<FuncArgument> arguments,
+                                  List<QObject> args,
+                                  HashMap<String, QObject> kwargs) throws RuntimeStriker {
         Memory enclosing = new Memory(closure);
         int argumentCount = arguments.size();
         int argsCount = args.size();
@@ -72,7 +74,7 @@ public class QFunc extends QObject {
             FuncArgument argument = arguments.get(i);
             if (i >= argsCount) {
                 if (!ModifierConstants.couldBeNull(argument.getModifiers()))
-                    Runtime.error("Argument mapping failed for argument #" + (i + 1) + ".\n" +
+                    runtime.error("Argument mapping failed for argument #" + (i + 1) + ".\n" +
                             "Expected not null, but got null");
                 enclosing.set(
                         argument.getName(),
@@ -97,7 +99,7 @@ public class QFunc extends QObject {
                         args.get(i),
                         argument.getModifiers()
                 );
-            } else Runtime.error("Argument mapping failed for argument #" + (i + 1) + ".\n" +
+            } else runtime.error("Argument mapping failed for argument #" + (i + 1) + ".\n" +
                     "Value " + args.get(i) + " is inapplicable for " +
                     TextUtils.modifiersToStringRepr(argument.getModifiers()));
         }
@@ -131,26 +133,26 @@ public class QFunc extends QObject {
         Memory enclosing;
         if (!alternatives.isEmpty()) for (AlternativeCall alternativeCall : alternatives) {
             try {
-                enclosing = mapArguments(alternativeCall.getArguments(), args, kwargs);
+                enclosing = mapArguments(runtime, alternativeCall.getArguments(), args, kwargs);
             } catch (RuntimeStriker striker) { continue; }
             return run(runtime, enclosing, alternativeCall.getCode(), args);
         }
-        enclosing = mapArguments(arguments, args, kwargs);
+        enclosing = mapArguments(runtime, arguments, args, kwargs);
         return run(runtime, enclosing, code, args);
     }
 
     @Override
-    public QObject derive() throws RuntimeStriker {
+    public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
-            Runtime.error("Attempt to derive from non-prototype value");
+            runtime.error("Attempt to derive from non-prototype value");
         return new QFunc(new Table(), className, this, false, name, arguments, code,
                 boundRuntime, isStatic, alternatives, closure);
     }
 
     @Override
-    public QObject extendAs(String className) throws RuntimeStriker {
+    public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
-            Runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error("Attempt to inherit from non-prototype value");
         return new QFunc(new Table(), className, this, true, name, arguments, code,
                 boundRuntime, isStatic, alternatives, closure);
     }
@@ -217,6 +219,18 @@ public class QFunc extends QObject {
 
     public void setClosure(Memory closure) {
         this.closure = closure;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("<function " + name + "(");
+        for (int i = 0; i < arguments.size(); i++)
+            if (i + 1 == arguments.size())
+                sb.append(arguments.get(i).toString()).append(")");
+            else
+                sb.append(arguments.get(i).toString()).append(", ");
+        sb.append(">");
+        return sb.toString();
     }
 
 }

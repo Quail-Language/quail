@@ -49,8 +49,8 @@ public class ParserPartialLiteralsTests {
         System.out.println(node.stringRepr());
         Assertions.assertEquals(
                 "block[" +
-                        "class{Test null {n=0.0 v=2.0} {f=function{f [] block[]}} []} " +
-                        "class{Test Test2 {n=0.0 v=2.0} {f=function{f [] block[]}} []}" +
+                        "class{Test null [assignvar{n 0.0} assignvar{v 2.0}] {f=function{f [] block[]}} []} " +
+                        "class{Test Test2 [assignvar{n 0.0} assignvar{v 2.0}] {f=function{f [] block[]}} []}" +
                         "]",
                 node.stringRepr()
         );
@@ -105,7 +105,7 @@ public class ParserPartialLiteralsTests {
         System.out.println(node.stringRepr());
         Assertions.assertEquals(
                 "block[" +
-                        "lambda{[a b] block[return{null}]}" +
+                        "lambda{[a=null b=null] block[return{null}]}" +
                         "]",
                 node.stringRepr()
         );

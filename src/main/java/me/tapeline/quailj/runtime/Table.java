@@ -11,6 +11,7 @@ import java.util.function.BiConsumer;
 public class Table {
 
     private final HashMap<String, QObject> values = new HashMap<>();
+    // TODO replace empty modifier sequences (int[0]) with null-s for lower memory consumption
     private final HashMap<String, int[]> modifiers = new HashMap<>();
 
     public Table() { }
@@ -24,7 +25,7 @@ public class Table {
         this.modifiers.putAll(modifiers);
     }
 
-    public void put(String name, QObject value) throws RuntimeStriker {
+    public void put(Runtime runtime, String name, QObject value) throws RuntimeStriker {
         if (modifiers.containsKey(name)) {
             int[] modifier = modifiers.get(name);
             boolean hadMatch = false;
@@ -35,7 +36,8 @@ public class Table {
                     break;
                 }
             if (!hadMatch)
-                Runtime.error("Attempt to assign wrong data to clarified variable");
+                runtime.error("Attempt to assign wrong data to clarified variable");
+            values.put(name, value);
         } else {
             values.put(name, value);
         }

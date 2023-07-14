@@ -7,6 +7,8 @@ import me.tapeline.quailj.preprocessing.Preprocessor;
 import me.tapeline.quailj.preprocessing.PreprocessorException;
 import me.tapeline.quailj.preprocessing.directives.AliasDirective;
 
+import java.io.File;
+
 public class PreprocessingAliasTests {
 
     @BeforeAll
@@ -21,8 +23,8 @@ public class PreprocessingAliasTests {
         String result;
         preprocessor = new Preprocessor("" +
                 "#:alias \"hello\" print(\"Hello, World!\")\n" +
-                "hello"
-        );
+                "hello",
+        new File(""));
         result = preprocessor.preprocess();
         System.out.println(result);
         Assertions.assertEquals(
@@ -38,8 +40,8 @@ public class PreprocessingAliasTests {
         preprocessor = new Preprocessor("" +
                 "#:alias \"hello\" print(\"Hello, World!\")\n" +
                 "hello\n" +
-                "print(\"Another hello\")"
-        );
+                "print(\"Another hello\")",
+        new File(""));
         result = preprocessor.preprocess();
         System.out.println(result);
         Assertions.assertEquals(
@@ -55,8 +57,8 @@ public class PreprocessingAliasTests {
         String result;
         preprocessor = new Preprocessor("" +
                 "#:alias \"set\\\\s*(?<id>[a-zA-Z0-9.]+)\\\\s*to\\\\s*(?<value>.*)\" $1 = $2\n" +
-                "set a to 2"
-        );
+                "set a to 2",
+        new File(""));
         result = preprocessor.preprocess();
         System.out.println(result);
         Assertions.assertEquals(
@@ -72,8 +74,8 @@ public class PreprocessingAliasTests {
         preprocessor = new Preprocessor("" +
                 "#:alias \"set\\\\s*(?<id>[a-zA-Z0-9.]+)\\\\s*to\\\\s*(?<value>.*)\" $1 = $2\n" +
                 "set a to 2\n" +
-                "b = \"set something to something\""
-        );
+                "b = \"set something to something\"",
+        new File(""));
         result = preprocessor.preprocess();
         System.out.println(result);
         Assertions.assertEquals(

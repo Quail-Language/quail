@@ -4,6 +4,7 @@ import me.tapeline.quailj.parsing.nodes.literals.LiteralFunction;
 import me.tapeline.quailj.runtime.Runtime;
 import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.typing.classes.QObject;
+import me.tapeline.quailj.utils.TextUtils;
 
 public class FuncArgument {
 
@@ -20,7 +21,9 @@ public class FuncArgument {
     }
 
     public FuncArgument(Runtime runtime, LiteralFunction.Argument argument) throws RuntimeStriker {
-        this(argument.name, runtime.run(argument.defaultValue), argument.modifiers, argument.type);
+        // TODO make it a static method FuncArgument::fromParsedArgument for better readability
+        this(argument.name, runtime.run(argument.defaultValue,
+                runtime.getMemory()), argument.modifiers, argument.type);
     }
 
     public String getName() {
@@ -53,6 +56,11 @@ public class FuncArgument {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return TextUtils.modifiersToStringRepr(modifiers) + " " + name;
     }
 
 }

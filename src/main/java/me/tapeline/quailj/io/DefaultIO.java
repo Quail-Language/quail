@@ -20,6 +20,8 @@ public class DefaultIO implements IO {
 
     @Override
     public File file(String path) {
+        if (new File(path).isAbsolute())
+            return new File(path);
         return Paths.get(absCwd, path).toFile();
     }
 

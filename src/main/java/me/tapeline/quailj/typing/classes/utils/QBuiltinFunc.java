@@ -18,7 +18,7 @@ public abstract class QBuiltinFunc extends QFunc {
 
     public QBuiltinFunc(String name, List<FuncArgument> args,
                         Runtime boundRuntime,
-                        boolean isStatic, Memory closure) {
+                        Memory closure, boolean isStatic) {
         super(name, args, null, boundRuntime, isStatic, new ArrayList<>(), closure);
     }
 
@@ -41,17 +41,17 @@ public abstract class QBuiltinFunc extends QFunc {
     }
 
     @Override
-    public QObject derive() throws RuntimeStriker {
+    public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
-            Runtime.error("Attempt to derive from non-prototype value");
+            runtime.error("Attempt to derive from non-prototype value");
         return new QFunc(new Table(), className, this, false, name, arguments, code,
                 boundRuntime, isStatic, alternatives, closure);
     }
 
     @Override
-    public QObject extendAs(String className) throws RuntimeStriker {
+    public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
-            Runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error("Attempt to inherit from non-prototype value");
         return new QFunc(new Table(), className, this, true, name, arguments, code,
                 boundRuntime, isStatic, alternatives, closure);
     }
@@ -59,7 +59,7 @@ public abstract class QBuiltinFunc extends QFunc {
     @Override
     public QObject copy() {
         try {
-            QBuiltinFunc copy = getClass().getConstructor().newInstance();
+            QBuiltinFunc copy = getClass().getConstructor(Runtime.class).newInstance(boundRuntime);
             copy.setInheritableFlag(isInheritable);
             return copy;
         } catch (NoSuchMethodException | InstantiationException

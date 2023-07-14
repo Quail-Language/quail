@@ -2,6 +2,7 @@ package me.tapeline.quailj.preprocessing.directives;
 
 import me.tapeline.quailj.preprocessing.StringBoundariesMap;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,8 +29,8 @@ public class AliasDirective extends AbstractDirective {
     }
 
     @Override
-    public String applyDirective(String code, StringBoundariesMap boundaries,
-                                 Object... arguments) {
+    public String applyDirective(String code, File scriptHome,
+                                 StringBoundariesMap boundaries, Object... arguments) {
         Pattern pattern = Pattern.compile(((String) arguments[0]), Pattern.MULTILINE);
         StringBuilder part = new StringBuilder();
         List<String> parts = new ArrayList<>();

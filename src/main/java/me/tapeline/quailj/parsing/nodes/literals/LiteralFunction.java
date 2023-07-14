@@ -71,12 +71,18 @@ public class LiteralFunction extends Node {
     public String name;
     public List<Argument> args;
     public Node code;
+    public boolean isStatic;
 
     public LiteralFunction(Token token, String name, List<Argument> args, Node code) {
+        this(token, name, args, code, false);
+    }
+
+    public LiteralFunction(Token token, String name, List<Argument> args, Node code, boolean isStatic) {
         super(token);
         this.name = name;
         this.args = args;
         this.code = code;
+        this.isStatic = isStatic;
     }
 
     @Override

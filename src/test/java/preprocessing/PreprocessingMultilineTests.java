@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,7 +31,8 @@ public class PreprocessingMultilineTests {
             }
 
             @Override
-            public String applyDirective(String code, StringBoundariesMap boundaries, Object... arguments) {
+            public String applyDirective(String code, File scriptHome,
+                                         StringBoundariesMap boundaries, Object... arguments) {
                 return "" + arguments[0] + arguments[1] + code;
             }
         });
@@ -43,8 +45,8 @@ public class PreprocessingMultilineTests {
         String result;
         preprocessor = new Preprocessor("" +
                 "#:dummy 5 \\\n" +
-                "6"
-        );
+                "6",
+        new File(""));
         result = preprocessor.preprocess();
         System.out.println(result);
         Assertions.assertEquals(
@@ -60,8 +62,8 @@ public class PreprocessingMultilineTests {
         preprocessor = new Preprocessor("" +
                 "#:alias \"twicehello\" print(\"Hello\") \\\n" +
                 "print(\"Hello\")\n" +
-                "twicehello"
-        );
+                "twicehello",
+        new File(""));
         result = preprocessor.preprocess();
         System.out.println(result);
         Assertions.assertEquals(

@@ -232,4 +232,25 @@ public class ParserPartialExpressionTests {
         );
     }
 
+    @Test
+    public void testArrayAndMatrix() throws LexerException, ParserException {
+        String code = "" +
+                "[-] [3, 4, 5]\n" +
+                "{!} [[false], [true]]\n" +
+                "[1, 2] [+] [3, 4]\n" +
+                "[[1], [2]] {/} [[3], [4]]\n";
+        Lexer lexer = new Lexer(code);
+        List<Token> tokens = lexer.scan();
+        Parser parser = new Parser(code, tokens);
+        Node node = parser.parse();
+        System.out.println(node.stringRepr());
+        Assertions.assertEquals(
+                "block[op{MINUS list[3.0 4.0 5.0]} " +
+                        "op{NOT list[list[false] list[true]]} " +
+                        "op{list[1.0 2.0] PLUS list[3.0 4.0]} " +
+                        "op{list[list[1.0] list[2.0]] DIVIDE list[list[3.0] list[4.0]]}]",
+                node.stringRepr()
+        );
+    }
+
 }

@@ -30,16 +30,16 @@ public class QNumber extends QObject {
     }
 
     @Override
-    public QObject derive() throws RuntimeStriker {
+    public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
-            Runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error("Attempt to inherit from non-prototype value");
         return new QNumber(new Table(), className, this, false, value);
     }
 
     @Override
-    public QObject extendAs(String className) throws RuntimeStriker {
+    public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
-            Runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error("Attempt to inherit from non-prototype value");
         return new QNumber(new Table(), className, this, true, value);
     }
 
@@ -56,6 +56,13 @@ public class QNumber extends QObject {
 
     public void setValue(double value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        if ((value % 1) == 0)
+            return Integer.toString((int) value);
+        return Double.toString(value);
     }
 
     @Override
@@ -164,7 +171,7 @@ public class QNumber extends QObject {
     }
 
     @Override
-    public QObject minus(Runtime runtime) {
+    public QObject negate(Runtime runtime) {
         return QObject.Val(-value);
     }
 

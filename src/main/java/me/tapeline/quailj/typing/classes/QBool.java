@@ -30,16 +30,16 @@ public class QBool extends QObject {
     }
 
     @Override
-    public QObject derive() throws RuntimeStriker {
+    public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
-            Runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error("Attempt to inherit from non-prototype value");
         return new QBool(new Table(), className, this, false, value);
     }
 
     @Override
-    public QObject extendAs(String className) throws RuntimeStriker {
+    public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
-            Runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error("Attempt to inherit from non-prototype value");
         return new QBool(new Table(), className, this, true, value);
     }
 
@@ -56,6 +56,11 @@ public class QBool extends QObject {
 
     public void setValue(boolean value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return Boolean.toString(value);
     }
 
 }

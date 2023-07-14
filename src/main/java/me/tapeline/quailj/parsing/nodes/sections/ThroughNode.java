@@ -11,15 +11,23 @@ public class ThroughNode extends Node {
     public @Nullable Node rangeStep;
     public String iterator;
     public Node code;
+    public boolean isIncluding;
 
     public ThroughNode(Token token, Node rangeStart, Node rangeEnd,
                        @Nullable Node rangeStep, String iterator, Node code) {
+        this(token, rangeStart, rangeEnd, rangeStep, iterator, code, false);
+    }
+
+    public ThroughNode(Token token, Node rangeStart, Node rangeEnd,
+                       @Nullable Node rangeStep, String iterator,
+                       Node code, boolean isIncluding) {
         super(token);
         this.rangeStart = rangeStart;
         this.rangeEnd = rangeEnd;
         this.rangeStep = rangeStep;
         this.iterator = iterator;
         this.code = code;
+        this.isIncluding = isIncluding;
     }
 
     public ThroughNode(Token token, Node rangeStart, Node rangeEnd, String iterator, Node code) {

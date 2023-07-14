@@ -8,10 +8,10 @@ import java.util.List;
 
 public class LiteralLambda extends Node {
 
-    public List<Node> args;
+    public List<LiteralFunction.Argument> args;
     public Node statement;
 
-    public LiteralLambda(Token token, List<Node> args, Node statement) {
+    public LiteralLambda(Token token, List<LiteralFunction.Argument> args, Node statement) {
         super(token);
         this.args = args;
         this.statement = statement;
@@ -19,7 +19,7 @@ public class LiteralLambda extends Node {
 
     @Override
     public String stringRepr() {
-        return "lambda{" + TextUtils.nodeListToStringRepr(args) + " " + statement.stringRepr() + "}";
+        return "lambda{" + TextUtils.argumentListToStringRepr(args) + " " + statement.stringRepr() + "}";
     }
 
 }

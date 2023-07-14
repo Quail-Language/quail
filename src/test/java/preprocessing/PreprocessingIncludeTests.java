@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+
 public class PreprocessingIncludeTests {
 
     @BeforeAll
@@ -22,8 +24,8 @@ public class PreprocessingIncludeTests {
         Preprocessor preprocessor;
         String result;
         preprocessor = new Preprocessor("" +
-                "#:include \"testAssets/include.q\"\n"
-        );
+                "#:include \"testAssets/include.q\"\n",
+        new File(""));
         result = preprocessor.preprocess();
         System.out.println(result);
         Assertions.assertEquals(
@@ -40,8 +42,8 @@ public class PreprocessingIncludeTests {
         String result;
         preprocessor = new Preprocessor("" +
                 "#:include \"testAssets/directives.q\"\n" +
-                "print(\"Another hello\")"
-        );
+                "print(\"Another hello\")",
+        new File(""));
         result = preprocessor.preprocess();
         System.out.println(result);
         Assertions.assertEquals(

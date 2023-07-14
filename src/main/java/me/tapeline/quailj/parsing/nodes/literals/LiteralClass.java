@@ -3,6 +3,8 @@ package me.tapeline.quailj.parsing.nodes.literals;
 import com.sun.istack.internal.Nullable;
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.parsing.nodes.Node;
+import me.tapeline.quailj.parsing.nodes.expression.AssignNode;
+import me.tapeline.quailj.parsing.nodes.expression.VarAssignNode;
 import me.tapeline.quailj.utils.TextUtils;
 
 import java.util.HashMap;
@@ -12,14 +14,14 @@ public class LiteralClass extends Node {
 
     public String name;
     public @Nullable Node like;
-    public HashMap<String, Node> contents;
+    public List<VarAssignNode> contents;
     public HashMap<String, LiteralFunction> methods;
     public List<Node> initialize;
 
     public LiteralClass(Token token,
                         String name,
                         @Nullable Node like,
-                        HashMap<String, Node> contents,
+                        List<VarAssignNode> contents,
                         HashMap<String, LiteralFunction> methods,
                         List<Node> initialize) {
         super(token);
@@ -34,7 +36,7 @@ public class LiteralClass extends Node {
     public String stringRepr() {
         return "class{" + name + " " +
                 (like != null? like.stringRepr() : "null") + " " +
-                TextUtils.nodeMapToStringRepr(contents) + " " +
+                TextUtils.nodeListToStringRepr(contents) + " " +
                 TextUtils.methodMapToStringRepr(methods) + " " +
                 TextUtils.nodeListToStringRepr(initialize) + "}";
     }

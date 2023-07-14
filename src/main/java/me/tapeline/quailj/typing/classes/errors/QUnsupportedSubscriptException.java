@@ -45,16 +45,16 @@ public class QUnsupportedSubscriptException extends QException {
     }
 
     @Override
-    public QObject derive() throws RuntimeStriker {
+    public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
-            Runtime.error("Attempt to derive from non-prototype value");
+            runtime.error("Attempt to derive from non-prototype value");
         return new QUnsupportedSubscriptException(new Table(), className, this, false);
     }
 
     @Override
-    public QObject extendAs(String className) throws RuntimeStriker {
+    public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
-            Runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error("Attempt to inherit from non-prototype value");
         return new QUnsupportedSubscriptException(new Table(), className, this, true);
     }
 

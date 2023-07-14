@@ -11,12 +11,12 @@ import java.util.List;
 public class ListForGeneratorNode extends Node {
 
     public Node value;
-    public List<VariableNode> iterators;
+    public List<String> iterators;
     public Node iterable;
     public @Nullable Node condition;
 
     public ListForGeneratorNode(Token token, Node value,
-                                List<VariableNode> iterators,
+                                List<String> iterators,
                                 Node iterable,
                                 @Nullable Node condition) {
         super(token);
@@ -29,7 +29,7 @@ public class ListForGeneratorNode extends Node {
     @Override
     public String stringRepr() {
         return "genlist{" + value.stringRepr() + " " +
-                TextUtils.iteratorsToStringRepr(iterators) + " " +
+                iterators + " " +
                 iterable.stringRepr() + " " +
                 (condition != null? condition.stringRepr() : "null") + "}";
     }

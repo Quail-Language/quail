@@ -12,12 +12,12 @@ public class DictForGeneratorNode extends Node {
 
     public Node key;
     public Node value;
-    public List<VariableNode> iterators;
+    public List<String> iterators;
     public Node iterable;
     public @Nullable Node condition;
 
     public DictForGeneratorNode(Token token, Node key, Node value,
-                                List<VariableNode> iterators,
+                                List<String> iterators,
                                 Node iterable,
                                 @Nullable Node condition) {
         super(token);
@@ -32,7 +32,7 @@ public class DictForGeneratorNode extends Node {
     public String stringRepr() {
         return "gendict{" + key.stringRepr() + " " +
                 value.stringRepr() + " " +
-                TextUtils.iteratorsToStringRepr(iterators) + " " +
+                iterators + " " +
                 iterable.stringRepr() + " " +
                 (condition != null? condition.stringRepr() : "null") + "}";
     }

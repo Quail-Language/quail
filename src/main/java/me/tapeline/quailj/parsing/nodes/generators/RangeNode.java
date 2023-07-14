@@ -9,12 +9,18 @@ public class RangeNode extends Node {
     public Node rangeStart;
     public Node rangeEnd;
     public @Nullable Node rangeStep;
+    public boolean isIncluding;
 
     public RangeNode(Token token, Node rangeStart, Node rangeEnd, @Nullable Node rangeStep) {
+        this(token, rangeStart, rangeEnd, rangeStep, token.getLexeme().contains("+"));
+    }
+
+    public RangeNode(Token token, Node rangeStart, Node rangeEnd, @Nullable Node rangeStep, boolean isIncluding) {
         super(token);
         this.rangeStart = rangeStart;
         this.rangeEnd = rangeEnd;
         this.rangeStep = rangeStep;
+        this.isIncluding = isIncluding;
     }
 
     @Override

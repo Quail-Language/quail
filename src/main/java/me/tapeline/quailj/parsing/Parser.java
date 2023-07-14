@@ -55,10 +55,12 @@ public class Parser {
     private void error(String message) throws ParserException {
         if (!reachedEnd())
             throw new ParserException(
+                    sourceCode,
                     message,
                     tokens.get(pos)
             );
         throw new ParserException(
+                sourceCode,
                 message,
                 tokens.get(tokens.size() - 1)
         );
@@ -71,6 +73,7 @@ public class Parser {
      */
     private void error(Token token, String message) throws ParserException {
         throw new ParserException(
+                sourceCode,
                 message,
                 token
         );
@@ -448,7 +451,8 @@ public class Parser {
                     ((RangeNode) range).rangeEnd,
                     ((RangeNode) range).rangeStep,
                     iterator.getLexeme(),
-                    code
+                    code,
+                    ((RangeNode) range).isIncluding
             );
         }
         if (matchMultiple(CONTROL_FOR, CONTROL_EVERY) != null) {
@@ -534,7 +538,7 @@ public class Parser {
             Token name = require(VAR);
             List<LiteralFunction.Argument> args = convertDefinedArguments(parseArgs(null, true));
             Node statement = parseStatement();
-            return new LiteralFunction(funcToken, name.getLexeme(), args, statement);
+            return new LiteralFunction(funcToken, name.getLexeme(), args, statement, true);
         }
         if (matchMultiple(TYPE_METHOD, TYPE_FUNCTION) != null) {
             Token funcToken = getPrevious();
@@ -589,17 +593,16 @@ public class Parser {
             if (match(LIKE) != null)
                 like = parseOr(null);
             match(LCPAR);
-            HashMap<String, Node> contents = new HashMap<>();
+            List<VarAssignNode> contents = new ArrayList<>();
             HashMap<String, LiteralFunction> methods = new HashMap<>();
             List<Node> initialize = new ArrayList<>();
             while (match(RCPAR) == null) {
                 Node expr = parseStatement();
-                if (expr instanceof AssignNode)
-                    contents.put(((AssignNode) expr).variable.getToken().getLexeme(),
-                            ((AssignNode) expr).value);
+                if (expr instanceof AssignNode && ((AssignNode) expr).variable instanceof VariableNode)
+                    contents.add(VarAssignNode.fromAssignNode(((AssignNode) expr)));
                 else if (expr instanceof VariableNode)
-                    contents.put(((VariableNode) expr).name,
-                            getDefaultNodeFor(((VariableNode) expr).modifiers));
+                    contents.add(new VarAssignNode(expr.getToken(), ((VariableNode) expr),
+                            getDefaultNodeFor(((VariableNode) expr).modifiers)));
                 else if (expr instanceof LiteralFunction)
                     methods.put(((LiteralFunction) expr).name, ((LiteralFunction) expr));
                 else
@@ -619,6 +622,7 @@ public class Parser {
 
     private Node parseAssignment(ParsingPolicy policy) throws ParserException {
         Node left = parseOr(policy);
+        // TODO: make right-associative
         if (match(ASSIGN) != null) {
             Token assignment = getPrevious();
             if (left instanceof IndexingNode)
@@ -684,6 +688,7 @@ public class Parser {
     }
 
     private Node parseRange(ParsingPolicy policy) throws ParserException {
+        // TODO: make right-associative
         Node left = parseTerm(policy);
         if (policy != null && policy.excludeRange) return left;
         if (forseePattern(RANGE, EOL))
@@ -822,7 +827,7 @@ public class Parser {
                 require(RPAR);
                 Token arrow = require(LAMBDA_ARROW);
                 Node statement = parseStatement();
-                return new LiteralLambda(arrow, args, statement);
+                return new LiteralLambda(arrow, convertDefinedArguments(args), statement);
             }
             require(RPAR);
             return expr;
@@ -838,9 +843,9 @@ public class Parser {
             List<Node> values;
             Node expr = parseExpression(null);
             if (matchMultiple(CONTROL_FOR, CONTROL_EVERY) != null) {
-                List<VariableNode> iterators = new ArrayList<>();
+                List<String> iterators = new ArrayList<>();
                 do {
-                    iterators.add(new VariableNode(require(VAR)));
+                    iterators.add(require(VAR).getLexeme());
                 } while (match(COMMA) != null);
                 require(IN);
                 Node iterable = parseExpression(null);
@@ -888,9 +893,9 @@ public class Parser {
             require(ASSIGN);
             Node value = parseOr(null);
             if (matchMultiple(CONTROL_FOR, CONTROL_EVERY) != null) {
-                List<VariableNode> iterators = new ArrayList<>();
+                List<String> iterators = new ArrayList<>();
                 do {
-                    iterators.add(new VariableNode(require(VAR)));
+                    iterators.add(require(VAR).getLexeme());
                 } while (match(COMMA) != null);
                 require(IN);
                 Node iterable = parseExpression(null);
@@ -941,7 +946,7 @@ public class Parser {
             Token func = getPrevious();
             List<Node> args = parseArgs(null, true);
             Node statement = parseStatement();
-            return new LiteralLambda(func, args, statement);
+            return new LiteralLambda(func, convertDefinedArguments(args), statement);
         }
         Node modifiersResult = parseModifiers(policy);
         if (modifiersResult instanceof TypecastNode ||
