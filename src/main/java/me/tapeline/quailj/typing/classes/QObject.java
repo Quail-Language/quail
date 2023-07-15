@@ -106,9 +106,10 @@ public class QObject {
         return new QObject(new Table(), className, this, true);
     }
 
-    public QObject newObject(Runtime runtime, List<QObject> args) throws RuntimeStriker {
+    public QObject newObject(Runtime runtime, List<QObject> args, HashMap<String, QObject> kwargs)
+            throws RuntimeStriker {
         QObject blank = derive(runtime);
-        blank = blank.callFromThis(runtime, "_constructor", args, new HashMap<>());
+        blank = blank.callFromThis(runtime, "_constructor", args, kwargs);
         return blank;
     }
 
@@ -279,8 +280,7 @@ public class QObject {
     public QObject call(Runtime runtime, List<QObject> args, HashMap<String, QObject> kwargs)
             throws RuntimeStriker {
         if (isPrototype()) {
-            QObject newObject = derive(runtime);
-            return newObject.callFromThis(runtime, "_constructor", args, kwargs);
+            return newObject(runtime, args, kwargs);
         }
         if (table.containsKey("_call"))
             return callFromThis(
