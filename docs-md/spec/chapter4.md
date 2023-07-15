@@ -3,6 +3,17 @@
 
 ## Chapter 4: Lexical analysis
 
+<!-- TOC -->
+* [Quail Specification](#quail-specification)
+  * [Chapter 4: Lexical analysis](#chapter-4-lexical-analysis)
+    * [4.1 Definition](#41-definition)
+      * [4.2 Defined tokens](#42-defined-tokens)
+      * [4.3 Textual representation of tokens](#43-textual-representation-of-tokens)
+        * [4.3.1 Keywords](#431-keywords)
+        * [4.3.2 Symbols](#432-symbols)
+      * [4.4 Lexing process](#44-lexing-process)
+<!-- TOC -->
+
 ### 4.1 Definition
 
 Lexical analysis is a process which splits textual code into a stream of tokens.

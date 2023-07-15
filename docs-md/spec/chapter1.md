@@ -3,6 +3,14 @@
 
 ## Chapter 1: A Brief Introduction
 
+<!-- TOC -->
+* [Quail Specification](#quail-specification)
+  * [Chapter 1: A Brief Introduction](#chapter-1-a-brief-introduction)
+    * [1.1 Specification organisation](#11-specification-organisation-)
+    * [1.2 Example programs](#12-example-programs)
+    * [1.3 Contact info](#13-contact-info)
+<!-- TOC -->
+
 The Quail is a general-purpose, multiparadigmal, object-oriented, interpretable programming language driven by Java 8, developed by single developer and oriented to be simple and friendly for new developers as well as for experienced programmers moving from other language.
 
 ### 1.1 Specification organisation 

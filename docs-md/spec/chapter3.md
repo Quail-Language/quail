@@ -3,6 +3,16 @@
 
 ## Chapter 3: Preprocessing
 
+<!-- TOC -->
+* [Quail Specification](#quail-specification)
+  * [Chapter 3: Preprocessing](#chapter-3-preprocessing)
+    * [3.1 Definitions](#31-definitions)
+    * [3.2 Directives](#32-directives)
+      * [3.2.1 Alias](#321-alias)
+      * [3.2.3 Include](#323-include)
+    * [3.2 Preprocessor overview](#32-preprocessor-overview)
+<!-- TOC -->
+
 ### 3.1 Definitions
 
 **<u>Preprocessor</u>** is a program that transforms textual representation of program code by given rules. Preprocessing comes before lexical analysing.

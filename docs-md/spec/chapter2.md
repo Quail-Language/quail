@@ -3,6 +3,13 @@
 
 ## Chapter 2: Grammar and execution flow
 
+<!-- TOC -->
+* [Quail Specification](#quail-specification)
+  * [Chapter 2: Grammar and execution flow](#chapter-2-grammar-and-execution-flow)
+    * [2.1 Grammar definition](#21-grammar-definition)
+    * [2.2 Execution flow](#22-execution-flow)
+<!-- TOC -->
+
 ### 2.1 Grammar definition
 
 [Link to scheme](https://tapeline.github.io/quail/quail2concept)
