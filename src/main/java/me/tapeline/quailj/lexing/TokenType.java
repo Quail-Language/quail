@@ -114,6 +114,7 @@ public enum TokenType {
     IN,
     INSTANCEOF,
     LIKE,
+    DOCS,
     EOF,
     TAB,
     EOL;

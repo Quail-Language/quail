@@ -1,10 +1,10 @@
-class MyException like Exception {
-    constructor(this, string message) {
-        this.message = message
-    }
-}
+#?toc-entry Real
 
 class Real like Number {
+    #?author Tapeline
+    #?since 0.1.3
+    #? An accurate implementation of a real number
+
     num numerator
     num denominator
 
@@ -14,6 +14,8 @@ class Real like Number {
     }
 
     override *(this, other) {
+        #? Support for arithmetic operations with Number
+
         if other instanceof Real
             return Real(this.numerator * other.numerator, this.denominator * other.denominator)
         else
@@ -21,4 +23,3 @@ class Real like Number {
     }
 }
 
-r1 =

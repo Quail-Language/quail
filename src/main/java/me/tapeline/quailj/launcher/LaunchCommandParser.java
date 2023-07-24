@@ -15,22 +15,38 @@ public class LaunchCommandParser {
     private String selectedRunStrategy;
     private String targetScript;
 
+    private String outputFile;
+
     public LaunchCommandParser(String[] consoleArgs) {
         this.receivedConsoleArgs = consoleArgs;
         this.globalFlags = new HashMap<>();
         this.userFlags = new HashMap<>();
     }
 
+    public static boolean toBoolean(String strValue) {
+        return strValue.equalsIgnoreCase("true") ||
+                strValue.equalsIgnoreCase("1") ||
+                strValue.equalsIgnoreCase("enable");
+    }
+
     public void parseReceivedArgs() {
         boolean strategySet = false;
+        boolean waitingOutputFile = false;
         for (String arg : receivedConsoleArgs) {
             if (arg.startsWith("-")) parseFlag(arg);
             else if (!strategySet) {
                 selectedRunStrategy = arg;
                 strategySet = true;
+            } else if (arg.equalsIgnoreCase(">")) {
+                waitingOutputFile = true;
+            } else if (waitingOutputFile) {
+                outputFile = arg;
+                break;
             } else {
                 targetScript = arg;
-                break;
+                if (selectedRunStrategy.equalsIgnoreCase("run") ||
+                    selectedRunStrategy.equalsIgnoreCase("profile"))
+                    break;
             }
         }
     }
@@ -40,28 +56,31 @@ public class LaunchCommandParser {
             if (!flag.contains("="))
                 globalFlags.put(flag.substring(3), true);
             else {
-                int assignPosition = 0;
-                for (int i = 0; i < flag.length(); i++)
-                    if (flag.charAt(i) == '=') {
-                        assignPosition = i;
-                        break;
-                    }
-                char valueType = flag.charAt(1);
-                String key = flag.substring(4, assignPosition);
-                String strValue = flag.substring(assignPosition + 1);
-                Object flagValue = null;
-                switch (valueType) {
-                    case INT_FLAG_TYPE: flagValue = Integer.valueOf(strValue); break;
-                    case DOUBLE_FLAG_TYPE: flagValue = Double.valueOf(strValue); break;
-                    case STRING_FLAG_TYPE: flagValue = strValue; break;
-                    case BOOLEAN_FLAG_TYPE:
-                        flagValue = strValue.equalsIgnoreCase("true") ||
-                                strValue.equalsIgnoreCase("1") ||
-                                strValue.equalsIgnoreCase("enable"); break;
+                String flagName = flag.substring(3, flag.indexOf('='));
+                if (flagName.equals("encoding"))
+                    globalFlags.put("encoding", flag.substring(flag.indexOf('=' + 1)));
+                if (flagName.equals("ignoreDocs"))
+                    globalFlags.put("ignoreDocs", toBoolean(flag.substring(flag.indexOf('=' + 1))));
+            }
+        } else {
+            int assignPosition = 0;
+            for (int i = 0; i < flag.length(); i++)
+                if (flag.charAt(i) == '=') {
+                    assignPosition = i;
+                    break;
                 }
-                if (flagValue != null) {
-                    globalFlags.put(key, flagValue);
-                }
+            char valueType = flag.charAt(1);
+            String key = flag.substring(4, assignPosition);
+            String strValue = flag.substring(assignPosition + 1);
+            Object flagValue = null;
+            switch (valueType) {
+                case INT_FLAG_TYPE: flagValue = Integer.valueOf(strValue); break;
+                case DOUBLE_FLAG_TYPE: flagValue = Double.valueOf(strValue); break;
+                case STRING_FLAG_TYPE: flagValue = strValue; break;
+                case BOOLEAN_FLAG_TYPE: flagValue = toBoolean(strValue); break;
+            }
+            if (flagValue != null) {
+                userFlags.put(key, flagValue);
             }
         }
     }
@@ -86,4 +105,7 @@ public class LaunchCommandParser {
         return targetScript;
     }
 
+    public String getOutputFile() {
+        return outputFile;
+    }
 }

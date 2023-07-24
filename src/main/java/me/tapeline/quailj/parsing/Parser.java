@@ -3,6 +3,7 @@ package me.tapeline.quailj.parsing;
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.lexing.TokenType;
 import me.tapeline.quailj.parsing.nodes.Node;
+import me.tapeline.quailj.parsing.nodes.comments.*;
 import me.tapeline.quailj.parsing.nodes.effects.*;
 import me.tapeline.quailj.parsing.nodes.expression.*;
 import me.tapeline.quailj.parsing.nodes.generators.*;
@@ -495,6 +496,9 @@ public class Parser {
         if (matchMultiple(INSTRUCTION_BREAK, INSTRUCTION_CONTINUE) != null)
             return new InstructionNode(getPrevious());
 
+        Node docs = parseDocs();
+        if (docs != null) return docs;
+
         Node effect = parseEffect();
         if (effect != null) return effect;
 
@@ -505,6 +509,23 @@ public class Parser {
         if (klass != null) return klass;
 
         return parseExpression(null);
+    }
+
+    private Node parseDocs() throws ParserException {
+        if (match(DOCS) != null) {
+            Token docToken = getPrevious();
+            if (docToken.getLexeme().startsWith("#?badge"))
+                return new DocBadgeNode(docToken);
+            else if (docToken.getLexeme().startsWith("#?author"))
+                return new DocAuthorNode(docToken);
+            else if (docToken.getLexeme().startsWith("#?since"))
+                return new DocSinceNode(docToken);
+            else if (docToken.getLexeme().startsWith("#?toc-entry"))
+                return new DocTOCEntryNode(docToken);
+            else
+                return new DocStringNode(docToken);
+        }
+        return null;
     }
 
     private Node parseEffect() throws ParserException {
@@ -1009,12 +1030,14 @@ public class Parser {
                 Token functionName = require(VAR);
                 List<Node> args = parseArgs(null, true);
                 Node statement = parseStatement();
-                return new LiteralFunction(
+                LiteralFunction function = new LiteralFunction(
                         functionName,
                         functionName.getLexeme(),
                         convertDefinedArguments(args),
                         statement
                 );
+                function.funcModifier = currentModifier;
+                return function;
             }
             if (forseeToken(VAR)) {
                 int[] modifiersArray = new int[modifiers.size()];

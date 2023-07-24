@@ -1,6 +1,7 @@
 package me.tapeline.quailj.launcher;
 
 import me.tapeline.quailj.GlobalFlags;
+import me.tapeline.quailj.docgen.DocumentationGenerator;
 import me.tapeline.quailj.io.DefaultIO;
 import me.tapeline.quailj.lexing.Lexer;
 import me.tapeline.quailj.lexing.LexerException;
@@ -27,6 +28,11 @@ public class QuailLauncher {
     private void setupGlobalFlags(HashMap<String, Object> flags) {
         if (flags.containsKey("encoding"))
             GlobalFlags.encoding = flags.get("encoding").toString();
+        if (flags.containsKey("ignoreDocs"))
+            GlobalFlags.ignoreDocs =
+                    flags.get("ignoreDocs").toString().equalsIgnoreCase("true") ||
+                    flags.get("ignoreDocs").toString().equalsIgnoreCase("1") ||
+                    flags.get("ignoreDocs").toString().equalsIgnoreCase("enable");
     }
 
     public QObject launch(String[] args) throws IOException, PreprocessorException,
@@ -37,8 +43,6 @@ public class QuailLauncher {
         setupGlobalFlags(launchCommandParser.getGlobalFlags());
         String mode = launchCommandParser.getSelectedRunStrategy();
 
-        if (!mode.equalsIgnoreCase("run") && !mode.equalsIgnoreCase("profile"))
-            throw new LauncherException("Invalid mode " + mode);
         boolean doProfile = mode.equalsIgnoreCase("profile");
 
         String code = FileUtils.readFileToString(new File(launchCommandParser.getTargetScript()),
@@ -54,20 +58,39 @@ public class QuailLauncher {
         Parser parser = new Parser(preprocessedCode, tokens);
         BlockNode parsedCode = parser.parse();
 
-        Runtime runtime = new Runtime(parsedCode, preprocessedCode, scriptHome, new DefaultIO(), doProfile);
-        QObject returnValue = QObject.Val(0);
-        try {
-            runtime.run(parsedCode, runtime.getMemory());
-        } catch (RuntimeStriker striker) {
-            if (striker.getType() == RuntimeStriker.Type.RETURN)
-                returnValue = striker.getCarryingReturnValue();
-            else if (striker.getType() == RuntimeStriker.Type.EXCEPTION) {
-                System.err.println("Runtime error:");
-                System.err.println(striker.formatError(preprocessedCode));
-            } else if (striker.getType() == RuntimeStriker.Type.EXIT)
-                returnValue = QObject.Val(striker.getExitCode());
+        if (mode.equalsIgnoreCase("gendoc")) {
+            if (launchCommandParser.getOutputFile() == null)
+                throw new LauncherException("Output file for documentation is not specified");
+            DocumentationGenerator generator = new DocumentationGenerator();
+            String name = new File(launchCommandParser.getTargetScript()).getName();
+            if (localFlags.containsKey("documentationHeadline"))
+                name = localFlags.get("documentationHeadline").toString();
+            String documentation = generator.generateDocumentationForFile(
+                    name,
+                    new File(launchCommandParser.getTargetScript()),
+                    parsedCode
+            );
+            FileUtils.writeStringToFile(new File(launchCommandParser.getOutputFile()),
+                    documentation, GlobalFlags.encoding);
+            return null;
+        } else if (mode.equalsIgnoreCase("run") || mode.equalsIgnoreCase("profile")) {
+            Runtime runtime = new Runtime(parsedCode, preprocessedCode, scriptHome, new DefaultIO(), doProfile);
+            QObject returnValue = QObject.Val(0);
+            try {
+                runtime.run(parsedCode, runtime.getMemory());
+            } catch (RuntimeStriker striker) {
+                if (striker.getType() == RuntimeStriker.Type.RETURN)
+                    returnValue = striker.getCarryingReturnValue();
+                else if (striker.getType() == RuntimeStriker.Type.EXCEPTION) {
+                    System.err.println("Runtime error:");
+                    System.err.println(striker.formatError(preprocessedCode));
+                } else if (striker.getType() == RuntimeStriker.Type.EXIT)
+                    returnValue = QObject.Val(striker.getExitCode());
+            }
+            return returnValue;
         }
-        return returnValue;
+
+        throw new LauncherException("Invalid mode " + mode);
     }
 
     public QObject launchWithAnonymousCode(String code, File scriptHome, String[] args)

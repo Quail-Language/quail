@@ -72,6 +72,7 @@ public class LiteralFunction extends Node {
     public List<Argument> args;
     public Node code;
     public boolean isStatic;
+    public int funcModifier = 0;
 
     public LiteralFunction(Token token, String name, List<Argument> args, Node code) {
         this(token, name, args, code, false);

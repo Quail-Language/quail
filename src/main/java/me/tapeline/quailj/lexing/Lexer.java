@@ -1,5 +1,7 @@
 package me.tapeline.quailj.lexing;
 
+import me.tapeline.quailj.GlobalFlags;
+
 import java.util.ArrayList;
 import java.util.List;
 import static me.tapeline.quailj.lexing.TokenModifier.*;
@@ -386,6 +388,11 @@ public class Lexer {
      * Scans a comment
      */
     private void scanComment() {
+        if (!GlobalFlags.ignoreDocs && peek() == '?') {
+            while (peek() != '\n' && !reachedEnd())
+                next();
+            addToken(DOCS);
+        }
         while (peek() != '\n' && !reachedEnd())
             next();
     }

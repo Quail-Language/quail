@@ -13,4 +13,9 @@ public class GlobalFlags {
      */
     public static String encoding = "UTF-8";
 
+    /**
+     * Whether to parse Quail docs or ignore them
+     */
+    public static boolean ignoreDocs = false;
+
 }
