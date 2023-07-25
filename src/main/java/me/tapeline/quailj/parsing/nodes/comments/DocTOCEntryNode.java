@@ -2,7 +2,7 @@ package me.tapeline.quailj.parsing.nodes.comments;
 
 import me.tapeline.quailj.lexing.Token;
 
-public class DocTOCEntryNode extends DocNode {
+public class DocTOCEntryNode extends DocTOCNode {
 
     public String docString;
 

@@ -16,4 +16,8 @@ public class DocumentationContext {
             this.qualifiedPath = name;
     }
 
+    public String getParentQualifiedPath() {
+        return parent != null? parent.qualifiedPath : "";
+    }
+
 }

@@ -46,7 +46,7 @@ public class DocumentationGenerator {
     private String documentationFooter = "</body>\n" +
             "</html>";
 
-    private List<String> tocEntries = new ArrayList<>();
+    private List<DocTOCNode> tocEntries = new ArrayList<>();
 
     public String generateDocumentationForFile(String name, File path, Node contents) {
         List<Node> nodes = convertToList(contents);
@@ -67,10 +67,14 @@ public class DocumentationGenerator {
                 .append("      <ul class=\"list-unstyled\">\n")
                 .append("        <li class=\"my-2\">\n")
                 .append("          <ul class=\"list-unstyled ps-3\">\n");
-        for (String tocEntry : tocEntries) {
-            sb.append("<li><a class=\"d-inline-flex align-items-center rounded\" href=\"#")
-                    .append(tocEntry).append("\">\n").append("   ").append(tocEntry).append("\n")
-                    .append("</a></li>\n");
+        for (DocTOCNode tocEntry : tocEntries) {
+            if (tocEntry instanceof DocTOCEntryNode)
+                sb.append("<li><a class=\"d-inline-flex align-items-center rounded\" href=\"#")
+                        .append(((DocTOCEntryNode) tocEntry).docString).append("\">\n").append("   ")
+                        .append(((DocTOCEntryNode) tocEntry).docString).append("\n")
+                        .append("</a></li>\n");
+            else if (tocEntry instanceof DocTOCHtmlNode)
+                sb.append(((DocTOCHtmlNode) tocEntry).html).append("\n");
         }
         sb.append(
                 "          </ul>\n" +
@@ -105,8 +109,8 @@ public class DocumentationGenerator {
                 authors.add(((DocAuthorNode) node).author);
             else if (node instanceof DocBadgeNode)
                 docBadges.add(((DocBadgeNode) node));
-            else if (node instanceof DocTOCEntryNode)
-                tocEntries.add(((DocTOCEntryNode) node).docString);
+            else if (node instanceof DocTOCNode)
+                tocEntries.add(((DocTOCNode) node));
         }
         StringBuilder sb = new StringBuilder();
         if (docBadges.size() != 0) {
@@ -167,8 +171,10 @@ public class DocumentationGenerator {
             if (classNode.methods.size() == 0)
                 sb.append("<p>None</p></div>");
             else {
-                for (LiteralFunction method : classNode.methods.values())
-                    sb.append(generateDocumentationForNode(method, scope));
+                classNode.methods.entrySet()
+                        .stream()
+                        .sorted(Map.Entry.comparingByKey())
+                        .forEach(entry -> sb.append(generateDocumentationForNode(entry.getValue(), scope)));
                 sb.append("</div>");
             }
             sb.append("</div>");

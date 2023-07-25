@@ -522,6 +522,8 @@ public class Parser {
                 return new DocSinceNode(docToken);
             else if (docToken.getLexeme().startsWith("#?toc-entry"))
                 return new DocTOCEntryNode(docToken);
+            else if (docToken.getLexeme().startsWith("#?toc-html"))
+                return new DocTOCHtmlNode(docToken);
             else if (docToken.getLexeme().startsWith("#?html"))
                 return new DocHtmlNode(docToken);
             else
