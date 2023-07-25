@@ -38,6 +38,8 @@ public class DocumentationGenerator {
             "  <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js\"\n" +
             "          integrity=\"sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM\"\n" +
             "          crossorigin=\"anonymous\"></script>\n" +
+            "  <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5" +
+            "/font/bootstrap-icons.css\">\n" +
             "  <title>Docs</title>\n" +
             "</head>\n" +
             "<body class=\"row p-5\">";
@@ -143,7 +145,11 @@ public class DocumentationGenerator {
             StringBuilder sb = new StringBuilder();
             sb.append("<h3 id=\"").append(scope.qualifiedPath)
                     .append("\"><code>").append(scope.qualifiedPath)
-                    .append("</code></h3>\n");
+                    .append("</code>");
+            if (classNode.like != null)
+                sb.append("<i class=\"bi-alarm\"></i> extends <code>")
+                        .append(((VariableNode) classNode.like).name).append("</code>");
+            sb.append("</h3>\n");
             sb.append("<div class=\"p-3\">");
             sb.append(compileAllDocNodes(classNode.initialize));
             sb.append("<div class=\"m-3\"></div>");
@@ -181,7 +187,8 @@ public class DocumentationGenerator {
             sb.append(compileAllDocNodes(convertToList(funcNode.code)));
             sb.append("</div>");
             return sb.toString();
-        }
+        } else if (node instanceof DocHtmlNode)
+            return ((DocHtmlNode) node).html + "\n";
         return "";
     }
 

@@ -12,7 +12,7 @@ public class DocBadgeNode extends DocNode {
         badgeString = token.getLexeme().replaceFirst("#\\?badge", "");
         if (badgeString.startsWith("-")) {
             badgeColor = badgeString.substring(1, badgeString.indexOf(' '));
-            badgeString = badgeColor.substring(badgeString.indexOf(' ') + 1);
+            badgeString = badgeString.substring(badgeString.indexOf(' ') + 1);
         } else {
             badgeColor = "default";
         }

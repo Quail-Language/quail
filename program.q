@@ -1,5 +1,7 @@
 #?toc-entry Real
 
+#?html <h1>Number utilities</h1><hr>
+
 class Real like Number {
     #?author Tapeline
     #?since 0.1.3
@@ -21,5 +23,11 @@ class Real like Number {
         else
             return Real(this.numerator * other, this.denominator)
     }
-}
 
+    string toString(this) {
+        #? Returns string representation like this: 1/3
+        #?since 0.3
+        return string(this.numerator) + "/" + string(this.denominator)
+    }
+
+}
