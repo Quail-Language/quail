@@ -109,17 +109,17 @@ public class DocumentationGenerator {
                 tocEntries.add(((DocTOCEntryNode) node).docString);
         }
         StringBuilder sb = new StringBuilder();
+        if (docBadges.size() != 0) {
+            sb.append("<p>");
+            for (DocBadgeNode badge : docBadges)
+                sb.append("<span class=\"badge bg-").append(colorAssociations.get(badge.badgeColor))
+                        .append("\">").append(badge.badgeString).append("</span>");
+            sb.append("</p>");
+        }
         if (docStrings.size() != 0) {
             sb.append("<p>");
             for (String docString : docStrings)
                 sb.append(docString).append("<br>");
-            sb.append("</p>");
-        }
-        if (docBadges.size() != 0) {
-            sb.append("<p>Features:");
-            for (DocBadgeNode badge : docBadges)
-                sb.append("<span class=\"badge bg-").append(colorAssociations.get(badge.badgeColor))
-                        .append("\">").append(badge.badgeString).append("</span>");
             sb.append("</p>");
         }
         if (authors.size() == 1) {
@@ -147,7 +147,7 @@ public class DocumentationGenerator {
                     .append("\"><code>").append(scope.qualifiedPath)
                     .append("</code>");
             if (classNode.like != null)
-                sb.append("<i class=\"bi-alarm\"></i> extends <code>")
+                sb.append(" <i class=\"bi bi-arrow-bar-left\"></i> extends <code>")
                         .append(((VariableNode) classNode.like).name).append("</code>");
             sb.append("</h3>\n");
             sb.append("<div class=\"p-3\">");
