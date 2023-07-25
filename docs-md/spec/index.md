@@ -17,3 +17,5 @@
 [Chapter 7: Memory and scopes](chapter7.md)
 
 [Chapter 12: Console operation](chapter12.md)
+
+[Chapter 13: Documentation](chapter13.md)

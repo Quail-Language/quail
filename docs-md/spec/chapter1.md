@@ -54,6 +54,9 @@ Specification is split into chapters:
 12. Console operation
     Describes how you should operate Quail in terminal
 
+13. Documentation
+    Describes inbuilt documentation engine
+
 ### 1.2 Example programs
 
 Hello, World!:
