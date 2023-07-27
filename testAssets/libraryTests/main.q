@@ -1,3 +1,2 @@
-use "greeterModule.q" = greeter
-
-greeter.greet("everyone")
+a = "dddd3"
+print(a.reversed())
