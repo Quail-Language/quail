@@ -1,6 +1,5 @@
 package me.tapeline.quailj.runtime;
 
-import com.sun.istack.internal.Nullable;
 import me.tapeline.quailj.io.DefaultIO;
 import me.tapeline.quailj.io.IO;
 import me.tapeline.quailj.launcher.LauncherException;
@@ -26,6 +25,7 @@ import me.tapeline.quailj.typing.utils.AlternativeCall;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 import me.tapeline.quailj.utils.IntFlags;
 import me.tapeline.quailj.utils.TextUtils;
+import org.jetbrains.annotations.Nullable;
 
 import static me.tapeline.quailj.typing.classes.QObject.Val;
 

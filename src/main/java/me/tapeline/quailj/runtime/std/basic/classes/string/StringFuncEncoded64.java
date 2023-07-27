@@ -1,27 +1,25 @@
-package me.tapeline.quailj.runtime.std.basic.reflection;
+package me.tapeline.quailj.runtime.std.basic.classes.string;
 
 import me.tapeline.quailj.parsing.nodes.literals.LiteralFunction;
 import me.tapeline.quailj.runtime.Runtime;
 import me.tapeline.quailj.typing.classes.QObject;
+import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 import me.tapeline.quailj.typing.modifiers.ModifierConstants;
 import me.tapeline.quailj.typing.utils.FuncArgument;
-import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
+import org.apache.commons.codec.binary.Base64;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
-public class FuncClassName extends QBuiltinFunc {
+public class StringFuncEncoded64 extends QBuiltinFunc {
 
-    public FuncClassName(Runtime runtime) {
+    public StringFuncEncoded64(Runtime runtime) {
         super(
-                "className",
+                "encoded64",
                 Collections.singletonList(
                         new FuncArgument(
-                                "obj",
+                                "this",
                                 QObject.Val(),
-                                new int[0],
+                                new int[]{ModifierConstants.STR},
                                 LiteralFunction.Argument.POSITIONAL
                         )
                 ),
@@ -33,7 +31,8 @@ public class FuncClassName extends QBuiltinFunc {
 
     @Override
     public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) {
-        return QObject.Val(args.get("obj").getClassName());
+        String thisString = args.get("this").strValue();
+        return Val(new String(Base64.encodeBase64(thisString.getBytes())));
     }
 
 }

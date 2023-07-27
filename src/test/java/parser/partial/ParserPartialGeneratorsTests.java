@@ -25,8 +25,8 @@ public class ParserPartialGeneratorsTests {
         System.out.println(node.stringRepr());
         Assertions.assertEquals(
                 "block[" +
-                        "assign{a gendict{k v [k v] dct null}} " +
-                        "assign{a gendict{k v [k v] dct op{k NOT_EQUALS e}}}" +
+                        "assign{a gendict{k v [k, v] dct null}} " +
+                        "assign{a gendict{k v [k, v] dct op{k NOT_EQUALS e}}}" +
                         "]",
                 node.stringRepr()
         );

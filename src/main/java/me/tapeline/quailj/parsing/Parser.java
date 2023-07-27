@@ -1018,11 +1018,12 @@ public class Parser {
 
     private Node parseModifiers(ParsingPolicy policy) throws ParserException {
         List<Integer> modifiers = null;
-        Integer currentModifier = ModifierConstants.UNCLARIFIED;
+        int currentModifier = ModifierConstants.UNCLARIFIED;
         do {
             if (modifiers == null) modifiers = new ArrayList<>();
-            currentModifier = parseModifier();
-            if (currentModifier == null) return null;
+            Integer parsedModifier = parseModifier();
+            if (parsedModifier == null) return null;
+            currentModifier |= parsedModifier;
             modifiers.add(currentModifier);
             if (match(LPAR) != null) {
                 Token parent = getPrevious();
@@ -1038,7 +1039,8 @@ public class Parser {
                         functionName,
                         functionName.getLexeme(),
                         convertDefinedArguments(args),
-                        statement
+                        statement,
+                        IntFlags.check(currentModifier, ModifierConstants.STATIC)
                 );
                 function.funcModifier = currentModifier;
                 return function;
@@ -1053,7 +1055,7 @@ public class Parser {
                         modifiersArray[i] = modifiers.get(i);
                 return new IncompleteModifierNode(modifiersArray);
             }
-        } while (match(PILLAR) != null);
+        } while (match(PILLAR) == null);
         return null;
     }
 
@@ -1069,6 +1071,7 @@ public class Parser {
         else if (match(MOD_REQUIRED) != null) currentModifier |= ModifierConstants.NOTNULL;
         else if (match(MOD_LOCAL) != null) currentModifier |= ModifierConstants.LOCAL;
         else if (matchMultiple(TYPE_LIST, TYPE_OBJECT, TYPE_FUNC) != null) {
+            Token modifierToken = getPrevious();
             if (match(LESS) != null) {
                 Integer mod = parseModifier();
                 Node klass = null;
@@ -1076,6 +1079,9 @@ public class Parser {
                 if (klass == null) error("Expected modifier or an expression but found none");
                 require(GREATER);
             }
+            if (modifierToken.getType() == TYPE_LIST) currentModifier |= ModifierConstants.LIST;
+            else if (modifierToken.getType() == TYPE_FUNC) currentModifier |= ModifierConstants.FUNC;
+            else if (modifierToken.getType() == TYPE_OBJECT) currentModifier |= ModifierConstants.OBJ;
         } else return null;
         return currentModifier;
     }

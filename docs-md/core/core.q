@@ -6,7 +6,7 @@
 #?toc-entry Dict
 #?toc-entry Func
 #?toc-entry Null
-#?toc-html <h4>Standard exceptions</h4>
+#?toc-html <h4><br>Standard exceptions</h4>
 #?toc-entry Exception
 #?toc-entry AssertionException
 #?toc-entry CircularDependencyException
@@ -22,6 +22,34 @@
 #?toc-entry UnsupportedStepSubscriptException
 #?toc-entry UnsupportedSubscriptException
 #?toc-entry UnsupportedUnaryOperationException
+#?toc-html <h4><br>Standard functions</h4>
+#?toc-entry all
+#?toc-entry any
+#?toc-entry clone
+#?toc-entry copy
+#?toc-entry enumerate
+#?toc-entry map
+#?toc-entry millis
+#?toc-entry input
+#?toc-entry print
+#?toc-entry put
+#?toc-entry abs
+#?toc-entry acos
+#?toc-entry asin
+#?toc-entry atan
+#?toc-entry atan2
+#?toc-entry cos
+#?toc-entry cosh
+#?toc-entry max
+#?toc-entry min
+#?toc-entry sin
+#?toc-entry sinh
+#?toc-entry tan
+#?toc-entry tanh
+#?toc-entry bin
+#?toc-entry dec
+#?toc-entry hex
+#?toc-entry oct
 
 #?html <h1 id="overview">Overview</h1>
 #?html <hr>
@@ -36,26 +64,30 @@ class Object {
 
     object _get(this, string key) {
         #?badge-yellow May be null
+        #?badge-red Not present, but can be defined in child class by user
         #? Called when field in that object is accessed through object.field or Object.get.
-        #? When field is accessed through Object.getStrict or object["field"] call to this method will be omitted.
+        #? When field is accessed through object["field"] call to this method will be omitted.
     }
 
     object _get_FIELDNAME(this) {
         #?badge-yellow May be null
+        #?badge-red Not present, but can be defined in child class by user
         #? Called when field FIELDNAME in that object is accessed through object.FIELDNAME or Object.get.
-        #? When field is accessed through Object.getStrict or object["FIELDNAME"] call to this method will be omitted.
+        #? When field is accessed through object["FIELDNAME"] call to this method will be omitted.
     }
 
     object _set(this, string key, object value) {
         #?badge-yellow May be null
+        #?badge-red Not present, but can be defined in child class by user
         #? Called when field in that object is set through object.field = value or Object.set.
-        #? When field is set through Object.setStrict or object["field"] = value call to this method will be omitted.
+        #? When field is set through object["field"] = value call to this method will be omitted.
     }
 
     object _set_FIELDNAME(this, object value) {
         #?badge-yellow May be null
+        #?badge-red Not present, but can be defined in child class by user
         #? Called when field FIELDNAME in that object is set through object.FIELDNAME = value or Object.set.
-        #? When field is accessed through Object.setStrict or object["FIELDNAME"] = value call to this method will be omitted.
+        #? When field is accessed through object["FIELDNAME"] = value call to this method will be omitted.
     }
 }
 
@@ -69,7 +101,6 @@ class Bool like Object {
 
 class String like Object {
     #? Represents a piece of text
-    #? <b>Unlike in any other language, it's mutable</b>
 
     string capitalized(this) {
         #? Makes first letter in string capital and all other letters - small
@@ -121,6 +152,7 @@ class String like Object {
 
     bool isAlphabetical(this) {
         #? Check if string contains only alphabetical characters
+        #? Space is included
     }
 
     bool isNumeric(this) {
@@ -129,6 +161,7 @@ class String like Object {
 
     bool isAlphaNumeric(this) {
         #? Check if string contains only numeric and alphabetical characters
+        #? Space is included
     }
 
     bool isUpper(this) {
@@ -162,7 +195,7 @@ class String like Object {
         #?badge Does not mutate
     }
 
-    list split(this, string separator) {
+    list split(this, string delimiter) {
         #? Splits this string by given separator and returns that list
     }
 
@@ -235,6 +268,10 @@ class List like Object {
         #? Removes element at given index from list. Returns removed element
     }
 
+    void reverse(this) {
+        #? Reverses this list
+    }
+
     list reversed(this) {
         #? Returns reversed list
         #?badge Does not mutate
@@ -272,7 +309,250 @@ class List like Object {
 
 
 class Dict like Object {
-    #? A key=value data structure
+    #? A string key -> object value data structure
 
-    #?
+    list keys(this) {
+        #? List all keys in this dict
+    }
+
+    list values(this) {
+        #? List all values in this dict
+    }
+
+    list pairs(this) {
+        #? List all <code>[key, value]</code> pairs
+    }
+
+    bool containsKey(this, string key) {
+        #? Check if this dict contains given key
+    }
+
+    num size(this) {
+        #? Returns size of this dict
+    }
+
+    void set(this, string key, value) {
+        #? Set given key to given value in this dict
+    }
+
+    object get(this, string key) {
+        #? Get value by given key in this dict
+    }
+
+    static dict assemblePairs(list pairs) {
+        #? Assemble dict from given list of <code>[key, value]</code> pairs
+    }
+
+}
+
+class Func {
+    #? Resembles functions and methods
+}
+
+class Null {
+    #? Resembles the <code>null</code> value
+}
+
+
+#?html <hr>
+#?html <h1 id="standard-exceptions">Standard exceptions</h1>
+
+class Exception {
+    #? Base class for all exceptions in Quail
+
+    string message
+}
+
+class AssertionException like Exception {
+    #? Thrown when <code>assert</code> results in <code>false</code>
+}
+
+class CircularDependencyException like Exception {
+    #? Thrown when one file is used in other file, that the first one trying to use
+}
+
+class DerivationException like Exception {
+    #? Thrown on attempt to derive or extend from non-prototype object
+
+    object target
+}
+
+class IOException like Exception {
+    #? Resembles Java's IOException
+}
+
+class IterationNotStartedException like Exception {
+    #? Thrown when <code>_next()</code> is called, but iteration was not started
+}
+class IterationStopException like Exception {
+    #? Should be thrown when iteration reaches its end
+}
+
+class UnsuitableTypeException like Exception {
+    #? Thrown when object is not suitable for operation because of its type
+
+    object value
+}
+
+class UnsuitableValueException like Exception {
+    #? Thrown when object is not suitable for operation because of its value
+
+    object value
+}
+
+class UnsupportedConversionException like Exception {
+    #? Thrown when object is not suitable for conversion
+
+    object operand
+    string targetType
+}
+
+class UnsupportedIterationException like Exception {
+    #? Thrown when object is not suitable for iteration
+
+    object operand
+}
+
+class UnsupportedOperationException like Exception {
+    #? Thrown when an operation is not supported by object
+
+    object left
+    string operator
+    object right
+}
+
+class UnsupportedStepSubscriptException like Exception {
+    #? Thrown when object is not suitable for stepped subscript
+
+    object operand
+}
+
+class UnsupportedSubscriptException like Exception {
+    #? Thrown when object is not suitable for subscript
+
+    object operand
+}
+
+class UnsupportedUnaryOperationException like Exception {
+    #? Thrown when an operation is not supported by object
+
+    string operator
+    object operand
+}
+
+#?html <hr>
+#?html <h1 id="standard-functions">Standard functions</h1>
+
+bool all(list values) {
+    #? Check if all given values are true
+}
+
+bool any(list values) {
+    #? Check if any of given values is true
+}
+
+object clone(obj) {
+    #? Clones given object
+}
+
+object copy(obj) {
+    #? Copies given object
+}
+
+list enumerate(list collection) {
+    #? Numerates given collection
+    #? E.g. <code>enumerate(["a", "b", "c"]) -> [[0, "a"], [1, "b"], [2, "c"]]</code>
+}
+
+list zip(list left, list right) {
+    #? Zips 2 lists into one
+    #? E.g. <code>zip([0, 1, 2], ["a", "b", "c"]) -> [[0, "a"], [1, "b"], [2, "c"]]</code>
+}
+
+list map(func callback, list collection) {
+    #? Applies given function to every item in collection and returns results of function in the order of application
+}
+
+num millis() {
+    #? Get current time in milliseconds
+}
+
+string input(string prompt = "") {
+    #? Put given prompt to console, wait for user input and return it
+}
+
+void print(values...) {
+    #? Print all values separated by space and put \n at the end
+}
+
+void put(values...) {
+    #? Print all values separated by space, but do not put \n at the end
+}
+
+num abs(num n) {
+    #? Absolute value of given number
+}
+
+num acos(num n) {
+    #? Arc cosine of given number
+}
+
+num asin(num n) {
+    #? Arc sine of given number
+}
+
+num atan(num n) {
+    #? Arc tangent of given number
+}
+
+num atan2(num x, num y) {
+    #? Arc tangent2 of given x;y
+}
+
+num cos(num n) {
+    #? Cosine of given number
+}
+
+num cosh(num n) {
+    #? Hyperbolic cosine of given number
+}
+
+num max(list values) {
+    #? Returns maximal value from given collection
+}
+
+num min(list values) {
+    #? Returns minimal value from given collection
+}
+
+num sin(num n) {
+    #? Sine of given number
+}
+
+num sinh(num n) {
+    #? Hyperbolic sine of given number
+}
+
+num tan(num n) {
+    #? Tangent of given number
+}
+
+num tanh(num n) {
+    #? Hyperbolic tangent of given number
+}
+
+string bin(num n) {
+    #? Convert given number to base-2 (integer only)
+}
+
+num dec(string n, num base) {
+    #? Converts given number representation to in given base to base-10 (integer only)
+}
+
+string hex(num n) {
+    #? Convert given number to base-16 (integer only)
+}
+
+string oct() {
+    #? Convert given number to base-8 (integer only)
 }

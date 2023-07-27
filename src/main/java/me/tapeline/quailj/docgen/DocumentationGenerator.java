@@ -190,6 +190,8 @@ public class DocumentationGenerator {
                     .append(argsToString(funcNode.args))
                     .append("</code></h6>");
             sb.append("<div class=\"ps-3\">");
+            if (funcNode.isStatic)
+                sb.append("<span class=\"badge bg-secondary\">Static</span><br>");
             sb.append(compileAllDocNodes(convertToList(funcNode.code)));
             sb.append("</div>");
             return sb.toString();
