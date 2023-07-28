@@ -352,7 +352,23 @@ public class Parser {
 
     private int consumeTabs() {
         int tabCount = 0;
-        for (; matchExactly(TAB) != null; tabCount++);
+        //for (; matchExactly(TAB) != null; tabCount++);
+
+        if (reachedEnd()) return 0;
+        int increment = 0;
+        while (true) {
+            Token next = getNext(increment);
+            if (next == null) return 0;
+            if (next.getType() == EOL) increment++;
+            else break;
+        }
+        while (true) {
+            Token next = getNext(increment + tabCount);
+            if (next == null) return 0;
+            if (next.getType() == TAB) tabCount++;
+            else break;
+        }
+        pos += increment + tabCount;
         return tabCount;
     }
 

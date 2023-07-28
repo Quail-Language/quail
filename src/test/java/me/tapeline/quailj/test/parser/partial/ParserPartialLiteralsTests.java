@@ -1,4 +1,4 @@
-package parser.partial;
+package me.tapeline.quailj.test.parser.partial;
 
 import me.tapeline.quailj.lexing.Lexer;
 import me.tapeline.quailj.lexing.LexerException;

@@ -1,4 +1,4 @@
-package parser.partial;
+package me.tapeline.quailj.test.parser.partial;
 
 import me.tapeline.quailj.lexing.Lexer;
 import me.tapeline.quailj.lexing.LexerException;
@@ -162,7 +162,7 @@ public class ParserPartialSectionsTests {
         System.out.println(node.stringRepr());
         Assertions.assertEquals(
                 "block[" +
-                        "while{c block[while{c block[call{print [1.0]}} call{print [1.0]}]]}" +
+                        "while{c block[while{c block[call{print [1.0]}]} call{print [1.0]}]}" +
                         "]",
                 node.stringRepr()
         );

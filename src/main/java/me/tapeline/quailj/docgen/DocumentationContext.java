@@ -1,6 +1,6 @@
 package me.tapeline.quailj.docgen;
 
-import com.sun.istack.internal.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class DocumentationContext {
 

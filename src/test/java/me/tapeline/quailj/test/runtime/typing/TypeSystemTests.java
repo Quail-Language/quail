@@ -1,4 +1,4 @@
-package runtime.typing;
+package me.tapeline.quailj.test.runtime.typing;
 
 import me.tapeline.quailj.runtime.Memory;
 import me.tapeline.quailj.runtime.Runtime;

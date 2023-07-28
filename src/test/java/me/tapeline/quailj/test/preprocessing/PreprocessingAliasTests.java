@@ -1,4 +1,4 @@
-package preprocessing;
+package me.tapeline.quailj.test.preprocessing;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

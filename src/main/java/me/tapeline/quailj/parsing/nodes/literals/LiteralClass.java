@@ -1,6 +1,6 @@
 package me.tapeline.quailj.parsing.nodes.literals;
 
-import com.sun.istack.internal.Nullable;
+import org.jetbrains.annotations.Nullable;
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.parsing.nodes.Node;
 import me.tapeline.quailj.parsing.nodes.expression.AssignNode;

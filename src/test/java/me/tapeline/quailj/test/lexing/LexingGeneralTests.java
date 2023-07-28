@@ -1,4 +1,4 @@
-package lexing;
+package me.tapeline.quailj.test.lexing;
 
 import me.tapeline.quailj.lexing.Lexer;
 import me.tapeline.quailj.lexing.LexerException;

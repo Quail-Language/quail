@@ -1,4 +1,4 @@
-package parser.partial;
+package me.tapeline.quailj.test.parser.partial;
 
 import me.tapeline.quailj.lexing.Lexer;
 import me.tapeline.quailj.lexing.LexerException;
@@ -11,99 +11,86 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class ParserPartialGeneratorsTests {
+public class ParserPartialEffectTests {
 
     @Test
-    public void testDictFor() throws LexerException, ParserException {
+    public void testAsync() throws LexerException, ParserException {
         String code = "" +
-                "a = {k = v for k, v in dct}\n" +
-                "a = {k = v for k, v in dct if k != e}";
+                "async 3\n" +
+                "async print()\n";
         Lexer lexer = new Lexer(code);
         List<Token> tokens = lexer.scan();
         Parser parser = new Parser(code, tokens);
         Node node = parser.parse();
         System.out.println(node.stringRepr());
         Assertions.assertEquals(
-                "block[" +
-                        "assign{a gendict{k v [k, v] dct null}} " +
-                        "assign{a gendict{k v [k, v] dct op{k NOT_EQUALS e}}}" +
-                        "]",
+                "block[async{3.0} async{call{print []}}]",
                 node.stringRepr()
         );
     }
 
     @Test
-    public void testDictThrough() throws LexerException, ParserException {
+    public void testEffects() throws LexerException, ParserException {
         String code = "" +
-                "a = {k = v through 0:10 as i}\n" +
-                "a = {k = v through 0:10 as i if i != 2}";
+                "throw \"ERROR!\"\n" +
+                "strike 3\n" +
+                "assert 4 == 4\n";
         Lexer lexer = new Lexer(code);
         List<Token> tokens = lexer.scan();
         Parser parser = new Parser(code, tokens);
         Node node = parser.parse();
         System.out.println(node.stringRepr());
         Assertions.assertEquals(
-                "block[" +
-                        "assign{a gendict{k v i range{0.0 10.0 null} null}} " +
-                        "assign{a gendict{k v i range{0.0 10.0 null} op{i NOT_EQUALS 2.0}}}" +
-                        "]",
+                "block[throw{\"ERROR!\"} strike{3.0} assert{op{4.0 EQUALS 4.0}}]",
                 node.stringRepr()
         );
     }
 
     @Test
-    public void testListFor() throws LexerException, ParserException {
+    public void testReturn() throws LexerException, ParserException {
         String code = "" +
-                "[v for v in lst]\n" +
-                "[v for v in lst if v != e]";
+                "return calc(3, 4)\n" +
+                "return\n" +
+                "return 3\n";
         Lexer lexer = new Lexer(code);
         List<Token> tokens = lexer.scan();
         Parser parser = new Parser(code, tokens);
         Node node = parser.parse();
         System.out.println(node.stringRepr());
         Assertions.assertEquals(
-                "block[" +
-                        "genlist{v [v] lst null} " +
-                        "genlist{v [v] lst op{v NOT_EQUALS e}}" +
-                        "]",
+                "block[return{call{calc [3.0 4.0]}} return{null} return{3.0}]",
                 node.stringRepr()
         );
     }
 
     @Test
-    public void testListThrough() throws LexerException, ParserException {
+    public void testInstructions() throws LexerException, ParserException {
         String code = "" +
-                "[v through 0:10 as i]\n" +
-                "[v through 0:10 as i if i != 2]";
+                "break\n" +
+                "continue\n";
         Lexer lexer = new Lexer(code);
         List<Token> tokens = lexer.scan();
         Parser parser = new Parser(code, tokens);
         Node node = parser.parse();
         System.out.println(node.stringRepr());
         Assertions.assertEquals(
-                "block[" +
-                        "genlist{v i range{0.0 10.0 null} null} " +
-                        "genlist{v i range{0.0 10.0 null} op{i NOT_EQUALS 2.0}}" +
-                        "]",
+                "block[break continue]",
                 node.stringRepr()
         );
     }
 
     @Test
-    public void testRange() throws LexerException, ParserException {
+    public void testUse() throws LexerException, ParserException {
         String code = "" +
-                "0:10\n" +
-                "0:10:2\n";
+                "use \"lang/math\" = math\n" +
+                "use \"lang/\\\"\" = quote\n";
         Lexer lexer = new Lexer(code);
         List<Token> tokens = lexer.scan();
         Parser parser = new Parser(code, tokens);
         Node node = parser.parse();
         System.out.println(node.stringRepr());
         Assertions.assertEquals(
-                "block[" +
-                        "range{0.0 10.0 null} " +
-                        "range{0.0 10.0 2.0}" +
-                        "]",
+                "block[use{lang/math math} use{lang/\" quote}]",
                 node.stringRepr()
         );
     }

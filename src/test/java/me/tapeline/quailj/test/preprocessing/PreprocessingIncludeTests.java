@@ -1,4 +1,4 @@
-package preprocessing;
+package me.tapeline.quailj.test.preprocessing;
 
 import me.tapeline.quailj.preprocessing.Preprocessor;
 import me.tapeline.quailj.preprocessing.PreprocessorException;

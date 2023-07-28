@@ -1,4 +1,4 @@
-package overall;
+package me.tapeline.quailj.test.overall;
 
 import me.tapeline.quailj.launcher.QuailLauncher;
 import me.tapeline.quailj.runtime.Memory;
