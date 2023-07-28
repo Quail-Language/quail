@@ -17,14 +17,14 @@ import java.util.*;
 
 public class DocumentationGenerator {
 
-    private static HashMap<String, String> colorAssociations = Dict.make(
+    private static final HashMap<String, String> colorAssociations = Dict.make(
             new Pair<>("default", "primary"),
             new Pair<>("red", "danger"),
             new Pair<>("green", "success"),
             new Pair<>("yellow", "warning")
     );
 
-    private String documentationHeader = "<!doctype html>\n" +
+    private final String documentationHeader = "<!doctype html>\n" +
             "<html lang=\"en\">\n" +
             "<head>\n" +
             "  <meta charset=\"UTF-8\">\n" +
@@ -43,10 +43,10 @@ public class DocumentationGenerator {
             "  <title>Docs</title>\n" +
             "</head>\n" +
             "<body class=\"row p-5\">";
-    private String documentationFooter = "</body>\n" +
+    private final String documentationFooter = "</body>\n" +
             "</html>";
 
-    private List<DocTOCNode> tocEntries = new ArrayList<>();
+    private final List<DocTOCNode> tocEntries = new ArrayList<>();
 
     public String generateDocumentationForFile(String name, File path, Node contents) {
         List<Node> nodes = convertToList(contents);
@@ -216,7 +216,7 @@ public class DocumentationGenerator {
             if (i + 1 < arguments.size())
                 sb.append(", ");
         }
-        return sb.toString() + ")";
+        return sb + ")";
     }
 
     private String variableToString(VariableNode variableNode) {

@@ -1,6 +1,5 @@
 package me.tapeline.quailj.utils;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import me.tapeline.quailj.parsing.nodes.Node;
 import me.tapeline.quailj.parsing.nodes.literals.LiteralFunction;
 import me.tapeline.quailj.parsing.nodes.sections.BlockNode;
@@ -22,7 +21,7 @@ public class TextUtils {
             if (i + 1 < clauses.size())
                 sb.append(" ");
         }
-        return sb.toString() + "]";
+        return sb + "]";
     }
 
     public static String blockListToStringRepr(List<BlockNode> nodes) {
@@ -32,7 +31,7 @@ public class TextUtils {
             if (i + 1 < nodes.size())
                 sb.append(" ");
         }
-        return sb.toString() + "]";
+        return sb + "]";
     }
 
     public static String nodeListToStringRepr(List<? extends Node> nodes) {
@@ -42,7 +41,7 @@ public class TextUtils {
             if (i + 1 < nodes.size())
                 sb.append(" ");
         }
-        return sb.toString() + "]";
+        return sb + "]";
     }
 
     public static String nodeMapToStringRepr(Map<String, Node> nodes) {
@@ -54,7 +53,7 @@ public class TextUtils {
             if (i + 1 < keys.size())
                 sb.append(" ");
         }
-        return sb.toString() + "}";
+        return sb + "}";
     }
 
     public static String methodMapToStringRepr(Map<String, LiteralFunction> nodes) {
@@ -66,7 +65,7 @@ public class TextUtils {
             if (i + 1 < keys.size())
                 sb.append(" ");
         }
-        return sb.toString() + "}";
+        return sb + "}";
     }
 
     public static String iteratorsToStringRepr(List<VariableNode> nodes) {
@@ -76,7 +75,7 @@ public class TextUtils {
             if (i + 1 < nodes.size())
                 sb.append(" ");
         }
-        return sb.toString() + "]";
+        return sb + "]";
     }
 
     public static String argumentListToStringRepr(List<LiteralFunction.Argument> arguments) {
@@ -87,7 +86,7 @@ public class TextUtils {
             if (i + 1 < arguments.size())
                 sb.append(" ");
         }
-        return sb.toString() + "]";
+        return sb + "]";
     }
 
     public static String modifiersToStringRepr(int[] mods) {

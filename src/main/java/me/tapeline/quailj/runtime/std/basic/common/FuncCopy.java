@@ -7,7 +7,6 @@ import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +31,7 @@ public class FuncCopy extends QBuiltinFunc {
     }
 
     @Override
-    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) throws RuntimeStriker {
+    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) {
         return args.get("obj").copy();
     }
 

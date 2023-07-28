@@ -5,9 +5,9 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class AsyncRuntimeWorker extends Thread {
 
-    private Node node;
-    private Runtime runtime;
-    private Memory scope;
+    private final Node node;
+    private final Runtime runtime;
+    private final Memory scope;
 
     public AsyncRuntimeWorker(Node node, Runtime runtime, Memory scope) {
         this.node = node;

@@ -6,7 +6,7 @@ import java.util.List;
 public class PreprocessingFilteringResult {
 
     private List<String> directives = new ArrayList<>();
-    private String filteredCode;
+    private final String filteredCode;
 
     public PreprocessingFilteringResult(List<String> directives, String filteredCode) {
         this.directives = directives;

@@ -152,7 +152,7 @@ public class QString extends QObject {
     }
 
     @Override
-    public QObject iterateStart(Runtime runtime) throws RuntimeStriker {
+    public QObject iterateStart(Runtime runtime) {
         iteratorIndex = 0;
         return this;
     }
@@ -165,17 +165,17 @@ public class QString extends QObject {
     }
 
     @Override
-    public QObject convertToString(Runtime runtime) throws RuntimeStriker {
+    public QObject convertToString(Runtime runtime) {
         return this;
     }
 
     @Override
-    public QObject convertToBool(Runtime runtime) throws RuntimeStriker {
+    public QObject convertToBool(Runtime runtime) {
         return Val(Boolean.parseBoolean(value));
     }
 
     @Override
-    public QObject convertToNumber(Runtime runtime) throws RuntimeStriker {
+    public QObject convertToNumber(Runtime runtime) {
         return Val(Double.parseDouble(value));
     }
 

@@ -32,7 +32,7 @@ public class ListFuncSize extends QBuiltinFunc {
     }
 
     @Override
-    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) throws RuntimeStriker {
+    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) {
         return Val(args.get("this").listValue().size());
     }
 

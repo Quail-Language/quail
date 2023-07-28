@@ -9,7 +9,6 @@ import me.tapeline.quailj.typing.modifiers.ModifierConstants;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class ListFuncRemoveElementAt extends QBuiltinFunc {
     }
 
     @Override
-    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) throws RuntimeStriker {
+    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) {
         List<QObject> list = args.get("this").listValue();
         int index = ((int) args.get("index").numValue());
         return list.remove(index);

@@ -9,10 +9,7 @@ import me.tapeline.quailj.typing.utils.FuncArgument;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class TypeSystemTests {
 
@@ -138,7 +135,7 @@ public class TypeSystemTests {
         public AClassConstructor() {
             super(
                     "_constructor",
-                    Arrays.asList(
+                    Collections.singletonList(
                             new FuncArgument("me", QObject.Val(), new int[0], 0)
                     ),
                     null,

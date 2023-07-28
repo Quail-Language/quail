@@ -11,6 +11,7 @@ import me.tapeline.quailj.typing.modifiers.ModifierConstants;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class DictFuncAssemblePairs extends QBuiltinFunc {
     public DictFuncAssemblePairs(Runtime runtime) {
         super(
                 "assemblePairs",
-                Arrays.asList(
+                Collections.singletonList(
                         new FuncArgument(
                                 "pairs",
                                 QObject.Val(),

@@ -7,14 +7,14 @@ import me.tapeline.quailj.utils.PositionedException;
 public class RuntimeStriker extends PositionedException {
 
     public enum Type {
-        BREAK, RETURN, CONTINUE, EXCEPTION, EXIT;
+        BREAK, RETURN, CONTINUE, EXCEPTION, EXIT
     }
 
     private QObject carryingError;
     private QObject carryingReturnValue;
     private int strikePower;
     private int exitCode;
-    private Type type;
+    private final Type type;
 
     public RuntimeStriker(Type type, QObject data, int character, int line, int length) {
         super(type.name() + data.toString(), character, line, length);

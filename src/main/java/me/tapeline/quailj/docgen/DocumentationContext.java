@@ -8,7 +8,7 @@ public class DocumentationContext {
 
     public String qualifiedPath = "";
 
-    public DocumentationContext(DocumentationContext parent, String name) {
+    public DocumentationContext(@Nullable DocumentationContext parent, String name) {
         this.parent = parent;
         if (parent != null)
             this.qualifiedPath = parent.qualifiedPath + "::" + name;

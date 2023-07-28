@@ -6,8 +6,8 @@ import java.util.List;
 public class StringBoundariesMap {
 
     public static class Bounds {
-        private int left;
-        private int right;
+        private final int left;
+        private final int right;
 
         public Bounds(int left, int right) {
             this.left = left;
@@ -23,7 +23,7 @@ public class StringBoundariesMap {
         }
     }
 
-    private List<Bounds> bounds = new ArrayList<>();
+    private final List<Bounds> bounds = new ArrayList<>();
 
     public void addBoundary(int pos, int length) {
         bounds.add(new Bounds(pos, pos + length));

@@ -9,7 +9,7 @@ public class Main {
         QuailLauncher launcher = new QuailLauncher();
         QObject returnValue = launcher.launchAndHandleErrors(args);
         if (returnValue != null)
-            System.out.println("Script finished with result " + returnValue.toString());
+            System.out.println("Script finished with result " + returnValue);
     }
 
 }

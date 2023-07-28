@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class StringFuncInBetweenOf extends QBuiltinFunc {
 
@@ -40,7 +39,7 @@ public class StringFuncInBetweenOf extends QBuiltinFunc {
     }
 
     @Override
-    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) throws RuntimeStriker {
+    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) {
         String thisString = args.get("this").strValue();
         List<QObject> values = args.get("values").listValue();
         return Val(StringUtils.join(values, thisString));

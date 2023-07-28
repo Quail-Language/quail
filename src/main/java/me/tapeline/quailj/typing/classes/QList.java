@@ -179,7 +179,7 @@ public class QList extends QObject {
     }
 
     @Override
-    public QObject iterateStart(Runtime runtime) throws RuntimeStriker {
+    public QObject iterateStart(Runtime runtime) {
         iteratorIndex = 0;
         return this;
     }

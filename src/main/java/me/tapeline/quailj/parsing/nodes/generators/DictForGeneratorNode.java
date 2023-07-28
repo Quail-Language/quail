@@ -3,8 +3,6 @@ package me.tapeline.quailj.parsing.nodes.generators;
 import org.jetbrains.annotations.Nullable;
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.parsing.nodes.Node;
-import me.tapeline.quailj.parsing.nodes.variable.VariableNode;
-import me.tapeline.quailj.utils.TextUtils;
 
 import java.util.List;
 

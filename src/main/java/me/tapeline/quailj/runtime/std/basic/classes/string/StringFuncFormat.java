@@ -43,8 +43,7 @@ public class StringFuncFormat extends QBuiltinFunc {
 
     @Override
     public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) throws RuntimeStriker {
-        String thisString = args.get("this").strValue();
-        String result = thisString;
+        String result = args.get("this").strValue();
         if (args.get("values").isList()) {
             List<QObject> values = args.get("values").listValue();
             for (int i = 0; i < values.size(); i++)

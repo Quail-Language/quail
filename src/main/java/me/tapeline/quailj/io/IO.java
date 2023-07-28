@@ -74,9 +74,8 @@ public interface IO {
      * Constructs missing directories by on given path
      * @param path target path
      * @return whether the action was successful
-     * @throws IOException if something goes wrong
      */
-    boolean makePath(String path) throws IOException;
+    boolean makePath(String path);
 
     /**
      * Deletes file at given path

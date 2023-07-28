@@ -232,7 +232,6 @@ public class Parser {
     /**
      * Gets nearest significant token (ignores tabs and newlines)
      * and moves caret forward to next token
-     * @return
      */
     private Token consumeSignificant() {
         if (reachedEnd()) return null;
@@ -527,7 +526,7 @@ public class Parser {
         return parseExpression(null);
     }
 
-    private Node parseDocs() throws ParserException {
+    private Node parseDocs() {
         if (match(DOCS) != null) {
             Token docToken = getPrevious();
             if (docToken.getLexeme().startsWith("#?badge"))

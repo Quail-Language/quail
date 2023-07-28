@@ -81,18 +81,18 @@ public class QDict extends QObject {
     }
 
     @Override
-    public QObject index(Runtime runtime, QObject index) throws RuntimeStriker {
+    public QObject index(Runtime runtime, QObject index) {
         return nullSafe(values.get(index.toString()));
     }
 
     @Override
-    public QObject indexSet(Runtime runtime, QObject index, QObject value) throws RuntimeStriker {
+    public QObject indexSet(Runtime runtime, QObject index, QObject value) {
         values.put(index.toString(), value);
         return value;
     }
 
     @Override
-    public QObject iterateStart(Runtime runtime) throws RuntimeStriker {
+    public QObject iterateStart(Runtime runtime) {
         iterator = 0;
         iterableKeys = new ArrayList<>(values.keySet());
         return this;

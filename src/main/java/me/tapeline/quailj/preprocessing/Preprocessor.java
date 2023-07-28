@@ -14,7 +14,7 @@ public class Preprocessor {
 
     private int pos;
     private String code;
-    private File scriptHome;
+    private final File scriptHome;
 
     public Preprocessor(String code, File scriptHome) {
         this.code = code;
@@ -126,7 +126,7 @@ public class Preprocessor {
         return new PreprocessingFilteringResult(directives, filteredCode.toString());
     }
 
-    private StringBoundariesMap resolveStringBoundaries(String code) throws PreprocessorException {
+    private StringBoundariesMap resolveStringBoundaries(String code) {
         int pos = 0;
         StringBoundariesMap boundaries = new StringBoundariesMap();
         while (pos < code.length()) {

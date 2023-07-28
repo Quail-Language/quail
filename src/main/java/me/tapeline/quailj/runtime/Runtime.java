@@ -45,16 +45,16 @@ public class Runtime {
     private final Node root;
     private final boolean doProfile;
     private final String code;
-    private IO io;
+    private final IO io;
     private Node current = new Node(Token.UNDEFINED) {
         @Override
         public String stringRepr() { return null; }
     };
-    private Memory memory;
-    private List<AsyncRuntimeWorker> asyncRuntimeWorkers = new ArrayList<>();
-    private LibraryCache libraryCache;
-    private LibraryLoader libraryLoader;
-    private Set<String> librariesRoots;
+    private final Memory memory;
+    private final List<AsyncRuntimeWorker> asyncRuntimeWorkers = new ArrayList<>();
+    private final LibraryCache libraryCache;
+    private final LibraryLoader libraryLoader;
+    private final Set<String> librariesRoots;
 
 
     public Runtime() {

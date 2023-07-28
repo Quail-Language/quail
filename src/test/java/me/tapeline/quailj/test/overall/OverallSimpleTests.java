@@ -1,19 +1,9 @@
 package me.tapeline.quailj.test.overall;
 
 import me.tapeline.quailj.launcher.QuailLauncher;
-import me.tapeline.quailj.runtime.Memory;
-import me.tapeline.quailj.runtime.Runtime;
-import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.typing.classes.*;
-import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
-import me.tapeline.quailj.typing.utils.FuncArgument;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 public class OverallSimpleTests {
 

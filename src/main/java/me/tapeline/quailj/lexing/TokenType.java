@@ -122,7 +122,7 @@ public enum TokenType {
     /**
      * Keywords and matching TokenTypes
      */
-    public static final HashMap<String, TokenType> keywords = Dict.make(
+    public static final HashMap<String, TokenType> keywords = Dict.<String, TokenType>make(
             new Pair<>("while", CONTROL_WHILE),
             new Pair<>("catch", CONTROL_CATCH),
             new Pair<>("else", CONTROL_ELSE),

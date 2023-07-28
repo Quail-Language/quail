@@ -10,16 +10,14 @@ import me.tapeline.quailj.utils.TextUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 
 public class LibraryLoader {
 
     private Set<String> libraryRoots = new HashSet<>();
-    private static Set<String> pathsCurrentlyLoading = new HashSet<>();
+    private static final Set<String> pathsCurrentlyLoading = new HashSet<>();
 
     public LibraryLoader(Set<String> libraryRoots) {
         this.libraryRoots = libraryRoots;

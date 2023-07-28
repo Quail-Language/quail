@@ -40,7 +40,7 @@ public class ListFuncSorted extends QBuiltinFunc {
     }
 
     @Override
-    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) throws RuntimeStriker {
+    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) {
         QList thisList = ((QList) args.get("this"));
         List<QObject> copy = thisList.getValues().subList(0, thisList.getValues().size());
         QFunc comparator = ((QFunc) args.get("comparator"));

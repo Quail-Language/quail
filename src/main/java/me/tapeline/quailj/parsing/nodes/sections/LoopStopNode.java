@@ -2,7 +2,6 @@ package me.tapeline.quailj.parsing.nodes.sections;
 
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.parsing.nodes.Node;
-import me.tapeline.quailj.utils.TextUtils;
 
 public class LoopStopNode extends Node {
 

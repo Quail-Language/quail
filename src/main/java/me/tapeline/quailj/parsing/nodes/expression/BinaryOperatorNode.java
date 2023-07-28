@@ -5,8 +5,6 @@ import me.tapeline.quailj.lexing.TokenModifier;
 import me.tapeline.quailj.lexing.TokenType;
 import me.tapeline.quailj.parsing.nodes.Node;
 
-import java.util.Locale;
-
 public class BinaryOperatorNode extends Node {
 
     public TokenType op;

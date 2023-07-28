@@ -18,7 +18,7 @@ public class Token {
     /**
      * Type of this token
      */
-    private TokenType type;
+    private final TokenType type;
 
     /**
      * String value of this token
@@ -29,17 +29,17 @@ public class Token {
     /**
      * Line on which this token has been scanned
      */
-    private int line;
+    private final int line;
 
     /**
      * Character position in line on which this token has been scanned
      */
-    private int character;
+    private final int character;
 
     /**
      * Length of this token
      */
-    private int length;
+    private final int length;
 
     /**
      * Token modifier

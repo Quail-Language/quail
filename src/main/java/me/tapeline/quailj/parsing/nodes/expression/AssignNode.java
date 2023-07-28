@@ -3,8 +3,6 @@ package me.tapeline.quailj.parsing.nodes.expression;
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.parsing.nodes.Node;
 
-import java.util.Locale;
-
 public class AssignNode extends Node {
 
     public Node variable;

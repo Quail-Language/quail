@@ -9,9 +9,9 @@ public class LaunchCommandParser {
     public static final char STRING_FLAG_TYPE = 's';
     public static final char BOOLEAN_FLAG_TYPE = 'b';
 
-    private String[] receivedConsoleArgs;
-    private HashMap<String, Object> globalFlags;
-    private HashMap<String, Object> userFlags;
+    private final String[] receivedConsoleArgs;
+    private final HashMap<String, Object> globalFlags;
+    private final HashMap<String, Object> userFlags;
     private String selectedRunStrategy;
     private String targetScript;
 

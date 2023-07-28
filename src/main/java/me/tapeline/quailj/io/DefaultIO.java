@@ -67,7 +67,7 @@ public class DefaultIO implements IO {
     }
 
     @Override
-    public boolean makePath(String path) throws IOException {
+    public boolean makePath(String path) {
         return file(path).mkdirs();
     }
 

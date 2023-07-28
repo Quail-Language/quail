@@ -1,6 +1,5 @@
 package me.tapeline.quailj.runtime.std.basic.io;
 
-import me.tapeline.quailj.lexing.TokenType;
 import me.tapeline.quailj.parsing.nodes.literals.LiteralFunction;
 import me.tapeline.quailj.runtime.Runtime;
 import me.tapeline.quailj.runtime.RuntimeStriker;

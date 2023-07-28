@@ -11,7 +11,6 @@ import me.tapeline.quailj.typing.utils.AlternativeCall;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 import me.tapeline.quailj.utils.TextUtils;
 
-import javax.xml.soap.Text;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
