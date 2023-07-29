@@ -24,6 +24,7 @@ import me.tapeline.quailj.runtime.std.basic.io.*;
 import me.tapeline.quailj.runtime.std.basic.math.*;
 import me.tapeline.quailj.runtime.std.basic.common.*;
 import me.tapeline.quailj.runtime.std.basic.numbers.*;
+import me.tapeline.quailj.runtime.std.qml.QMLLibrary;
 import me.tapeline.quailj.typing.classes.*;
 import me.tapeline.quailj.typing.classes.errors.*;
 import me.tapeline.quailj.typing.modifiers.ModifierConstants;
@@ -214,6 +215,8 @@ public class Runtime {
         memory.set("dec", new FuncDec(this), new int[0]);
         memory.set("hex", new FuncHex(this), new int[0]);
         memory.set("oct", new FuncOct(this), new int[0]);
+
+        libraryLoader.addBuiltinLibrary(new QMLLibrary());
     }
 
     public void error(String message) throws RuntimeStriker {

@@ -37,10 +37,8 @@
                     <excludes>
                         <exclude>com.driver.test.VehicleTest</exclude>
                     </excludes>
-                </configuration!-->
-                <configuration>
                     <showSuccess>false</showSuccess>
-                </configuration>
+                </configuration!-->
             </plugin>
         </plugins>
     </build>

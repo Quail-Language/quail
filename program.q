@@ -1,33 +1,52 @@
-#?toc-entry Real
+class Event {
+    string name
 
-#?html <h1>Number utilities</h1><hr>
-
-class Real like Number {
-    #?author Tapeline
-    #?since 0.1.3
-    #? An accurate implementation of a real number
-
-    num numerator
-    num denominator
-
-    constructor(this, num numerator, num denominator) {
-        this.numerator = numerator
-        this.denominator = denominator
+    constructor(this, string name) {
+        this.name = name
     }
-
-    override *(this, other) {
-        #? Support for arithmetic operations with Number
-
-        if other instanceof Real
-            return Real(this.numerator * other.numerator, this.denominator * other.denominator)
-        else
-            return Real(this.numerator * other, this.denominator)
-    }
-
-    string toString(this) {
-        #? Returns string representation like this: 1/3
-        #?since 0.3
-        return string(this.numerator) + "/" + string(this.denominator)
-    }
-
 }
+
+
+class EventManager {
+    list eventQueue
+    dict eventHandlers
+
+    constructor(this) {
+        this.eventQueue = []
+        this.eventHandlers = {}
+    }
+
+    void fireEvent(this, event) {
+        this.eventQueue.add(event)
+    }
+
+    void handleEvents(this) {
+        for event in this.eventQueue {
+            if this.eventHandlers.containsKey(event.name)
+                for handler in this.eventHandlers.get(event.name) {
+                    result = this.eventHandlers.get(event.name)(event)
+                    if (result == false) break
+                }
+        }
+    }
+
+    void addHandler(this, string name, func handler) {
+        f = {}
+        if this.eventHandlers.containsKey(name)
+            this.eventHandlers.get(name).add(handler)
+        else
+            this.eventHandlers.set(name, [handler])
+    }
+}
+
+
+manager = EventManager()
+
+function handler1(event) {
+    print("Event " + event.name + " fired!")
+}
+manager.addHandler("testEvent", handler1)
+
+manager.fireEvent(Event("testEvent"))
+
+manager.handleEvents()

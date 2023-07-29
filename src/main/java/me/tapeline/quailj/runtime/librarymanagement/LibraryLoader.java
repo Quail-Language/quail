@@ -10,6 +10,7 @@ import me.tapeline.quailj.utils.TextUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -17,6 +18,7 @@ import java.util.regex.Matcher;
 public class LibraryLoader {
 
     private Set<String> libraryRoots = new HashSet<>();
+    private HashMap<String, BuiltinLibrary> builtinLibraries = new HashMap<>();
     private static final Set<String> pathsCurrentlyLoading = new HashSet<>();
 
     public LibraryLoader(Set<String> libraryRoots) {
@@ -25,6 +27,11 @@ public class LibraryLoader {
 
     public QObject loadLibrary(Runtime runtime, LibraryCache registry, String name) throws RuntimeStriker {
         QObject cached = registry.getCachedLibrary(name);
+        if (builtinLibraries.containsKey(name)) {
+            QObject library = builtinLibraries.get(name).constructLibrary(runtime);
+            registry.cacheLibrary(name, library);
+            return library;
+        }
         if (cached == null) {
             for (String pathWildcard : libraryRoots) {
                 pathWildcard = pathWildcard.replaceAll("\\$cwd\\$",
@@ -62,6 +69,10 @@ public class LibraryLoader {
                     "Please check library installation and/or correct library root dir(s) definition");
             return null;
         } else return registry.getCachedLibrary(name);
+    }
+
+    public void addBuiltinLibrary(BuiltinLibrary library) {
+        builtinLibraries.put(library.id(), library);
     }
 
 }
