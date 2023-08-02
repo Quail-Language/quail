@@ -44,7 +44,7 @@ public class WindowFuncSetTitle extends QBuiltinFunc {
         if (!(args.get("this") instanceof QMLWindow))
             runtime.error(new QUnsuitableTypeException("Window", args.get("this")));
         QMLWindow thisWindow = ((QMLWindow) args.get("this"));
-        if (thisWindow.frame == null)
+        if (!thisWindow.isInitialized())
             runtime.error(new QMLWindowNotInitializedException());
 
         thisWindow.frame.setTitle(args.get("this").strValue());

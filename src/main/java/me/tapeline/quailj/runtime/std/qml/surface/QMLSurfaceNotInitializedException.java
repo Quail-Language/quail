@@ -10,7 +10,7 @@ public class QMLSurfaceNotInitializedException extends QException {
 
     public static QMLSurfaceNotInitializedException prototype = new QMLSurfaceNotInitializedException(
             new Table(),
-            "WindowNotInitializedException",
+            "SurfaceNotInitializedException",
             QException.prototype,
             true
     );
@@ -27,7 +27,7 @@ public class QMLSurfaceNotInitializedException extends QException {
 
     public QMLSurfaceNotInitializedException() {
         this(new Table(), prototype.className, prototype, false,
-                "Window method was called, but window was not initialized");
+                "Surface method was called, but surface was not initialized");
     }
 
     @Override

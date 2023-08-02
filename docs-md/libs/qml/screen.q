@@ -4,6 +4,8 @@ class SurfaceNotInitializedException {}
 class Window {
     constructor(string title) {}
 
+    object<EventManager> getEventManager() {}
+
     void setTitle(string title) {}
     string getTitle() {}
 

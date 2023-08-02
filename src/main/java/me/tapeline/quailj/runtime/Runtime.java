@@ -24,6 +24,7 @@ import me.tapeline.quailj.runtime.std.basic.io.*;
 import me.tapeline.quailj.runtime.std.basic.math.*;
 import me.tapeline.quailj.runtime.std.basic.common.*;
 import me.tapeline.quailj.runtime.std.basic.numbers.*;
+import me.tapeline.quailj.runtime.std.event.EventLibrary;
 import me.tapeline.quailj.runtime.std.qml.QMLLibrary;
 import me.tapeline.quailj.typing.classes.*;
 import me.tapeline.quailj.typing.classes.errors.*;
@@ -193,6 +194,7 @@ public class Runtime {
         memory.set("copy", new FuncCopy(this), new int[0]);
         memory.set("enumerate", new FuncEnumerate(this), new int[0]);
         memory.set("map", new FuncMap(this), new int[0]);
+        memory.set("hash", new FuncHash(this), new int[0]);
         memory.set("millis", new FuncMillis(this), new int[0]);
         memory.set("zip", new FuncZip(this), new int[0]);
         memory.set("input", new FuncInput(this), new int[0]);
@@ -217,6 +219,7 @@ public class Runtime {
         memory.set("oct", new FuncOct(this), new int[0]);
 
         libraryLoader.addBuiltinLibrary(new QMLLibrary());
+        libraryLoader.addBuiltinLibrary(new EventLibrary());
     }
 
     public void error(String message) throws RuntimeStriker {

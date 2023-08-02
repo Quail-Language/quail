@@ -50,7 +50,7 @@ public class WindowFuncSetSize extends QBuiltinFunc {
         if (!(args.get("this") instanceof QMLWindow))
             runtime.error(new QUnsuitableTypeException("Window", args.get("this")));
         QMLWindow thisWindow = ((QMLWindow) args.get("this"));
-        if (thisWindow.frame == null)
+        if (!thisWindow.isInitialized())
             runtime.error(new QMLWindowNotInitializedException());
 
         thisWindow.frame.setSize(((int) args.get("width").numValue()), ((int) args.get("height").numValue()));

@@ -5,6 +5,7 @@ import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.runtime.Table;
 import me.tapeline.quailj.runtime.std.qml.window.*;
 import me.tapeline.quailj.typing.classes.QObject;
+import me.tapeline.quailj.typing.classes.utils.Initializable;
 import me.tapeline.quailj.utils.Dict;
 import me.tapeline.quailj.utils.Pair;
 
@@ -15,31 +16,35 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
-public class QMLSurface extends QObject {
+public class QMLSurface extends QObject implements Initializable {
 
     public static QMLSurface prototype = null;
     public static QMLSurface prototype(Runtime runtime) {
         if (prototype == null)
             prototype = new QMLSurface(
                     new Table(Dict.make(
-                            new Pair<>("_constructor", new WindowConstructor(runtime)),
-                            new Pair<>("centerOnScreen", new WindowFuncCenterOnScreen(runtime)),
-                            new Pair<>("getHeight", new WindowFuncGetHeight(runtime)),
-                            new Pair<>("getPositionX", new WindowFuncGetPositionX(runtime)),
-                            new Pair<>("getPositionY", new WindowFuncGetPositionY(runtime)),
-                            new Pair<>("getTitle", new WindowFuncGetTitle(runtime)),
-                            new Pair<>("getWidth", new WindowFuncGetWidth(runtime)),
-                            new Pair<>("isFocused", new WindowFuncIsFocused(runtime)),
-                            new Pair<>("isFullscreen", new WindowFuncIsFullscreen(runtime)),
-                            new Pair<>("isResizable", new WindowFuncIsResizable(runtime)),
-                            new Pair<>("isVisible", new WindowFuncIsVisible(runtime)),
-                            new Pair<>("requestFocus", new WindowFuncRequestFocus(runtime)),
-                            new Pair<>("setFullscreen", new WindowFuncSetFullscreen(runtime)),
-                            new Pair<>("setPosition", new WindowFuncSetPosition(runtime)),
-                            new Pair<>("setResizable", new WindowFuncSetResizable(runtime)),
-                            new Pair<>("setSize", new WindowFuncSetSize(runtime)),
-                            new Pair<>("setTitle", new WindowFuncSetTitle(runtime)),
-                            new Pair<>("setVisible", new WindowFuncSetVisible(runtime))
+                            new Pair<>("_constructor", new SurfaceConstructor(runtime)),
+                            new Pair<>("clear", new SurfaceFuncClear(runtime)),
+                            new Pair<>("drawLine", new SurfaceFuncDrawLine(runtime)),
+                            new Pair<>("drawOval", new SurfaceFuncDrawOval(runtime)),
+                            new Pair<>("drawPixel", new SurfaceFuncDrawPixel(runtime)),
+                            new Pair<>("drawPoly", new SurfaceFuncDrawPoly(runtime)),
+                            new Pair<>("drawRect", new SurfaceFuncDrawRect(runtime)),
+                            new Pair<>("drawText", new SurfaceFuncDrawText(runtime)),
+                            new Pair<>("fillOval", new SurfaceFuncFillOval(runtime)),
+                            new Pair<>("fillPoly", new SurfaceFuncFillPoly(runtime)),
+                            new Pair<>("fillRect", new SurfaceFuncFillRect(runtime)),
+                            new Pair<>("getColor", new SurfaceFuncGetColor(runtime)),
+                            new Pair<>("getColorHSB", new SurfaceFuncGetColorHSB(runtime)),
+                            new Pair<>("getColorRGBA", new SurfaceFuncGetColorRGBA(runtime)),
+                            new Pair<>("getFont", new SurfaceFuncGetFont(runtime)),
+                            new Pair<>("getHeight", new SurfaceFuncGetHeight(runtime)),
+                            new Pair<>("getWidth", new SurfaceFuncGetWidth(runtime)),
+                            new Pair<>("setColor", new SurfaceFuncSetColor(runtime)),
+                            new Pair<>("setColorHSB", new SurfaceFuncSetColorHSB(runtime)),
+                            new Pair<>("setColorRGBA", new SurfaceFuncSetColorRGBA(runtime)),
+                            new Pair<>("setFont", new SurfaceFuncSetFont(runtime)),
+                            new Pair<>("stamp", new SurfaceFuncStamp(runtime))
                     )),
                     "Surface",
                     QObject.superObject,
@@ -51,8 +56,17 @@ public class QMLSurface extends QObject {
     protected Graphics2D graphics;
     protected BufferedImage image;
 
+    public boolean isInitialized() {
+        return graphics != null && image != null;
+    }
+
     public QMLSurface(Table table, String className, QObject parent, boolean isPrototype) {
         super(table, className, parent, isPrototype);
+    }
+
+    public void initForImage(BufferedImage image) {
+        this.image = image;
+        graphics = image.createGraphics();
     }
 
     @Override
@@ -74,6 +88,14 @@ public class QMLSurface extends QObject {
         QObject copy = new QMLSurface(table, className, parent, isPrototype);
         copy.setInheritableFlag(isInheritable);
         return copy;
+    }
+
+    public Graphics2D getGraphics() {
+        return graphics;
+    }
+
+    public BufferedImage getImage() {
+        return image;
     }
 
     public static class MouseHandler implements MouseListener {

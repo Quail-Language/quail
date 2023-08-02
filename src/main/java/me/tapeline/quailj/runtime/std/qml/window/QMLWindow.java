@@ -3,7 +3,10 @@ package me.tapeline.quailj.runtime.std.qml.window;
 import me.tapeline.quailj.runtime.Runtime;
 import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.runtime.Table;
+import me.tapeline.quailj.runtime.std.event.event.Event;
+import me.tapeline.quailj.runtime.std.event.eventmanager.EventManager;
 import me.tapeline.quailj.typing.classes.QObject;
+import me.tapeline.quailj.typing.classes.utils.Initializable;
 import me.tapeline.quailj.utils.Dict;
 import me.tapeline.quailj.utils.Pair;
 
@@ -12,8 +15,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
-public class QMLWindow extends QObject {
+public class QMLWindow extends QObject implements Initializable {
 
     public static QMLWindow prototype = null;
     public static QMLWindow prototype(Runtime runtime) {
@@ -22,6 +28,8 @@ public class QMLWindow extends QObject {
                     new Table(Dict.make(
                             new Pair<>("_constructor", new WindowConstructor(runtime)),
                             new Pair<>("centerOnScreen", new WindowFuncCenterOnScreen(runtime)),
+                            new Pair<>("draw", new WindowFuncDraw(runtime)),
+                            new Pair<>("getEventManager", new WindowFuncGetEventManager(runtime)),
                             new Pair<>("getHeight", new WindowFuncGetHeight(runtime)),
                             new Pair<>("getPositionX", new WindowFuncGetPositionX(runtime)),
                             new Pair<>("getPositionY", new WindowFuncGetPositionY(runtime)),
@@ -47,8 +55,14 @@ public class QMLWindow extends QObject {
     }
 
     protected Frame frame;
+    protected Canvas canvas;
+    protected EventManager eventManager;
     protected MouseHandler mouseHandler;
     protected WindowHandler windowHandler;
+
+    public boolean isInitialized() {
+        return eventManager != null && frame != null && canvas != null;
+    }
 
     public QMLWindow(Table table, String className, QObject parent, boolean isPrototype) {
         super(table, className, parent, isPrototype);
@@ -80,10 +94,26 @@ public class QMLWindow extends QObject {
         public volatile boolean mouseDown = false;
         public volatile int mouseButton = -1;
 
-        public MouseHandler() { }
+        public QMLWindow window;
+        public Runtime runtime;
+
+        public MouseHandler(Runtime runtime, QMLWindow window) {
+            this.window = window;
+            this.runtime = runtime;
+        }
 
         @Override
-        public void mouseClicked(MouseEvent e) { }
+        public void mouseClicked(MouseEvent e) {
+            try {
+                QObject event = Event.prototype(runtime).newObject(runtime,
+                        new ArrayList<>(Arrays.asList(Val("qml.mouseClick"))), new HashMap<>());
+                event.set(runtime, "button", Val(e.getButton()));
+                event.set(runtime, "clickCount", Val(e.getClickCount()));
+                event.set(runtime, "x", Val(e.getX()));
+                event.set(runtime, "y", Val(e.getY()));
+                window.eventManager.fireEvent(((Event) event));
+            } catch (RuntimeStriker ignored) {}
+        }
 
         @Override
         public void mousePressed(MouseEvent e) {

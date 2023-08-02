@@ -120,7 +120,7 @@ public class QDict extends QObject {
 
     @Override
     public QObject get(String name) {
-        if (values.containsKey(name))
+        if (values != null && values.containsKey(name))
             return values.get(name);
         return super.get(name);
     }

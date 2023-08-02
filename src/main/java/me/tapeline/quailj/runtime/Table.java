@@ -26,7 +26,7 @@ public class Table {
     }
 
     public void put(Runtime runtime, String name, QObject value) throws RuntimeStriker {
-        if (modifiers.containsKey(name)) {
+        if (modifiers.containsKey(name) && modifiers.get(name).length > 0) {
             int[] modifier = modifiers.get(name);
             boolean hadMatch = false;
             if (modifier.length == 1) hadMatch = ModifierConstants.matchesOnAssign(modifier[0], value);

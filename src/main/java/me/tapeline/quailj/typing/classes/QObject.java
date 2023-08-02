@@ -109,7 +109,8 @@ public class QObject {
     public QObject newObject(Runtime runtime, List<QObject> args, HashMap<String, QObject> kwargs)
             throws RuntimeStriker {
         QObject blank = derive(runtime);
-        blank = blank.callFromThis(runtime, "_constructor", args, kwargs);
+        if (blank.get("_constructor").isFunc())
+            blank = blank.callFromThis(runtime, "_constructor", args, kwargs);
         return blank;
     }
 

@@ -45,7 +45,7 @@ public class WindowFuncSetFullscreen extends QBuiltinFunc {
         if (!(args.get("this") instanceof QMLWindow))
             runtime.error(new QUnsuitableTypeException("Window", args.get("this")));
         QMLWindow thisWindow = ((QMLWindow) args.get("this"));
-        if (thisWindow.frame == null)
+        if (!thisWindow.isInitialized())
             runtime.error(new QMLWindowNotInitializedException());
 
         if (args.get("isFullscreen").boolValue()) {

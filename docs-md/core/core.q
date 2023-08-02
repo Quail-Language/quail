@@ -29,6 +29,7 @@
 #?toc-entry copy
 #?toc-entry enumerate
 #?toc-entry map
+#?toc-entry hash
 #?toc-entry millis
 #?toc-entry input
 #?toc-entry print
@@ -471,6 +472,10 @@ list zip(list left, list right) {
 
 list map(func callback, list collection) {
     #? Applies given function to every item in collection and returns results of function in the order of application
+}
+
+num hash(obj) {
+    #? Hashes given object
 }
 
 num millis() {
