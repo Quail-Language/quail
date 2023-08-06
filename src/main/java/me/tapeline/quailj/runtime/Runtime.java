@@ -861,7 +861,7 @@ public class Runtime {
             LiteralFunction thisNode = ((LiteralFunction) node);
             List<FuncArgument> arguments = new ArrayList<>();
             for (LiteralFunction.Argument arg : thisNode.args)
-                arguments.add(new FuncArgument(this, arg));
+                arguments.add(FuncArgument.fromParsedArgument(this, arg));
             if (scope.table.containsKey(thisNode.name) &&
                 scope.table.get(thisNode.name).isFunc()) {
                 QFunc overriddenFunction = ((QFunc) scope.table.get(thisNode.name));
@@ -885,7 +885,7 @@ public class Runtime {
             List<FuncArgument> arguments = new ArrayList<>();
             int argCount = thisNode.args.size();
             for (int i = 0; i < argCount; i++)
-                arguments.add(new FuncArgument(this, thisNode.args.get(i)));
+                arguments.add(FuncArgument.fromParsedArgument(this, thisNode.args.get(i)));
             QFunc func = new QFunc(
                     "anonymous#" + thisNode.hashCode(),
                     arguments,

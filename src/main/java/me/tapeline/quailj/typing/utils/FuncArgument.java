@@ -20,9 +20,8 @@ public class FuncArgument {
         this.type = type;
     }
 
-    public FuncArgument(Runtime runtime, LiteralFunction.Argument argument) throws RuntimeStriker {
-        // TODO make it a static method FuncArgument::fromParsedArgument for better readability
-        this(argument.name, runtime.run(argument.defaultValue,
+    public static FuncArgument fromParsedArgument(Runtime runtime, LiteralFunction.Argument argument) throws RuntimeStriker {
+        return new FuncArgument(argument.name, runtime.run(argument.defaultValue,
                 runtime.getMemory()), argument.modifiers, argument.type);
     }
 
