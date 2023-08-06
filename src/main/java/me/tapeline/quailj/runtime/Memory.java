@@ -40,6 +40,10 @@ public class Memory {
         table.put(id, value, modifiers);
     }
 
+    public void set(String id, QObject value) {
+        table.put(id, value);
+    }
+
     public QObject get(String id) {
         QObject value = null;
         if (table.getValues().containsKey(id))
@@ -48,7 +52,7 @@ public class Memory {
 
         if (value == null) {
             value = QObject.Val();
-            table.put(id, value, new int[0]);
+            table.put(id, value);
         }
         return value;
     }

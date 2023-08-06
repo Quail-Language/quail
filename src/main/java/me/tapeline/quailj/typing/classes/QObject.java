@@ -156,8 +156,12 @@ public class QObject {
         table.put(name, value, modifiers);
     }
 
+    public void set(String name, QObject value) {
+        table.put(name, value);
+    }
+
     public void forceSet(String name, QObject value) {
-        table.put(name, value, new int[0]);
+        table.put(name, value);
     }
 
     public QObject getOverridable(Runtime runtime, String name) throws RuntimeStriker {

@@ -29,7 +29,7 @@ public class EventLibrary implements BuiltinLibrary {
         Memory scope = new Memory(runtime.getMemory());
         QObject defaultManager = EventManager.prototype.newObject(runtime, new ArrayList<>(), new HashMap<>());
         contents.put("defaultManager", defaultManager);
-        scope.set("defaultManager", defaultManager, new int[0]);
+        scope.set("defaultManager", defaultManager);
 
         contents.put("addHandler", new EventFuncAddHandler(runtime, scope));
         contents.put("removeHandler", new EventFuncRemoveHandler(runtime, scope));

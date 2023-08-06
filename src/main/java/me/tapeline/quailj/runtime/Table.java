@@ -11,7 +11,6 @@ import java.util.function.BiConsumer;
 public class Table {
 
     private final HashMap<String, QObject> values = new HashMap<>();
-    // TODO replace empty modifier sequences (int[0]) with null-s for lower memory consumption
     private final HashMap<String, int[]> modifiers = new HashMap<>();
 
     public Table() { }
@@ -46,6 +45,10 @@ public class Table {
     public void put(String name, QObject value, int[] modifier) {
         values.put(name, value);
         modifiers.put(name, modifier);
+    }
+
+    public void put(String name, QObject value) {
+        values.put(name, value);
     }
 
     public boolean containsKey(String name) {
