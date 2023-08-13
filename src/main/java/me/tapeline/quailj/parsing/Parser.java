@@ -662,16 +662,15 @@ public class Parser {
 
     private Node parseAssignment(ParsingPolicy policy) throws ParserException {
         Node left = parseOr(policy);
-        // TODO: make right-associative
         if (match(ASSIGN) != null) {
             Token assignment = getPrevious();
             if (left instanceof IndexingNode)
                 return new IndexSetNode(assignment, ((IndexingNode) left).collection,
-                        ((IndexingNode) left).index, parseOr(policy));
+                        ((IndexingNode) left).index, parseAssignment(policy));
             if (left instanceof FieldReferenceNode)
                 return new FieldSetNode(assignment, ((FieldReferenceNode) left).parent,
-                        ((FieldReferenceNode) left).value, parseOr(policy));
-            return new AssignNode(getPrevious(), left, parseOr(policy));
+                        ((FieldReferenceNode) left).value, parseAssignment(policy));
+            return new AssignNode(getPrevious(), left, parseAssignment(policy));
         }
         if (matchMultiple(SHORT_DIVIDE, SHORT_MODULO, SHORT_INTDIV,
                 SHORT_POWER, SHORT_MINUS, SHORT_MULTIPLY, SHORT_PLUS) != null) {
@@ -728,7 +727,6 @@ public class Parser {
     }
 
     private Node parseRange(ParsingPolicy policy) throws ParserException {
-        // TODO: make right-associative
         Node left = parseTerm(policy);
         if (policy != null && policy.excludeRange) return left;
         if (forseePattern(RANGE, EOL))

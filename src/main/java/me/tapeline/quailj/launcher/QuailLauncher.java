@@ -23,6 +23,13 @@ import java.util.List;
 
 public class QuailLauncher {
 
+    public static final int QUAIL_MAJOR_VERSION = 2;
+    public static final int QUAIL_MINOR_VERSION = 0;
+    public static final int QUAIL_PATCH_VERSION = 0;
+    public static final String QUAIL_VERSION_STATUS = "alpha";
+    public static final int QUAIL_SUBVERSION = 1;
+    public static final boolean QUAIL_VERSION_IS_STABLE = false;
+
     private HashMap<String, Object> localFlags;
 
     private void setupGlobalFlags(HashMap<String, Object> flags) {
@@ -42,6 +49,18 @@ public class QuailLauncher {
         localFlags = launchCommandParser.getUserFlags();
         setupGlobalFlags(launchCommandParser.getGlobalFlags());
         String mode = launchCommandParser.getSelectedRunStrategy();
+
+        if (mode.equals("info")) {
+            System.out.println("-=+* QuailJ by Tapeline *+=-");
+            System.out.println("     Version: " +
+                                QUAIL_MAJOR_VERSION + '.' +
+                                QUAIL_MINOR_VERSION + '.' +
+                                QUAIL_PATCH_VERSION + '-' +
+                                QUAIL_VERSION_STATUS + '.' +
+                                QUAIL_SUBVERSION);
+            System.out.println("     " + (QUAIL_VERSION_IS_STABLE ? "Stable" : "Snapshot"));
+            return null;
+        }
 
         boolean doProfile = mode.equalsIgnoreCase("profile");
 

@@ -28,7 +28,10 @@ public class LibraryLoader {
     public QObject loadLibrary(Runtime runtime, LibraryCache registry, String name) throws RuntimeStriker {
         QObject cached = registry.getCachedLibrary(name);
         if (builtinLibraries.containsKey(name)) {
-            QObject library = builtinLibraries.get(name).constructLibrary(runtime);
+            Runtime libraryRuntime = builtinLibraries.get(name).initializeRuntime();
+            if (libraryRuntime == null)
+                libraryRuntime = runtime;
+            QObject library = builtinLibraries.get(name).constructLibrary(libraryRuntime);
             registry.cacheLibrary(name, library);
             return library;
         }

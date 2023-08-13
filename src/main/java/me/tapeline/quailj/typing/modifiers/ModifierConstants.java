@@ -22,11 +22,24 @@ public class ModifierConstants {
     public static final int FINAL_ASSIGNED = 16384;
 
     public static boolean matchesOnAssign(int[] flags, QObject value) {
-        return true; // TODO
+        for (int i = 0; i < flags.length; i++)
+            if (!matchesOnAssign(flags[i], value))
+                return false;
+        return true;
     }
 
     public static boolean matchesOnAssign(int flag, QObject value) {
-        return true; // TODO
+        if ((flag & NUM) == NUM && !value.isNum()) return false;
+        if ((flag & BOOL) == BOOL && !value.isBool()) return false;
+        if ((flag & NULL) == NULL && !value.isNull()) return false;
+        if ((flag & VOID) == VOID && !value.isNull()) return false;
+        if ((flag & NOTNULL) == NOTNULL && value.isNull()) return false;
+        if ((flag & DICT) == DICT && !value.isDict()) return false;
+        if ((flag & LIST) == LIST && !value.isList()) return false;
+        if ((flag & STR) == STR && !value.isStr()) return false;
+        if ((flag & FUNC) == FUNC && !value.isFunc()) return false;
+        if ((flag & FINAL_ASSIGNED) == FINAL_ASSIGNED) return false;
+        return true;
     }
 
     public static boolean couldBeNull(int[] flags) {
@@ -34,6 +47,10 @@ public class ModifierConstants {
             if (!IntFlags.check(flag, NOTNULL) || IntFlags.check(flag, NULL))
                 return true;
         return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(matchesOnAssign(NUM, QObject.Val("")));
     }
 
 }

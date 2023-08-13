@@ -10,9 +10,15 @@ import me.tapeline.quailj.typing.classes.QObject;
 import java.util.HashMap;
 
 public class QMLLibrary implements BuiltinLibrary {
+
     @Override
     public String id() {
         return "lang/qml";
+    }
+
+    @Override
+    public Runtime initializeRuntime() {
+        return new Runtime();
     }
 
     @Override
@@ -21,6 +27,9 @@ public class QMLLibrary implements BuiltinLibrary {
         contents.put("Window", QMLWindow.prototype(runtime));
         contents.put("Surface", QMLSurface.prototype(runtime));
         contents.put("Font", QMLFont.prototype(runtime));
+
+        runtime.getMemory().table.putAll(contents);
+
         return QObject.Val(contents);
     }
 }

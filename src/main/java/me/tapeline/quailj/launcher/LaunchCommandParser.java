@@ -17,7 +17,9 @@ public class LaunchCommandParser {
 
     private String outputFile;
 
-    public LaunchCommandParser(String[] consoleArgs) {
+    public LaunchCommandParser(String[] consoleArgs) throws LauncherException {
+        if (consoleArgs.length < 1)
+            throw new LauncherException("Provide a valid mode");
         this.receivedConsoleArgs = consoleArgs;
         this.globalFlags = new HashMap<>();
         this.userFlags = new HashMap<>();
@@ -37,6 +39,8 @@ public class LaunchCommandParser {
             else if (!strategySet) {
                 selectedRunStrategy = arg;
                 strategySet = true;
+                if (selectedRunStrategy.equals("info"))
+                    break;
             } else if (arg.equalsIgnoreCase(">")) {
                 waitingOutputFile = true;
             } else if (waitingOutputFile) {

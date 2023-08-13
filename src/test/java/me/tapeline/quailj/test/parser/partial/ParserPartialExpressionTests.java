@@ -17,14 +17,15 @@ public class ParserPartialExpressionTests {
     public void testAssign() throws LexerException, ParserException {
         String code = "" +
                 "a = 3\n" +
-                "b = a\n";
+                "b = a\n" +
+                "a = b = c\n";
         Lexer lexer = new Lexer(code);
         List<Token> tokens = lexer.scan();
         Parser parser = new Parser(code, tokens);
         Node node = parser.parse();
         System.out.println(node.stringRepr());
         Assertions.assertEquals(
-                "block[assign{a 3.0} assign{b a}]",
+                "block[assign{a 3.0} assign{b a} assign{a assign{b c}}]",
                 node.stringRepr()
         );
     }

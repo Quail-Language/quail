@@ -5,7 +5,8 @@ import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.typing.classes.QObject;
 
 public interface BuiltinLibrary {
-    // TODO Make individual runtimes for each library
+
+    Runtime initializeRuntime();
     String id();
     QObject constructLibrary(Runtime runtime) throws RuntimeStriker;
 
