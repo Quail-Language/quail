@@ -1,5 +1,5 @@
 function main() {
-    list retValue = ""
+    string retValue = ""
 
     print("Hello, World!")
 
