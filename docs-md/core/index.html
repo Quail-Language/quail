@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+  <title>Docs</title>
+</head>
+<body class="row p-5">
+  <aside class="bd-aside sticky-xl-top text-muted align-self-start mb-3 mb-xl-5 px-2 col-auto">
+    <h2 class="h6 pt-4 pb-3 mb-4 border-bottom">Quail Core Docs</h2>
+    <nav class="small" id="toc">
+      <ul class="list-unstyled">
+        <li class="my-2">
+          <button class="btn d-inline-flex align-items-center collapsed"
+                  data-bs-toggle="collapse" aria-expanded="false"
+                  data-bs-target="#std-classes-collapse"
+                  aria-controls="std-classes-collapse">
+              Standard Classes
+          </button>
+          <ul class="list-unstyled ps-3 collapse" id="std-classes-collapse">
+            <li><a class="d-inline-flex align-items-center rounded" href="#Object">
+                Object
+            </a></li>
+            <li><a class="d-inline-flex align-items-center rounded" href="#Number">
+                Number
+            </a></li>
+            <li><a class="d-inline-flex align-items-center rounded" href="#Bool">
+                Boolean
+            </a></li>
+            <li><a class="d-inline-flex align-items-center rounded" href="#String">
+                String
+            </a></li>
+            <li><a class="d-inline-flex align-items-center rounded" href="#List">
+                List
+            </a></li>
+            <li><a class="d-inline-flex align-items-center rounded" href="#Dict">
+                Dict
+            </a></li>
+          </ul>
+        </li>
+        <li class="my-2">
+          <button class="btn d-inline-flex align-items-center collapsed"
+                  data-bs-toggle="collapse" aria-expanded="false"
+                  data-bs-target="#std-methods-collapse"
+                  aria-controls="std-methods-collapse">
+              Standard Library
+          </button>
+          <ul class="list-unstyled ps-3 collapse" id="std-methods-collapse">
+            <li><a class="d-inline-flex align-items-center rounded" href="#print">
+                print
+            </a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="col">
+    <h1 id="overview">Overview</h1>
+    <hr>
+    <h1 id="standard-classes">Standard classes</h1>
+
+    <h3 id="Object"><code>Object</code></h3>
+    <div class="p-3">
+      <p>Located: <i>in global</i></p>
+      <p>Features:
+        <span class="badge bg-primary">Ancestor for all</span>
+        <span class="badge bg-success">Mutable</span>
+      </p>
+      <p>
+        Inherited from: none
+      </p>
+      <h6>Fields</h6>
+      <div class="ps-3">
+        <p>None</p>
+      </div>
+      <h6>Methods</h6>
+      <div class="ps-3">
+        <h6 id="Object::get"><code>object get(string key)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Get value by <code>key</code>. This call could be overridden with
+            <a class="text-decoration-none" href="#Object::_get"><code>Object._get</code></a>
+            and <a class="text-decoration-none" href="#Object::_get_*"><code>Object._get_*</code></a>
+          </p>
+        </div>
+
+        <h6 id="Object::set"><code>void set(string key, object value)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Mutates</span>
+          </p>
+          <p>
+            Set <code>value</code> by <code>key</code>. This call could be overridden with
+            <a class="text-decoration-none" href="#Object::_get"><code>Object._set</code></a>
+            and <a class="text-decoration-none" href="#Object::_get_*"><code>Object._set_*</code></a>
+          </p>
+        </div>
+
+        <h6 id="Object::getStrict"><code>object getStrict(string key)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Get value by <code>key</code>. This call <b>could not</b> be overridden with
+            <a class="text-decoration-none" href="#Object::_get"><code>Object._get</code></a>
+            and <a class="text-decoration-none" href="#Object::_get_*"><code>Object._get_*</code></a>
+          </p>
+        </div>
+
+        <h6 id="Object::setStrict"><code>void setStrict(string key, object value)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Mutates</span>
+          </p>
+          <p>
+            Set <code>value</code> by <code>key</code>. This call <b>could not</b> be overridden with
+            <a class="text-decoration-none" href="#Object::_get"><code>Object._set</code></a>
+            and <a class="text-decoration-none" href="#Object::_get_*"><code>Object._set_*</code></a>
+          </p>
+        </div>
+
+        <h6 id="Object::keys"><code>list keys()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Get all keys in this object
+          </p>
+        </div>
+
+        <h6 id="Object::values"><code>list values()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Get all values in this object
+          </p>
+        </div>
+
+        <h6 id="Object::pairs"><code>list pairs()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Get all pairs (key, value) in this object
+          </p>
+          <p>
+            Returns: <code>[[string key, object value], ...]</code>
+          </p>
+        </div>
+
+        <h6 id="Object::contains"><code>bool contains(string key)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Check if object contains pair with key <code>key</code>
+          </p>
+        </div>
+
+        <h6 id="Object::size"><code>num size()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Count all key=value pairs in this object
+          </p>
+        </div>
+
+        <h6 id="Object::table"><code>dict table()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Get all key=value pairs in form of a <code>dict</code>
+          </p>
+        </div>
+
+        <h6 id="Object::_get"><code>object _get(string key)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-warning">May be null</span>
+          </p>
+          <p>
+            Called when field in that object is accessed through <code>object.field</code>
+            or <a class="text-decoration-none" href="#Object::get"><code>Object.get</code></a>.
+            When field is accessed through
+            <a class="text-decoration-none" href="#Object::getStrict"><code>Object.getStrict</code></a>
+            or <code>object["field"]</code> call to this method will be omitted.
+          </p>
+        </div>
+
+        <h6 id="Object::_get_*"><code>object _get_&lt;field&gt;()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-warning">May be null</span>
+          </p>
+          <p>
+            Called when field <code>&lt;field&gt;</code> in that object is accessed through
+            <code>object.field</code>
+            or <a class="text-decoration-none" href="#Object::get"><code>Object.get</code></a>.
+            When field is accessed through
+            <a class="text-decoration-none" href="#Object::getStrict"><code>Object.getStrict</code></a>
+            or <code>object["field"]</code> call to this method will be omitted.
+          </p>
+        </div>
+
+        <h6 id="Object::_set"><code>object _set(string key, object value)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-warning">May be null</span>
+          </p>
+          <p>
+            Called when field in that object is set through <code>object.field = value</code>
+            or <a class="text-decoration-none" href="#Object::set"><code>Object.set</code></a>.
+            When field is set through
+            <a class="text-decoration-none" href="#Object::setStrict"><code>Object.setStrict</code></a>
+            or <code>object["field"] = value</code> call to this method will be omitted.
+          </p>
+        </div>
+
+        <h6 id="Object::_set_*"><code>object _set_&lt;field&gt;(object value)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-warning">May be null</span>
+          </p>
+          <p>
+            Called when field <code>&lt;field&gt;</code> in that object is set through
+            <code>object.field = value</code>
+            or <a class="text-decoration-none" href="#Object::set"><code>Object.set</code></a>.
+            When field is accessed through
+            <a class="text-decoration-none" href="#Object::setStrict"><code>Object.setStrict</code></a>
+            or <code>object["field"] = value</code> call to this method will be omitted.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3 id="Number"><code>Number</code></h3>
+    <div class="p-3">
+      <p>Located: <i>in global</i></p>
+      <p>Features:
+        <span class="badge bg-danger">Not inheritable</span>
+        <span class="badge bg-success">Immutable</span>
+      </p>
+      <p>
+        Inherited from: <a class="text-decoration-none" href="#Object"><code>Object</code></a>
+      </p>
+      <h6>Fields</h6>
+      <div class="ps-3">
+        <p>None</p>
+      </div>
+      <h6>Methods</h6>
+      <div class="ps-3">
+        <h6 id="Number::round"><code>num round()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Returns mathematically rounded number
+          </p>
+        </div>
+
+        <h6 id="Number::ceil"><code>num ceil()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Returns mathematically ceiled number
+          </p>
+        </div>
+
+        <h6 id="Number::floor"><code>num floor()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Returns mathematically floored number
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3 id="Bool"><code>Bool</code></h3>
+    <div class="p-3">
+      <p>Located: <i>in global</i></p>
+      <p>Features:
+        <span class="badge bg-danger">Not inheritable</span>
+        <span class="badge bg-success">Immutable</span>
+      </p>
+      <p>
+        Inherited from: <a class="text-decoration-none" href="#Object"><code>Object</code></a>
+      </p>
+      <h6>Fields</h6>
+      <div class="ps-3">
+        <p>None</p>
+      </div>
+      <h6>Methods</h6>
+      <div class="ps-3">
+        <p>None</p>
+      </div>
+    </div>
+
+    <h3 id="String"><code>String</code></h3>
+    <div class="p-3">
+      <p>Located: <i>in global</i></p>
+      <p>Features:
+        <span class="badge bg-danger">Not inheritable</span>
+        <span class="badge bg-success">Immutable</span>
+      </p>
+      <p>
+        Inherited from: <a class="text-decoration-none" href="#Object"><code>Object</code></a>
+      </p>
+      <h6>Fields</h6>
+      <div class="ps-3">
+        <p>None</p>
+      </div>
+      <h6>Methods</h6>
+      <div class="ps-3">
+        <h6 id="String::capitalize"><code>string capitalize()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Make first letter in string capital and all other letters - small
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::center"><code>string center(num size)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Center string in row of defined size
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::count"><code>string count(string needle)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Counts occurrences of <code>needle</code> in string
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::find"><code>string find(string needle)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Returns index of first occurrence of <code>needle</code> in string
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::encode64"><code>string encode64()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Returns base64 encoded version of that string
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::decode64"><code>string decode64()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Returns base64 decoded version of that string (assuming that string is base64-encoded)
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::endsWith"><code>bool endsWith(string suffix)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Check if string ends with <code>suffix</code>
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::startsWith"><code>bool startsWith(string prefix)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Check if string starts with <code>prefix</code>
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::format"><code>string format(list values)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Format this string with given values by <code>%number</code> pattern. <br>
+            E.g. <code>"%0, %1".format(["Hello", 3]) -> "Hello, 3"</code>
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6><code>string format(dict values)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Format this string with given values by <code>%key</code> pattern. <br>
+            E.g. <code>"Hello, %name".format({"name"="John"}) -> "Hello, John"</code>
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::isAlpha"><code>bool isAlpha()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Check if string contains only alphabetical characters
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::isNumeric"><code>bool isNumeric()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Check if string contains only numeric characters
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::isAlphaNumeric"><code>bool isAlphaNumeric()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Check if string contains only numeric and alphabetical characters
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::isUpper"><code>bool isUpper()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Check if string contains only uppercase letters
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::isLower"><code>bool isLower()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Check if string contains only lowercase letters
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::inBetween"><code>string inBetween(list values)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Place this string in between given values. <br>
+            E.g. <code>", ".inBetween(["a", "b", "c"]) -> "a, b, c"</code>
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::lower"><code>string lower()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Make all characters in this string lowercase
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::upper"><code>string upper()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Make all characters in this string uppercase
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::replaceAll"><code>string replaceAll(string needle, string replacement)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Returns string with replaced all <code>needle</code> occurrences with <code>replacement</code>
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::replaceFirst"><code>string replaceFirst(string needle, string replacement)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Returns string with replaced first <code>needle</code> occurrence with <code>replacement</code>
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::split"><code>string split(string separator)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Splits this string by <code>separator</code> and returns that list
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::swapCase"><code>string swapCase()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Makes all uppercase letters lower and vice versa
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::size"><code>num size()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Length of string
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::reversed"><code>string reversed()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Returns reversed string
+          </p>
+        </div>
+      </div>
+
+      <div class="ps-3">
+        <h6 id="String::chars"><code>list chars()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Returns list of characters of that string
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3 id="List"><code>List</code></h3>
+    <div class="p-3">
+      <p>Located: <i>in global</i></p>
+      <p>Features:
+        <span class="badge bg-danger">Not inheritable</span>
+        <span class="badge bg-success">Mutable</span>
+      </p>
+      <p>
+        Inherited from: <a class="text-decoration-none" href="#Object"><code>Object</code></a>
+      </p>
+      <h6>Fields</h6>
+      <div class="ps-3">
+        <p>None</p>
+      </div>
+      <h6>Methods</h6>
+      <div class="ps-3">
+        <h6 id="List::add"><code>void add(object element)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Mutates</span>
+          </p>
+          <p>
+            Appends <code>element</code> to the end of that list
+          </p>
+        </div>
+
+        <h6 id="List::clear"><code>void clear()</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Mutates</span>
+          </p>
+          <p>
+            Removes all elements in list
+          </p>
+        </div>
+
+        <h6 id="List::count"><code>num count(object needle)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Count elements in this list for which the following expression is true:
+            <code>element == needle</code>
+          </p>
+        </div>
+
+        <h6 id="List::addAll"><code>void addAll(list elements)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Mutates</span>
+          </p>
+          <p>
+            Appends all elements to the end of that list
+          </p>
+        </div>
+
+        <h6 id="List::find"><code>num find(object needle)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Does not mutate</span>
+          </p>
+          <p>
+            Get index of first element in this list for which the following expression is true:
+            <code>element == needle</code>
+          </p>
+        </div>
+
+        <h6 id="List::count"><code>num count(object needle)</code></h6>
+        <div class="ps-3">
+          <p>
+            <span class="badge bg-primary">Non-static</span>
+            <span class="badge bg-success">Mutates</span>
+          </p>
+          <p>
+            Count elements in this list for which the following expression is true:
+            <code>element == needle</code>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
