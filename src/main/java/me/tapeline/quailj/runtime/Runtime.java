@@ -877,6 +877,7 @@ public class Runtime {
                         scope
                 );
                 scope.set(this, thisNode.name, constructedFunction);
+                return constructedFunction;
             }
             if (doProfile) end(node);
             return Val();

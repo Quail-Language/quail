@@ -104,6 +104,7 @@ public enum TokenType {
     LCPAR,
     RCPAR,
 
+    ANNOTATION,
     CONSUMER,
     KWARG_CONSUMER,
     LAMBDA_ARROW,

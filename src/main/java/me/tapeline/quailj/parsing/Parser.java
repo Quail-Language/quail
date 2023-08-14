@@ -2,6 +2,9 @@ package me.tapeline.quailj.parsing;
 
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.lexing.TokenType;
+import me.tapeline.quailj.parsing.annotation.Annotation;
+import me.tapeline.quailj.parsing.annotation.Decoration;
+import me.tapeline.quailj.parsing.annotation.std.DeprecatedAnnotation;
 import me.tapeline.quailj.parsing.nodes.Node;
 import me.tapeline.quailj.parsing.nodes.comments.*;
 import me.tapeline.quailj.parsing.nodes.effects.*;
@@ -13,11 +16,16 @@ import me.tapeline.quailj.parsing.nodes.utils.IncompleteModifierNode;
 import me.tapeline.quailj.parsing.nodes.variable.VariableNode;
 import me.tapeline.quailj.typing.modifiers.ModifierConstants;
 import me.tapeline.quailj.utils.IntFlags;
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang3.ClassUtils;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static me.tapeline.quailj.lexing.TokenType.*;
 
@@ -27,6 +35,8 @@ import static me.tapeline.quailj.lexing.TokenType.*;
  * @author Tapeline
  */
 public class Parser {
+
+    private static List<Annotation> registeredAnnotations = new ArrayList<>();
 
     /**
      * Token list
@@ -42,10 +52,22 @@ public class Parser {
      * Current caret position
      */
     private int pos = 0;
+    private List<Decoration> pendingDecorations;
 
     public Parser(String code, List<Token> tokens) {
         this.tokens = tokens;
         this.sourceCode = code;
+        this.pendingDecorations = new ArrayList<>();
+        registerDefaultAnnotations();
+    }
+
+    public static void registerDefaultAnnotations() {
+        registerAnnotation(new DeprecatedAnnotation());
+    }
+
+    public static void registerAnnotation(Annotation annotation) {
+        if (findAnnotation(annotation.name()) == null)
+            registeredAnnotations.add(annotation);
     }
 
     /**
@@ -387,6 +409,111 @@ public class Parser {
         }
     }
 
+    private Node newNode(Class<? extends Node> node, Object... args) {
+        Constructor<?> foundConstructor = null;
+        for (Constructor<?> constructor : node.getConstructors()) {
+            if (constructor.getParameterCount() != args.length)
+                continue;
+            boolean matches = true;
+            for (int i = 0; i < args.length; i++) {
+                if (args[i] == null) continue;
+                Class<?> parameterClass = constructor.getParameterTypes()[i];
+                if (constructor.getParameterTypes()[i].isPrimitive())
+                    parameterClass = ClassUtils.primitiveToWrapper(
+                            constructor.getParameterTypes()[i]);
+                if (!parameterClass.isAssignableFrom(args[i].getClass())) {
+                    matches = false;
+                    break;
+                }
+            }
+            if (matches) {
+                foundConstructor = constructor;
+                break;
+            }
+        }
+        if (foundConstructor == null)
+            throw new RuntimeException("Cannot find suitable constructor");
+        try {
+            return applyDecorations(pendingDecorations,
+                    (Node) foundConstructor.newInstance(args));
+        } catch (InstantiationException | IllegalAccessException |
+                InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Node applyDecorations(List<Decoration> decorations, Node target) {
+        decorations = new ArrayList<>(decorations);
+        Collections.reverse(decorations);
+        String name = null;
+        if (target instanceof LiteralClass) name = ((LiteralClass) target).name;
+        if (target instanceof LiteralFunction) name = ((LiteralFunction) target).name;
+        if (target instanceof LiteralClass ||
+            target instanceof LiteralFunction) {
+            for (Decoration decoration : decorations) {
+                if (decoration.getAnnotation() != null)
+                    target = decoration.getAnnotation().apply(target,
+                            decoration.transformArgs());
+                else
+                    target = wrapWithDecoration(target, decoration);
+                if (target instanceof AssignNode)
+                    target = ((AssignNode) target).value;
+            }
+            target = new AssignNode(
+                    target.getToken(),
+                    new VariableNode(target.getToken().derivativeFor(VAR, name)),
+                    target
+            );
+        } else {
+            for (Decoration decoration : decorations) {
+                if (decoration.getAnnotation() != null)
+                    target = decoration.getAnnotation().apply(target,
+                            decoration.transformArgs());
+                else
+                    target = wrapWithDecoration(target, decoration);
+            }
+        }
+        return target;
+    }
+
+    private Node wrapWithDecoration(Node target, Decoration decoration) {
+        String name = null;
+        if (target instanceof LiteralClass)
+            name = ((LiteralClass) target).name;
+        if (target instanceof LiteralFunction)
+            name = ((LiteralFunction) target).name;
+        if (target instanceof LiteralClass ||
+                target instanceof LiteralFunction) {
+            return new AssignNode(
+                    decoration.getToken(),
+                    new VariableNode(target.getToken().derivativeFor(VAR, name)),
+                    new CallNode(
+                            decoration.getToken(),
+                            decoration.getName(),
+                            ListUtils.union(
+                                    Collections.singletonList(target),
+                                    decoration.getArgs()
+                            ),
+                            new HashMap<>()
+                    )
+            );
+        } else {
+            return new CallNode(
+                    decoration.getToken(),
+                    decoration.getName(),
+                    ListUtils.union(
+                            Collections.singletonList(target),
+                            decoration.getArgs()
+                    ),
+                    new HashMap<>()
+            );
+        }
+    }
+
+    private List<Decoration> freezeDecorations() {
+        return pendingDecorations.subList(0, pendingDecorations.size());
+    }
+
     public BlockNode parse() throws ParserException {
         BlockNode statements = new BlockNode(current(), new ArrayList<>());
         while (toNextSignificant() != null)
@@ -514,6 +641,8 @@ public class Parser {
         Node docs = parseDocs();
         if (docs != null) return docs;
 
+        parseDecorations();
+
         Node effect = parseEffect();
         if (effect != null) return effect;
 
@@ -524,6 +653,51 @@ public class Parser {
         if (klass != null) return klass;
 
         return parseExpression(null);
+    }
+
+    private static Annotation findAnnotation(String name) {
+        for (Annotation annotation : registeredAnnotations)
+            if (annotation.name().equals(name))
+                return annotation;
+        return null;
+    }
+
+    private void parseDecorations() throws ParserException {
+        while (match(ANNOTATION) != null) {
+            Token annotationToken = getPrevious();
+            Node annotationNode = parseExpression(null);
+            if (annotationNode instanceof VariableNode) {
+                Annotation annotation = findAnnotation(
+                        ((VariableNode) annotationNode).name);
+                if (annotation != null) {
+                    pendingDecorations.add(new Decoration(annotationToken,
+                            annotation, new ArrayList<>()));
+                } else {
+                    pendingDecorations.add(new Decoration(annotationToken,
+                            annotationNode, new ArrayList<>()));
+                }
+            } else if (annotationNode instanceof CallNode) {
+                if (((CallNode) annotationNode).callee instanceof VariableNode) {
+                    Annotation annotation = findAnnotation(
+                            ((VariableNode) ((CallNode) annotationNode).callee).name);
+                    if (annotation != null) {
+                        pendingDecorations.add(new Decoration(annotationToken,
+                                annotation, ((CallNode) annotationNode).args));
+                    } else {
+                        pendingDecorations.add(new Decoration(annotationToken,
+                                ((CallNode) annotationNode).callee,
+                                ((CallNode) annotationNode).args));
+                    }
+                } else {
+                    pendingDecorations.add(new Decoration(annotationToken,
+                            ((CallNode) annotationNode).callee,
+                            ((CallNode) annotationNode).args));
+                }
+            } else {
+                pendingDecorations.add(new Decoration(annotationToken,
+                        annotationNode, new ArrayList<>()));
+            }
+        }
     }
 
     private Node parseDocs() {
@@ -569,6 +743,14 @@ public class Parser {
     }
 
     private Node parseFunction() throws ParserException {
+        List<Decoration> decorations = null;
+        if (forseePattern(MOD_STATIC, TYPE_METHOD) ||
+            forseePattern(MOD_STATIC, TYPE_FUNCTION) ||
+            forseeToken(TYPE_METHOD) || forseeToken(TYPE_FUNCTION) ||
+            forseeToken(SETS) || forseeToken(GETS) ||
+            forseeToken(OVERRIDE) || forseeToken(CONSTRUCTOR))
+            decorations = freezeDecorations();
+        LiteralFunction function = null;
         if (forseePattern(MOD_STATIC, TYPE_METHOD) ||
             forseePattern(MOD_STATIC, TYPE_FUNCTION)) {
             require(MOD_STATIC);
@@ -578,30 +760,26 @@ public class Parser {
             Token name = require(VAR);
             List<LiteralFunction.Argument> args = convertDefinedArguments(parseArgs(null, true));
             Node statement = parseStatement();
-            return new LiteralFunction(funcToken, name.getLexeme(), args, statement, true);
-        }
-        if (matchMultiple(TYPE_METHOD, TYPE_FUNCTION) != null) {
+            function = new LiteralFunction(funcToken, name.getLexeme(), args, statement, true);
+        } else if (matchMultiple(TYPE_METHOD, TYPE_FUNCTION) != null) {
             Token funcToken = getPrevious();
             Token name = require(VAR);
             List<LiteralFunction.Argument> args = convertDefinedArguments(parseArgs(null, true));
             Node statement = parseStatement();
-            return new LiteralFunction(funcToken, name.getLexeme(), args, statement);
-        }
-        if (match(GETS) != null) {
+            function = new LiteralFunction(funcToken, name.getLexeme(), args, statement);
+        } else if (match(GETS) != null) {
             Token funcToken = getPrevious();
             Token name = require(VAR);
             List<LiteralFunction.Argument> args = convertDefinedArguments(parseArgs(null, true));
             Node statement = parseStatement();
-            return new LiteralFunction(funcToken, "_get_" + name.getLexeme(), args, statement);
-        }
-        if (match(SETS) != null) {
+            function = new LiteralFunction(funcToken, "_get_" + name.getLexeme(), args, statement);
+        } else if (match(SETS) != null) {
             Token funcToken = getPrevious();
             Token name = require(VAR);
             List<LiteralFunction.Argument> args = convertDefinedArguments(parseArgs(null, true));
             Node statement = parseStatement();
-            return new LiteralFunction(funcToken, "_set_" + name.getLexeme(), args, statement);
-        }
-        if (match(OVERRIDE) != null) {
+            function = new LiteralFunction(funcToken, "_set_" + name.getLexeme(), args, statement);
+        } else if (match(OVERRIDE) != null) {
             Token funcToken = getPrevious();
             Token name = consumeSignificant();
             if (name == null) error("Unexpected end");
@@ -614,15 +792,17 @@ public class Parser {
                 functionName = "_call";
             List<LiteralFunction.Argument> args = convertDefinedArguments(parseArgs(null, true));
             Node statement = parseStatement();
-            return new LiteralFunction(funcToken, functionName, args, statement);
-        }
-        if (match(CONSTRUCTOR) != null) {
+            function = new LiteralFunction(funcToken, functionName, args, statement);
+        } else if (match(CONSTRUCTOR) != null) {
             Token funcToken = getPrevious();
             List<LiteralFunction.Argument> args = convertDefinedArguments(parseArgs(null, true));
             Node statement = parseStatement();
-            return new LiteralFunction(funcToken, "_constructor", args, statement);
+            function = new LiteralFunction(funcToken, "_constructor", args, statement);
         }
-        return null;
+        if (decorations != null)
+            return applyDecorations(decorations, function);
+        else
+            return function;
     }
 
     private Node parseClass() throws ParserException {

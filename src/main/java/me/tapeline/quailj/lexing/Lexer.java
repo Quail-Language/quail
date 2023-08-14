@@ -259,7 +259,9 @@ public class Lexer {
                 else
                     addToken(DOT);
                 break;
-
+            case '@':
+                addToken(ANNOTATION);
+                break;
             case '-':
                 if (match('>'))
                     addToken(LAMBDA_ARROW);
