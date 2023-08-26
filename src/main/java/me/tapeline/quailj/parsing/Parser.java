@@ -443,6 +443,7 @@ public class Parser {
     }
 
     private Node applyDecorations(List<Decoration> decorations, Node target) {
+        if (decorations.size() < 1) return target;
         decorations = new ArrayList<>(decorations);
         Collections.reverse(decorations);
         String name = null;

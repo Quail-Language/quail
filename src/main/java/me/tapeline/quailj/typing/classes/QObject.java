@@ -180,14 +180,14 @@ public class QObject {
         else set(runtime, name, value);
     }
 
-    public final QObject callFromThis(Runtime runtime, QObject func, List<QObject> args,
+    public QObject callFromThis(Runtime runtime, QObject func, List<QObject> args,
                                       HashMap<String, QObject> kwargs) throws RuntimeStriker {
         if (!isPrototype())
             args.add(0, this);
         return func.call(runtime, args, kwargs);
     }
 
-    public final QObject callFromThis(Runtime runtime, String func, List<QObject> args,
+    public QObject callFromThis(Runtime runtime, String func, List<QObject> args,
                                       HashMap<String, QObject> kwargs) throws RuntimeStriker {
         return callFromThis(runtime, get(func), args, kwargs);
     }

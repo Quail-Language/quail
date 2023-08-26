@@ -24,3 +24,5 @@ while (win.isVisible()) {
     win.getEventManager().handleEvents()
     while (millis() < frameStart + timeFrame) {}
 }
+
+Null
