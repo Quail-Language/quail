@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 
 public class QString extends QObject {
 
+    // TODO Revise all toString usages and migrate to strValue()
+
     public static QString prototype = new QString(
             new Table(),
             "String",

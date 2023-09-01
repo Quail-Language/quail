@@ -3,6 +3,7 @@ package me.tapeline.quailj.typing.classes;
 import me.tapeline.quailj.runtime.Runtime;
 import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.runtime.Table;
+import me.tapeline.quailj.typing.classes.errors.QIndexOutOfBoundsException;
 import me.tapeline.quailj.typing.classes.errors.QIterationStopException;
 import me.tapeline.quailj.utils.QListUtils;
 import org.apache.commons.collections.ListUtils;
@@ -143,14 +144,20 @@ public class QList extends QObject {
 
     @Override
     public QObject index(Runtime runtime, QObject index) throws RuntimeStriker {
-        if (index.isNum())
-            return values.get((int) index.numValue());
+        if (index.isNum()) {
+            if (values.size() <= index.numValue())
+                runtime.error(new QIndexOutOfBoundsException(index, Val(values.size())));
+            else
+                return values.get((int) index.numValue());
+        }
         return super.index(runtime, index);
     }
 
     @Override
     public QObject indexSet(Runtime runtime, QObject index, QObject value) throws RuntimeStriker {
         if (index.isNum()) {
+            if (values.size() <= index.numValue())
+                runtime.error(new QIndexOutOfBoundsException(index, Val(values.size())));
             values.set((int) index.numValue(), value);
             return Val();
         }

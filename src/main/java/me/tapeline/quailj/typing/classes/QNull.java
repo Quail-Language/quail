@@ -43,6 +43,18 @@ public class QNull extends QObject {
     }
 
     @Override
+    public QObject equalsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+        if (other.isNull()) return Val(true);
+        return super.equalsObject(runtime, other);
+    }
+
+    @Override
+    public QObject notEqualsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+        if (other.isNull()) return Val(false);
+        return super.notEqualsObject(runtime, other);
+    }
+
+    @Override
     public String toString() {
         return "null";
     }

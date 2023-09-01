@@ -82,6 +82,47 @@ public class JavaObject extends QObject {
     }
 
     @Override
+    public void set(Runtime runtime, String name, QObject value) throws RuntimeStriker {
+        if (object == null) {
+            super.set(name, value);
+            return;
+        }
+        set(name, value);
+    }
+
+    @Override
+    public void set(String name, QObject value, int[] modifiers) {
+        if (object == null) {
+            super.set(name, value);
+            return;
+        }
+        set(name, value);
+    }
+
+    @Override
+    public void set(String name, QObject value) {
+        if (object == null) {
+            super.set(name, value);
+            return;
+        }
+        try {
+            for (Field field : FieldUtils.getAllFields(object.getClass())) {
+                if (field.getName().equals(name)) {
+                    if (!field.isAccessible()) {
+                        field.setAccessible(true);
+                        field.set(object, Arg.transform(value));
+                        field.setAccessible(false);
+                    } else {
+                        field.set(object, Arg.transform(value));
+                    }
+                }
+            }
+        } catch (IllegalAccessException e) {
+            super.set(name, value);
+        }
+    }
+
+    @Override
     public QObject get(String name) {
         if (object == null) return super.get(name);
         try {

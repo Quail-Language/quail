@@ -1,0 +1,8 @@
+JFrame = ji.getClass("javax.swing.JFrame")
+JTextArea = ji.getClass("javax.swing.JTextArea")
+JScrollPane = ji.getClass("javax.swing.JScrollPane")
+WindowConstants = ji.getClass("javax.swing.WindowConstants")
+JMenuBar = ji.getClass("javax.swing.JMenuBar")
+JMenu = ji.getClass("javax.swing.JMenu")
+JMenuItem = ji.getClass("javax.swing.JMenuItem")
+JFileChooser = ji.getClass("javax.swing.JFileChooser")

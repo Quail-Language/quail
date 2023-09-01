@@ -45,6 +45,8 @@ public class Arg {
             return dict;
         } else if (object instanceof JavaClass) {
             return ((JavaClass) object).getClazz();
+        } else if (object instanceof JavaObject) {
+            return ((JavaObject) object).getObject();
         }
         return object;
     }
@@ -74,6 +76,8 @@ public class Arg {
             return HashMap.class;
         } else if (object instanceof JavaClass) {
             return Class.class;
+        } else if (object instanceof JavaObject) {
+            return ((JavaObject) object).getObject().getClass();
         }
         return object.getClass();
     }
@@ -106,7 +110,17 @@ public class Arg {
     }
 
     public static QObject transformBack(Object obj) {
-        if (obj instanceof Number)
+        if (obj instanceof Byte)
+            return QObject.Val(((Number) obj).doubleValue());
+        if (obj instanceof Short)
+            return QObject.Val(((Number) obj).doubleValue());
+        if (obj instanceof Integer)
+            return QObject.Val(((Number) obj).doubleValue());
+        if (obj instanceof Long)
+            return QObject.Val(((Number) obj).doubleValue());
+        if (obj instanceof Float)
+            return QObject.Val(((Number) obj).doubleValue());
+        if (obj instanceof Double)
             return QObject.Val(((Number) obj).doubleValue());
         else if (obj instanceof String)
             return QObject.Val(((String) obj));

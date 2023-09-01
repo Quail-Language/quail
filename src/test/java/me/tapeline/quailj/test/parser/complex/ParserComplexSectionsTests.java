@@ -36,21 +36,11 @@ public class ParserComplexSectionsTests {
         Node node = parser.parse();
         System.out.println(node.stringRepr());
         Assertions.assertEquals(
-                "block[" +
-                        "while{True block[" +
-                        "if{[c1] [block[" +
-                        "try{block[" +
-                        "for{[i] range{0.0 10.0 null} call{f []}}" +
-                        "] [catch{AE e block[" +
-                        "loop{call{field{e ended} []} block[" +
-                        "call{print [call{field{e next} []}]}" +
-                        "]} " +
-                        "through{0.0 10.0 null i block[" +
-                        "call{print [i]}" +
-                        "]}" +
-                        "]}" +
-                        "]}" +
-                        "]] null}]} block[call{print [f]}]]",
+                "block[while{True block[if{[c1] [block[try{block[for{[i] " +
+                        "range{0.0 10.0 null} call{f []}}] [catch{AE e block[loop" +
+                        "{call{field{e ended} []} block[call{print [call{field{e " +
+                        "next} []}]}]} through{0.0 10.0 null i block[call{print [" +
+                        "i]}]}]}]}]] block[call{print [f]}]}]}]",
                 node.stringRepr()
         );
     }

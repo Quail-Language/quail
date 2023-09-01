@@ -1,5 +1,6 @@
 package me.tapeline.quailj.utils;
 
+import me.tapeline.quailj.typing.classes.QList;
 import me.tapeline.quailj.typing.classes.QObject;
 
 import java.util.ArrayList;
@@ -59,6 +60,13 @@ public class QListUtils {
             for (int i = end - 1; i >= start; i += step)
                 lb.add(list.get(i));
         return lb;
+    }
+
+    public static List<String> qStringListToStrings(QList list) {
+        List<String> strings = new ArrayList<>();
+        for (QObject element : list.getValues())
+            strings.add(element.strValue());
+        return strings;
     }
 
 }

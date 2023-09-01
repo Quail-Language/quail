@@ -5,19 +5,20 @@ import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.runtime.Table;
 import me.tapeline.quailj.runtime.std.ji.Arg;
 import me.tapeline.quailj.runtime.std.ji.JIJavaException;
+import me.tapeline.quailj.runtime.std.ji.javamethod.JavaMethod;
 import me.tapeline.quailj.runtime.std.ji.javaobject.JavaObject;
 import me.tapeline.quailj.typing.classes.QObject;
 import me.tapeline.quailj.typing.classes.errors.QDerivationException;
 import me.tapeline.quailj.typing.classes.errors.QUnsuitableValueException;
 import me.tapeline.quailj.utils.Dict;
 import me.tapeline.quailj.utils.Pair;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -83,6 +84,79 @@ public class JavaClass extends QObject {
         QObject copy = new JavaClass(table, className, parent, isPrototype, clazz);
         copy.setInheritableFlag(isInheritable);
         return copy;
+    }
+
+    @Override
+    public void set(Runtime runtime, String name, QObject value) throws RuntimeStriker {
+        if (clazz == null) {
+            super.set(name, value);
+            return;
+        }
+        set(name, value);
+    }
+
+    @Override
+    public void set(String name, QObject value, int[] modifiers) {
+        if (clazz == null) {
+            super.set(name, value);
+            return;
+        }
+        set(name, value);
+    }
+
+    @Override
+    public void set(String name, QObject value) {
+        if (clazz == null) {
+            super.set(name, value);
+            return;
+        }
+        try {
+            for (Field field : FieldUtils.getAllFields(clazz)) {
+                if (field.getName().equals(name) && Modifier.isStatic(field.getModifiers())) {
+                    if (!field.isAccessible()) {
+                        field.setAccessible(true);
+                        field.set(null, Arg.transform(value));
+                        field.setAccessible(false);
+                    } else {
+                        field.set(null, Arg.transform(value));
+                    }
+                }
+            }
+        } catch (IllegalAccessException e) {
+            super.set(name, value);
+        }
+    }
+
+    @Override
+    public QObject get(String name) {
+        if (clazz == null) return super.get(name);
+        try {
+            for (Field field : FieldUtils.getAllFields(clazz)) {
+                if (field.getName().equals(name) && Modifier.isStatic(field.getModifiers())) {
+                    if (!field.isAccessible()) {
+                        field.setAccessible(true);
+                        Object value = field.get(null);
+                        field.setAccessible(false);
+                        return Arg.transformBack(value);
+                    }
+                    return Arg.transformBack(field.get(null));
+                }
+            }
+        } catch (IllegalAccessException e) {
+            return super.get(name);
+        }
+        List<Method> foundMethods = new ArrayList<>();
+        for (Method method : clazz.getMethods()) {
+            if (method.getName().equals(name))
+                foundMethods.add(method);
+        }
+        if (foundMethods.size() > 0) {
+            return new JavaMethod(
+                    clazz,
+                    null,
+                    foundMethods.toArray(new Method[] {})
+            );
+        } else return super.get(name);
     }
 
     @Override

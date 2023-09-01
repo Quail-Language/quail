@@ -160,10 +160,6 @@ public class QObject {
         table.put(name, value);
     }
 
-    public void forceSet(String name, QObject value) {
-        table.put(name, value);
-    }
-
     public QObject getOverridable(Runtime runtime, String name) throws RuntimeStriker {
         if (table.containsKey("_get"))
             return callFromThis(runtime, "_get", Collections.singletonList(Val(name)), new HashMap<>());
@@ -414,7 +410,8 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        return Val(table.getValues().equals(other.table.getValues()));
+        return Val(this == other);
+        // wtf was that: return Val(table.getValues().equals(other.table.getValues()));
     }
 
     public QObject notEqualsObject(Runtime runtime, QObject other) throws RuntimeStriker {
@@ -425,7 +422,8 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        return Val(!table.getValues().equals(other.table.getValues()));
+        return Val(this != other);
+        // wtf was that: return Val(!table.getValues().equals(other.table.getValues()));
     }
 
     public QObject greater(Runtime runtime, QObject other) throws RuntimeStriker {

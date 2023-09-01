@@ -188,6 +188,7 @@ public class Runtime {
         memory.set("UnsupportedStepSubscriptException", QUnsupportedStepSubscriptException.prototype);
         memory.set("UnsupportedSubscriptException", QUnsupportedSubscriptException.prototype);
         memory.set("UnsupportedUnaryOperationException", QUnsupportedUnaryOperationException.prototype);
+        memory.set("IndexOutOfBoundsException", QIndexOutOfBoundsException.prototype);
 
         memory.set("all", new FuncAll(this));
         memory.set("any", new FuncAny(this));
@@ -218,6 +219,8 @@ public class Runtime {
         memory.set("dec", new FuncDec(this));
         memory.set("hex", new FuncHex(this));
         memory.set("oct", new FuncOct(this));
+        memory.set("readFile", new FuncReadFile(this));
+        memory.set("writeFile", new FuncWriteFile(this));
 
         libraryLoader.addBuiltinLibrary(new QMLLibrary());
         libraryLoader.addBuiltinLibrary(new EventLibrary());
@@ -428,10 +431,10 @@ public class Runtime {
                             currentToken.getCharacter(), currentToken.getLine(), currentToken.getLength()
                     );
                 case EFFECT_IMPORT:
-                    File target = io.file(run(thisNode.value, scope).toString());
+                    String target = run(thisNode.value, scope).strValue();
                     String targetContents;
                     try {
-                        targetContents = io.readFile(target.getAbsolutePath());
+                        targetContents = io.readFile(scriptHome.getAbsolutePath() + "/" + target);
                     } catch (IOException e) {
                         error(new QIOException(e.toString()));
                         return Val();

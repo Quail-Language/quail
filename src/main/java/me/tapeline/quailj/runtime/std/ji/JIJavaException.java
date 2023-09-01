@@ -30,7 +30,7 @@ public class JIJavaException extends QException {
     }
 
     public JIJavaException(Table table, String className, QObject parent, boolean isPrototype, Exception exception) {
-        super(table, className, parent, isPrototype, "A java exception occurred");
+        super(table, className, parent, isPrototype, "A java exception occurred " + exception.toString());
         this.exception = exception;
     }
 

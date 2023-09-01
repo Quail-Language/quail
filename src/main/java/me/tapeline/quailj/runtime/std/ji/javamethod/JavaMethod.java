@@ -10,6 +10,7 @@ import me.tapeline.quailj.typing.classes.errors.QUnsuitableValueException;
 import me.tapeline.quailj.utils.Dict;
 import me.tapeline.quailj.utils.Pair;
 
+import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -126,8 +127,10 @@ public class JavaMethod extends QObject {
         try {
             Object result = foundMethod.invoke(object, Arg.transformArgs(args));
             return Arg.transformBack(result);
-        } catch (IllegalAccessException | InvocationTargetException e) {
+        } catch (IllegalAccessException | IllegalArgumentException e) {
             runtime.error(new JIJavaException(e));
+        } catch (InvocationTargetException e) {
+            runtime.error(new JIJavaException(((Exception) e.getCause())));
         }
         return Val();
     }

@@ -542,6 +542,7 @@ public class Parser {
             BlockNode ifBranchCode;
             if (match(LCPAR) != null) {
                 ifBranchCode = parseBlockUntil(getPrevious(), CONTROL_ELSEIF, CONTROL_ELSE, RCPAR);
+                pos--;
                 match(RCPAR);
             } else
                 ifBranchCode = new BlockNode(current(), Collections.singletonList(parseStatement()));
@@ -552,6 +553,7 @@ public class Parser {
                 BlockNode elseIfCode;
                 if (match(LCPAR) != null) {
                     elseIfCode = parseBlockUntil(getPrevious(), CONTROL_ELSEIF, CONTROL_ELSE, RCPAR);
+                    pos--;
                     match(RCPAR);
                 } else
                     elseIfCode = new BlockNode(current(), Collections.singletonList(parseStatement()));
@@ -562,6 +564,7 @@ public class Parser {
             if (match(CONTROL_ELSE) != null)
                 if (match(LCPAR) != null) {
                     ifNode.elseBranch = parseBlockUntil(getPrevious(), RCPAR);
+                    pos--;
                     match(RCPAR);
                 } else
                     ifNode.elseBranch = new BlockNode(current(), Collections.singletonList(parseStatement()));

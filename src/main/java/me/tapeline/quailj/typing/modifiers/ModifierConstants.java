@@ -44,9 +44,11 @@ public class ModifierConstants {
 
     public static boolean couldBeNull(int[] flags) {
         for (int flag : flags)
-            if (!IntFlags.check(flag, NOTNULL) || IntFlags.check(flag, NULL))
+            if (IntFlags.check(flag, NOTNULL))
+                return false;
+            else if (IntFlags.check(flag, NULL) || IntFlags.check(flag, VOID))
                 return true;
-        return false;
+        return true;
     }
 
     public static void main(String[] args) {
