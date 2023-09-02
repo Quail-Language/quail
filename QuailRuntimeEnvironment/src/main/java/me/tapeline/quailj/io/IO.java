@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Input/Output interface.
- * Default implementation - {@link me.tapeline.quailj.io.DefaultIO}
+ * Default implementation - {@link DefaultIO}
  * @author Tapeline
  */
 public interface IO {
