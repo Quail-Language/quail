@@ -17,6 +17,7 @@ public class DefaultIO implements IO {
     private String encoding = "UTF-8";
 
     private String absCwd = "";
+    private String defaultCwd = "";
 
     @Override
     public File file(String path) {
@@ -118,7 +119,11 @@ public class DefaultIO implements IO {
 
     @Override
     public void resetCwd() {
-        absCwd = new File("").getAbsolutePath();
+        absCwd = defaultCwd;
+    }
+
+    public void setDefaultCwd(String path) {
+        defaultCwd = new File(path).getAbsolutePath();
     }
 
     @Override

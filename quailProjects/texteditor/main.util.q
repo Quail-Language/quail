@@ -8,7 +8,7 @@ function asActionListener(func f) {
             "me.tapeline.quailj.swingintegration.func" + string(hash(f)),
             javaClass
         ),
-        "quailProjects/texteditor/JIGenerated",
+        fs.absolutePath("JIGenerated"),
         ["me.tapeline.quailj.swingintegration.func" + string(hash(f)) + ".QuailSwingActionListener" + string(hash(f))]
     )
     return pkg[0]

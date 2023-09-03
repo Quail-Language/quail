@@ -40,7 +40,7 @@ public class FsAbsolutePath extends QBuiltinFunc {
             runtime.error(new QUnsuitableTypeException("String", args.get("path")));
             return Val();
         }
-        return Val(new File(path).getAbsolutePath());
+        return Val(runtime.getIo().file(path).getAbsolutePath());
     }
 
 }

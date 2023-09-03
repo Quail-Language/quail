@@ -78,6 +78,9 @@ public class Runtime {
         libraryCache = new LibraryCache();
         libraryLoader = new LibraryLoader(librariesRoots);
         registerDefaults();
+        if (io instanceof DefaultIO)
+            ((DefaultIO) io).setDefaultCwd(scriptHome.getAbsolutePath());
+        io.resetCwd();
     }
 
     public File getScriptHome() {

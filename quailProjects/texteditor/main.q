@@ -100,6 +100,7 @@ class Application {
 function main() {
     app = Application()
     app.run()
+    fs.deleteDirectory(fs.absolutePath("JIGenerated"))
 }
 
 
