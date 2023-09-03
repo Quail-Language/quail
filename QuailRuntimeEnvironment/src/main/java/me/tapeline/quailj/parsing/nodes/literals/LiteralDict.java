@@ -8,8 +8,8 @@ import java.util.List;
 
 public class LiteralDict extends Node {
 
-    public List<Node> keys;
-    public List<Node> values;
+    public final List<Node> keys;
+    public final List<Node> values;
 
     public LiteralDict(Token token, List<Node> keys, List<Node> values) {
         super(token);

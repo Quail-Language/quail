@@ -5,8 +5,8 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class VariableNode extends Node {
 
-    public int[] modifiers;
-    public String name;
+    public final int[] modifiers;
+    public final String name;
     public boolean isArgConsumer;
     public boolean isKwargConsumer;
 

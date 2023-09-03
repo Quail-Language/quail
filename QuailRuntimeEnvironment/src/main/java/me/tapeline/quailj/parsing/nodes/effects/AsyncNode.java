@@ -5,7 +5,7 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class AsyncNode extends Node {
 
-    public Node expression;
+    public final Node expression;
 
     public AsyncNode(Token token, Node expression) {
         super(token);

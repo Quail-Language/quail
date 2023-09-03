@@ -8,7 +8,7 @@ import java.util.List;
 
 public class LiteralList extends Node {
 
-    public List<Node> values;
+    public final List<Node> values;
 
     public LiteralList(Token token, List<Node> values) {
         super(token);

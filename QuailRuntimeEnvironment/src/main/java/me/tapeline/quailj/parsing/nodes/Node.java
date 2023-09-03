@@ -7,7 +7,7 @@ public abstract class Node {
     public long executionStart = -1;
     public long executionTime = -1;
 
-    protected Token token;
+    protected final Token token;
 
     public Node(Token token) {
         this.token = token;

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Preprocessor {
     // TODO Test and fix aliases
-    public static List<AbstractDirective> registeredDirectives = new ArrayList<>();
+    public static final List<AbstractDirective> registeredDirectives = new ArrayList<>();
 
     private int pos;
     private String code;

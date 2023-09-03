@@ -5,8 +5,8 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class FieldReferenceNode extends Node {
 
-    public Node parent;
-    public String value;
+    public final Node parent;
+    public final String value;
 
     public FieldReferenceNode(Token token, Node parent, String value) {
         super(token);

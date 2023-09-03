@@ -14,9 +14,6 @@ import me.tapeline.quailj.utils.Dict;
 import me.tapeline.quailj.utils.Pair;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,7 +84,7 @@ public class JavaClass extends QObject {
     }
 
     @Override
-    public void set(Runtime runtime, String name, QObject value) throws RuntimeStriker {
+    public void set(Runtime runtime, String name, QObject value) {
         if (clazz == null) {
             super.set(name, value);
             return;

@@ -12,7 +12,7 @@ public class QUnsupportedUnaryOperationException extends QException {
     public static final String OPERAND_FIELD = "operand";
     public static final String OPERATOR_FIELD = "operator";
 
-    public static QUnsupportedUnaryOperationException prototype = new QUnsupportedUnaryOperationException(
+    public static final QUnsupportedUnaryOperationException prototype = new QUnsupportedUnaryOperationException(
             new Table(
                     Dict.make(
                             new Pair<>(OPERAND_FIELD, QObject.Val()),

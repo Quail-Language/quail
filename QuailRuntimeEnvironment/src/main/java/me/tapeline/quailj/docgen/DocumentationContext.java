@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class DocumentationContext {
 
-    public @Nullable DocumentationContext parent;
+    public final @Nullable DocumentationContext parent;
 
     public String qualifiedPath = "";
 

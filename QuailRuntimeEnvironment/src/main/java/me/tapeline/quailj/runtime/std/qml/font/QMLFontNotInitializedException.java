@@ -8,7 +8,7 @@ import me.tapeline.quailj.typing.classes.errors.QException;
 
 public class QMLFontNotInitializedException extends QException {
 
-    public static QMLFontNotInitializedException prototype = new QMLFontNotInitializedException(
+    public static final QMLFontNotInitializedException prototype = new QMLFontNotInitializedException(
             new Table(),
             "FontNotInitializedException",
             QException.prototype,

@@ -6,12 +6,12 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class ThroughNode extends Node {
 
-    public Node rangeStart;
-    public Node rangeEnd;
-    public @Nullable Node rangeStep;
-    public String iterator;
-    public Node code;
-    public boolean isIncluding;
+    public final Node rangeStart;
+    public final Node rangeEnd;
+    public final @Nullable Node rangeStep;
+    public final String iterator;
+    public final Node code;
+    public final boolean isIncluding;
 
     public ThroughNode(Token token, Node rangeStart, Node rangeEnd,
                        @Nullable Node rangeStep, String iterator, Node code) {

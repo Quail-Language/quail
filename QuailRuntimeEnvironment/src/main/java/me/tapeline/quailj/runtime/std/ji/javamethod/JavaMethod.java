@@ -8,9 +8,7 @@ import me.tapeline.quailj.runtime.std.ji.JIJavaException;
 import me.tapeline.quailj.typing.classes.QObject;
 import me.tapeline.quailj.typing.classes.errors.QUnsuitableValueException;
 import me.tapeline.quailj.utils.Dict;
-import me.tapeline.quailj.utils.Pair;
 
-import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;

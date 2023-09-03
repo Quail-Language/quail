@@ -7,7 +7,7 @@ import me.tapeline.quailj.typing.classes.QObject;
 
 public class QIterationNotStartedException extends QException {
 
-    public static QIterationNotStartedException prototype = new QIterationNotStartedException(
+    public static final QIterationNotStartedException prototype = new QIterationNotStartedException(
             new Table(),
             "IterationNotStartedException",
             QException.prototype,

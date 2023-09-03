@@ -4,7 +4,7 @@ import me.tapeline.quailj.lexing.Token;
 
 public class DocTOCHtmlNode extends DocTOCNode {
 
-    public String html;
+    public final String html;
 
     public DocTOCHtmlNode(Token token) {
         super(token);

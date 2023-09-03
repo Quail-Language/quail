@@ -22,12 +22,13 @@ public class ModifierConstants {
     public static final int FINAL_ASSIGNED = 16384;
 
     public static boolean matchesOnAssign(int[] flags, QObject value) {
-        for (int i = 0; i < flags.length; i++)
-            if (!matchesOnAssign(flags[i], value))
+        for (int flag : flags)
+            if (!matchesOnAssign(flag, value))
                 return false;
         return true;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     public static boolean matchesOnAssign(int flag, QObject value) {
         if ((flag & NUM) == NUM && !value.isNum()) return false;
         if ((flag & BOOL) == BOOL && !value.isBool()) return false;

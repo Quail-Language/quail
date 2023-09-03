@@ -7,7 +7,7 @@ import me.tapeline.quailj.typing.classes.QObject;
 
 public class QCircularDependencyException extends QException {
 
-    public static QCircularDependencyException prototype = new QCircularDependencyException(
+    public static final QCircularDependencyException prototype = new QCircularDependencyException(
             new Table(),
             "CircularDependencyException",
             QException.prototype,

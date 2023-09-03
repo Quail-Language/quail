@@ -8,10 +8,10 @@ import java.util.List;
 
 public class ListForGeneratorNode extends Node {
 
-    public Node value;
-    public List<String> iterators;
-    public Node iterable;
-    public @Nullable Node condition;
+    public final Node value;
+    public final List<String> iterators;
+    public final Node iterable;
+    public final @Nullable Node condition;
 
     public ListForGeneratorNode(Token token, Node value,
                                 List<String> iterators,

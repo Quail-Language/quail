@@ -42,8 +42,8 @@ public class FuncMap extends QBuiltinFunc {
         QFunc callback = ((QFunc) args.get("callback"));
         List<QObject> result = new ArrayList<>();
         int count = values.size();
-        for (int i = 0; i < count; i++)
-            result.add(callback.call(runtime, Collections.singletonList(values.get(i)), new HashMap<>()));
+        for (QObject value : values)
+            result.add(callback.call(runtime, Collections.singletonList(value), new HashMap<>()));
         return QObject.Val(result);
     }
 

@@ -11,7 +11,7 @@ public class QUnsuitableTypeException extends QException {
 
     public static final String VALUE_FIELD = "value";
 
-    public static QUnsuitableTypeException prototype = new QUnsuitableTypeException(
+    public static final QUnsuitableTypeException prototype = new QUnsuitableTypeException(
             new Table(
                     Dict.make(
                             new Pair<>(VALUE_FIELD, QObject.Val())

@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static me.tapeline.quailj.lexing.TokenType.*;
 
@@ -36,7 +35,7 @@ import static me.tapeline.quailj.lexing.TokenType.*;
  */
 public class Parser {
 
-    private static List<Annotation> registeredAnnotations = new ArrayList<>();
+    private static final List<Annotation> registeredAnnotations = new ArrayList<>();
 
     /**
      * Token list
@@ -52,7 +51,7 @@ public class Parser {
      * Current caret position
      */
     private int pos = 0;
-    private List<Decoration> pendingDecorations;
+    private final List<Decoration> pendingDecorations;
 
     public Parser(String code, List<Token> tokens) {
         this.tokens = tokens;

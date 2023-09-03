@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+
 public class DefaultIO implements IO {
 
     private String encoding = "UTF-8";
@@ -46,6 +47,7 @@ public class DefaultIO implements IO {
         System.out.print(str);
     }
 
+    @SuppressWarnings("BlockingMethodInNonBlockingContext")
     @Override
     public String readLine() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

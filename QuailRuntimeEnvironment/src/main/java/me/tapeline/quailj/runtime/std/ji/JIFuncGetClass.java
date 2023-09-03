@@ -10,10 +10,7 @@ import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 import me.tapeline.quailj.typing.modifiers.ModifierConstants;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class JIFuncGetClass extends QBuiltinFunc {
 
@@ -21,11 +18,11 @@ public class JIFuncGetClass extends QBuiltinFunc {
     public JIFuncGetClass(Runtime runtime, Memory closure) {
         super(
                 "getClass",
-                Arrays.asList(
+                Collections.singletonList(
                         new FuncArgument(
                                 "name",
                                 QObject.Val(),
-                                new int[] {ModifierConstants.STR},
+                                new int[]{ModifierConstants.STR},
                                 LiteralFunction.Argument.POSITIONAL
                         )
                 ),

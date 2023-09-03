@@ -8,8 +8,8 @@ import java.util.List;
 
 public class TryNode extends Node {
 
-    public Node code;
-    public List<CatchClause> catchClauses;
+    public final Node code;
+    public final List<CatchClause> catchClauses;
 
     public TryNode(Token token, Node code, List<CatchClause> catchClauses) {
         super(token);

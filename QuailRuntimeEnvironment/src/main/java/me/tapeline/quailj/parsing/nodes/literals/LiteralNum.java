@@ -5,7 +5,7 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class LiteralNum extends Node {
 
-    public double value;
+    public final double value;
 
     public LiteralNum(Token token) {
         super(token);

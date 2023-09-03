@@ -5,9 +5,9 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class CatchClause {
 
-    public @Nullable Node instance;
-    public String var;
-    public Node code;
+    public final @Nullable Node instance;
+    public final String var;
+    public final Node code;
 
     public CatchClause(@Nullable Node instance, String var, Node code) {
         this.instance = instance;

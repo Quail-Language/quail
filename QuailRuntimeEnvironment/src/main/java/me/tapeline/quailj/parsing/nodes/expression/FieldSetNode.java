@@ -5,9 +5,9 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class FieldSetNode extends Node {
 
-    public Node parent;
-    public String field;
-    public Node value;
+    public final Node parent;
+    public final String field;
+    public final Node value;
 
     public FieldSetNode(Token token, Node parent, String field, Node value) {
         super(token);

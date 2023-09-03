@@ -16,10 +16,10 @@ public class LiteralFunction extends Node {
         public static final int POSITIONAL_CONSUMER = 1;
         public static final int KEYWORD_CONSUMER = 2;
 
-        public String name;
-        public int type;
-        public Node defaultValue;
-        public int[] modifiers;
+        public final String name;
+        public final int type;
+        public final Node defaultValue;
+        public final int[] modifiers;
 
         public Argument(String name, int type, Node defaultValue, int[] modifiers) {
             this.name = name;
@@ -68,10 +68,10 @@ public class LiteralFunction extends Node {
         }
     }
 
-    public String name;
-    public List<Argument> args;
-    public Node code;
-    public boolean isStatic;
+    public final String name;
+    public final List<Argument> args;
+    public final Node code;
+    public final boolean isStatic;
     public int funcModifier = 0;
 
     public LiteralFunction(Token token, String name, List<Argument> args, Node code) {

@@ -11,6 +11,7 @@ import me.tapeline.quailj.runtime.RuntimeStriker;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,11 +20,11 @@ public class FsExists extends QBuiltinFunc {
     public FsExists(Runtime runtime) {
         super(
                 "exists",
-                Arrays.asList(
+                Collections.singletonList(
                         new FuncArgument(
-                               "path",
+                                "path",
                                 QObject.Val(),
-                                new int[] {ModifierConstants.STR},
+                                new int[]{ModifierConstants.STR},
                                 LiteralFunction.Argument.POSITIONAL
                         )
                 ),

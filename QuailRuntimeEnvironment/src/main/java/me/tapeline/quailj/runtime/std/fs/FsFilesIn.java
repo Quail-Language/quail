@@ -12,9 +12,9 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class FsFilesIn extends QBuiltinFunc {
@@ -22,11 +22,11 @@ public class FsFilesIn extends QBuiltinFunc {
     public FsFilesIn(Runtime runtime) {
         super(
                 "filesIn",
-                Arrays.asList(
+                Collections.singletonList(
                         new FuncArgument(
-                               "directory",
+                                "directory",
                                 QObject.Val(),
-                                new int[] {ModifierConstants.STR},
+                                new int[]{ModifierConstants.STR},
                                 LiteralFunction.Argument.POSITIONAL
                         )
                 ),

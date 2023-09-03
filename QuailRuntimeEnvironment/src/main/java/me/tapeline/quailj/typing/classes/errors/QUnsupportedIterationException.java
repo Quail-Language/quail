@@ -11,7 +11,7 @@ public class QUnsupportedIterationException extends QException {
 
     public static final String OPERAND_FIELD = "operand";
 
-    public static QUnsupportedIterationException prototype = new QUnsupportedIterationException(
+    public static final QUnsupportedIterationException prototype = new QUnsupportedIterationException(
             new Table(
                     Dict.make(
                             new Pair<>(OPERAND_FIELD, QObject.Val())

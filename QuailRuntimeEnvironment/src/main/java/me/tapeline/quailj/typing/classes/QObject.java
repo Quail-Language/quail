@@ -27,12 +27,12 @@ public class QObject {
     public static QDict Val(HashMap<String, QObject> value) {
         return new QDict(value);
     }
-    public static QObject superObject = new QObject(new Table(), "Object", null, true);
+    public static final QObject superObject = new QObject(new Table(), "Object", null, true);
     public static QObject nullSafe(QObject object) {
         return object == null? Val() : object;
     }
 
-    protected Table table = new Table();
+    protected Table table;
     protected String className;
     protected QObject parent;
 
@@ -120,6 +120,7 @@ public class QObject {
         return copy;
     }
 
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     public QObject clone() {
         QObject copy = copy();
         copy.getTable().clear();

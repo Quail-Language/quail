@@ -12,7 +12,7 @@ public class QIndexOutOfBoundsException extends QException {
     public static final String INDEX_FIELD = "index";
     public static final String SIZE_FIELD = "size";
 
-    public static QIndexOutOfBoundsException prototype = new QIndexOutOfBoundsException(
+    public static final QIndexOutOfBoundsException prototype = new QIndexOutOfBoundsException(
             new Table(
                     Dict.make(
                             new Pair<>(INDEX_FIELD, QObject.Val()),

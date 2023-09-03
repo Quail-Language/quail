@@ -4,7 +4,7 @@ import me.tapeline.quailj.lexing.Token;
 
 public class DocAuthorNode extends DocNode {
 
-    public String author;
+    public final String author;
 
     public DocAuthorNode(Token token) {
         super(token);

@@ -13,21 +13,19 @@ import me.tapeline.quailj.runtime.RuntimeStriker;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
+@SuppressWarnings("BlockingMethodInNonBlockingContext")
 public class FsReadBinary extends QBuiltinFunc {
 
     public FsReadBinary(Runtime runtime) {
         super(
                 "readBinary",
-                Arrays.asList(
+                Collections.singletonList(
                         new FuncArgument(
-                               "path",
+                                "path",
                                 QObject.Val(),
-                                new int[] {ModifierConstants.STR},
+                                new int[]{ModifierConstants.STR},
                                 LiteralFunction.Argument.POSITIONAL
                         )
                 ),

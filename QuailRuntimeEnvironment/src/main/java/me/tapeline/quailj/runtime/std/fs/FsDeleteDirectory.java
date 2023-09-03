@@ -13,6 +13,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,11 +22,11 @@ public class FsDeleteDirectory extends QBuiltinFunc {
     public FsDeleteDirectory(Runtime runtime) {
         super(
                 "deleteDirectory",
-                Arrays.asList(
+                Collections.singletonList(
                         new FuncArgument(
-                               "path",
+                                "path",
                                 QObject.Val(),
-                                new int[] {ModifierConstants.STR},
+                                new int[]{ModifierConstants.STR},
                                 LiteralFunction.Argument.POSITIONAL
                         )
                 ),

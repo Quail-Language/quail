@@ -8,11 +8,11 @@ import me.tapeline.quailj.parsing.nodes.variable.VariableNode;
 
 public class DictThroughGeneratorNode extends Node {
 
-    public Node key;
-    public Node value;
-    public VariableNode iterator;
-    public RangeNode range;
-    public @Nullable Node condition;
+    public final Node key;
+    public final Node value;
+    public final VariableNode iterator;
+    public final RangeNode range;
+    public final @Nullable Node condition;
 
     public DictThroughGeneratorNode(Token token, Node key, Node value,
                                     VariableNode iterator,

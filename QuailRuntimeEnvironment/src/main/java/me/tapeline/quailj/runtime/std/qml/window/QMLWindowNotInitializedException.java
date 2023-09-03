@@ -8,7 +8,7 @@ import me.tapeline.quailj.typing.classes.errors.QException;
 
 public class QMLWindowNotInitializedException extends QException {
 
-    public static QMLWindowNotInitializedException prototype = new QMLWindowNotInitializedException(
+    public static final QMLWindowNotInitializedException prototype = new QMLWindowNotInitializedException(
             new Table(),
             "WindowNotInitializedException",
             QException.prototype,

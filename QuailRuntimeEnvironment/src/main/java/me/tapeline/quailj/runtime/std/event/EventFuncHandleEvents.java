@@ -1,6 +1,5 @@
 package me.tapeline.quailj.runtime.std.event;
 
-import me.tapeline.quailj.parsing.nodes.literals.LiteralFunction;
 import me.tapeline.quailj.runtime.Memory;
 import me.tapeline.quailj.runtime.Runtime;
 import me.tapeline.quailj.runtime.RuntimeStriker;
@@ -11,7 +10,6 @@ import me.tapeline.quailj.typing.classes.QFunc;
 import me.tapeline.quailj.typing.classes.QObject;
 import me.tapeline.quailj.typing.classes.errors.QUnsuitableTypeException;
 import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
-import me.tapeline.quailj.typing.utils.FuncArgument;
 
 import java.util.ArrayList;
 import java.util.Collections;

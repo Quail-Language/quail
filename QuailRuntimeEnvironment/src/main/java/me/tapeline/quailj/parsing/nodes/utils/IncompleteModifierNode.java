@@ -5,7 +5,7 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class IncompleteModifierNode extends Node {
 
-    public int[] modifiers;
+    public final int[] modifiers;
 
     public IncompleteModifierNode(int[] modifiers) {
         super(Token.UNDEFINED);

@@ -8,7 +8,7 @@ import me.tapeline.quailj.typing.classes.errors.QException;
 
 public class QMLSurfaceNotInitializedException extends QException {
 
-    public static QMLSurfaceNotInitializedException prototype = new QMLSurfaceNotInitializedException(
+    public static final QMLSurfaceNotInitializedException prototype = new QMLSurfaceNotInitializedException(
             new Table(),
             "SurfaceNotInitializedException",
             QException.prototype,

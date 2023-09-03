@@ -6,10 +6,10 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class SubscriptNode extends Node {
 
-    public Node collection;
-    public @Nullable Node start;
-    public @Nullable Node end;
-    public @Nullable Node step;
+    public final Node collection;
+    public final @Nullable Node start;
+    public final @Nullable Node end;
+    public final @Nullable Node step;
 
     public SubscriptNode(Token token, Node collection, @Nullable Node start,
                          @Nullable Node end, @Nullable Node step) {

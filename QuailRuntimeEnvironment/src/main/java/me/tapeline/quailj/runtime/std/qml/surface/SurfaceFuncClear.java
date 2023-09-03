@@ -8,9 +8,8 @@ import me.tapeline.quailj.typing.classes.errors.QUnsuitableTypeException;
 import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,11 +19,11 @@ public class SurfaceFuncClear extends QBuiltinFunc {
     public SurfaceFuncClear(Runtime runtime) {
         super(
                 "clear",
-                Arrays.asList(
+                Collections.singletonList(
                         new FuncArgument(
                                 "this",
                                 QObject.Val(),
-                                new int[] {},
+                                new int[]{},
                                 LiteralFunction.Argument.POSITIONAL
                         )
                 ),

@@ -9,6 +9,7 @@ import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 import me.tapeline.quailj.runtime.RuntimeStriker;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,11 +18,11 @@ public class FsSetEncoding extends QBuiltinFunc {
     public FsSetEncoding(Runtime runtime) {
         super(
                 "setEncoding",
-                Arrays.asList(
+                Collections.singletonList(
                         new FuncArgument(
-                               "encoding",
+                                "encoding",
                                 QObject.Val(),
-                                new int[] {ModifierConstants.STR},
+                                new int[]{ModifierConstants.STR},
                                 LiteralFunction.Argument.POSITIONAL
                         )
                 ),
@@ -32,7 +33,7 @@ public class FsSetEncoding extends QBuiltinFunc {
     }
 
     @Override
-    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) throws RuntimeStriker {
+    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) {
         runtime.getIo().setEncoding(args.get("encoding").strValue());
         return Val();
     }

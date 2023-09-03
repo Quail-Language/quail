@@ -5,8 +5,8 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class TypecastNode extends Node {
 
-    public int cast;
-    public Node expr;
+    public final int cast;
+    public final Node expr;
 
     public TypecastNode(Token token, int cast, Node expr) {
         super(token);

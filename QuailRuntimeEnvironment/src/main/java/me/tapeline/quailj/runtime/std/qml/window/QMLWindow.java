@@ -17,6 +17,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class QMLWindow extends QObject implements Initializable {
@@ -94,8 +95,8 @@ public class QMLWindow extends QObject implements Initializable {
         public volatile boolean mouseDown = false;
         public volatile int mouseButton = -1;
 
-        public QMLWindow window;
-        public Runtime runtime;
+        public final QMLWindow window;
+        public final Runtime runtime;
 
         public MouseHandler(Runtime runtime, QMLWindow window) {
             this.window = window;
@@ -106,7 +107,7 @@ public class QMLWindow extends QObject implements Initializable {
         public void mouseClicked(MouseEvent e) {
             try {
                 QObject event = Event.prototype(runtime).newObject(runtime,
-                        new ArrayList<>(Arrays.asList(Val("qml.mouseClick"))), new HashMap<>());
+                        new ArrayList<>(Collections.singletonList(Val("qml.mouseClick"))), new HashMap<>());
                 event.set(runtime, "button", Val(e.getButton()));
                 event.set(runtime, "clickCount", Val(e.getClickCount()));
                 event.set(runtime, "x", Val(e.getX()));

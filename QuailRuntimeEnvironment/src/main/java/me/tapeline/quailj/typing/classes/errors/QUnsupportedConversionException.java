@@ -12,7 +12,7 @@ public class QUnsupportedConversionException extends QException {
     public static final String OPERAND_FIELD = "operand";
     public static final String TARGET_TYPE_FIELD = "targetType";
 
-    public static QUnsupportedConversionException prototype = new QUnsupportedConversionException(
+    public static final QUnsupportedConversionException prototype = new QUnsupportedConversionException(
             new Table(
                     Dict.make(
                             new Pair<>(OPERAND_FIELD, QObject.Val()),

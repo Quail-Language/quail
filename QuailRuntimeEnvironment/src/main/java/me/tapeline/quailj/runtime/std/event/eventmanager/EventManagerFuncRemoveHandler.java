@@ -10,7 +10,6 @@ import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 import me.tapeline.quailj.typing.modifiers.ModifierConstants;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;

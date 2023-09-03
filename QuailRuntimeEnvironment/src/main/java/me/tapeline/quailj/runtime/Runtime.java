@@ -661,10 +661,10 @@ public class Runtime {
             }
             if (thisNode.getToken().getMod() == TokenModifier.ARRAY_MOD && list != null) {
                 int count = list.size();
-                for (int i = 0; i < count; i++) {
+                for (QObject qObject : list) {
                     QObject value = performUnaryOperation(
                             thisNode.op,
-                            list.get(i)
+                            qObject
                     );
                     if (value == null)
                         error("Unknown unary operation");
@@ -673,17 +673,16 @@ public class Runtime {
                 return QObject.Val(result);
             } else if (thisNode.getToken().getMod() == TokenModifier.MATRIX_MOD && list != null) {
                 int countX = list.size();
-                for (int x = 0; x < countX; x++) {
-                    QObject sub = list.get(x);
+                for (QObject sub : list) {
                     if (!sub.isList())
                         error(new QUnsuitableTypeException("List", sub));
                     List<QObject> sublist = sub.listValue();
                     List<QObject> subResult = new ArrayList<>();
                     int countY = sublist.size();
-                    for (int y = 0; y < countY; y++) {
+                    for (QObject qObject : sublist) {
                         QObject value = performUnaryOperation(
                                 thisNode.op,
-                                sublist.get(y)
+                                qObject
                         );
                         if (value == null)
                             error("Unknown unary operation");

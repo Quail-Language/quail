@@ -5,9 +5,9 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class IndexSetNode extends Node {
 
-    public Node collection;
-    public Node index;
-    public Node value;
+    public final Node collection;
+    public final Node index;
+    public final Node value;
 
     public IndexSetNode(Token token, Node collection, Node index, Node value) {
         super(token);

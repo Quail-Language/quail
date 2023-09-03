@@ -11,7 +11,7 @@ public class QDerivationException extends QException {
 
     public static final String TARGET_FIELD = "target";
 
-    public static QDerivationException prototype = new QDerivationException(
+    public static final QDerivationException prototype = new QDerivationException(
             new Table(
                     Dict.make(
                             new Pair<>(TARGET_FIELD, QObject.Val())

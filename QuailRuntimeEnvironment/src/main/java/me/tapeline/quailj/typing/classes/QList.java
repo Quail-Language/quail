@@ -13,7 +13,7 @@ import java.util.List;
 
 public class QList extends QObject {
 
-    public static QList prototype = new QList(
+    public static final QList prototype = new QList(
             new Table(),
             "List",
             QObject.superObject,

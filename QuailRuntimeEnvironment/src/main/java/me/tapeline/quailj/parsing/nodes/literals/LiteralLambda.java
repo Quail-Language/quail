@@ -8,8 +8,8 @@ import java.util.List;
 
 public class LiteralLambda extends Node {
 
-    public List<LiteralFunction.Argument> args;
-    public Node statement;
+    public final List<LiteralFunction.Argument> args;
+    public final Node statement;
 
     public LiteralLambda(Token token, List<LiteralFunction.Argument> args, Node statement) {
         super(token);

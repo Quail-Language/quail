@@ -12,7 +12,6 @@ import me.tapeline.quailj.typing.classes.errors.QUnsuitableTypeException;
 import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;

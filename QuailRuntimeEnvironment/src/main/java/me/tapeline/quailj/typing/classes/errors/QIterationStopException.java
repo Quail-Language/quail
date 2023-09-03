@@ -7,7 +7,7 @@ import me.tapeline.quailj.typing.classes.QObject;
 
 public class QIterationStopException extends QException {
 
-    public static QIterationStopException prototype = new QIterationStopException(
+    public static final QIterationStopException prototype = new QIterationStopException(
             new Table(),
             "IterationStopException",
             QException.prototype,

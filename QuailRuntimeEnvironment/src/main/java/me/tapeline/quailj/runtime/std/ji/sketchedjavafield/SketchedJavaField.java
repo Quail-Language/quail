@@ -6,8 +6,6 @@ import me.tapeline.quailj.runtime.Table;
 import me.tapeline.quailj.typing.classes.QObject;
 import me.tapeline.quailj.utils.Dict;
 import me.tapeline.quailj.utils.Pair;
-import org.burningwave.core.classes.FunctionSourceGenerator;
-import org.burningwave.core.classes.SourceGenerator;
 import org.burningwave.core.classes.VariableSourceGenerator;
 
 

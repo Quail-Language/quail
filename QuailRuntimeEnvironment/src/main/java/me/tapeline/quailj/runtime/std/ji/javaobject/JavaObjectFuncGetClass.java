@@ -10,6 +10,7 @@ import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,11 +20,11 @@ public class JavaObjectFuncGetClass extends QBuiltinFunc {
     public JavaObjectFuncGetClass(Runtime runtime) {
         super(
                 "getClass",
-                Arrays.asList(
+                Collections.singletonList(
                         new FuncArgument(
                                 "this",
                                 QObject.Val(),
-                                new int[] {},
+                                new int[]{},
                                 LiteralFunction.Argument.POSITIONAL
                         )
                 ),

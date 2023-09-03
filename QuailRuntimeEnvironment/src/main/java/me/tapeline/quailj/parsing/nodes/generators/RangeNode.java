@@ -6,10 +6,10 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class RangeNode extends Node {
 
-    public Node rangeStart;
-    public Node rangeEnd;
-    public @Nullable Node rangeStep;
-    public boolean isIncluding;
+    public final Node rangeStart;
+    public final Node rangeEnd;
+    public final @Nullable Node rangeStep;
+    public final boolean isIncluding;
 
     public RangeNode(Token token, Node rangeStart, Node rangeEnd, @Nullable Node rangeStep) {
         this(token, rangeStart, rangeEnd, rangeStep, token.getLexeme().contains("+"));

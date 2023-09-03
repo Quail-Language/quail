@@ -2,23 +2,20 @@ package me.tapeline.quail.qdk.templater;
 
 import me.tapeline.quailj.parsing.nodes.Node;
 import me.tapeline.quailj.parsing.nodes.literals.*;
-import me.tapeline.quailj.typing.utils.FuncArgument;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.burningwave.core.classes.SourceGenerator;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Templater {
 
-    private List<Node> nodes;
-    private String selectedPackage;
-    private String prefix;
-    private List<TemplatedFile> files;
+    private final List<Node> nodes;
+    private final String selectedPackage;
+    private final String prefix;
+    private final List<TemplatedFile> files;
 
     public Templater(List<Node> nodes, String selectedPackage, String prefix) {
         this.nodes = nodes;

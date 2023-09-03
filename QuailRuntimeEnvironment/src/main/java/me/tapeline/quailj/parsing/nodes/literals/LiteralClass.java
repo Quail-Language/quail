@@ -11,11 +11,11 @@ import java.util.List;
 
 public class LiteralClass extends Node {
 
-    public String name;
-    public @Nullable Node like;
-    public List<VarAssignNode> contents;
-    public HashMap<String, LiteralFunction> methods;
-    public List<Node> initialize;
+    public final String name;
+    public final @Nullable Node like;
+    public final List<VarAssignNode> contents;
+    public final HashMap<String, LiteralFunction> methods;
+    public final List<Node> initialize;
 
     public LiteralClass(Token token,
                         String name,

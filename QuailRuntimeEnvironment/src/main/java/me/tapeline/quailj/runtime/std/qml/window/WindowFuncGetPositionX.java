@@ -9,6 +9,7 @@ import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,11 +19,11 @@ public class WindowFuncGetPositionX extends QBuiltinFunc {
     public WindowFuncGetPositionX(Runtime runtime) {
         super(
                 "getPositionX",
-                Arrays.asList(
+                Collections.singletonList(
                         new FuncArgument(
                                 "this",
                                 QObject.Val(),
-                                new int[] {},
+                                new int[]{},
                                 LiteralFunction.Argument.POSITIONAL
                         )
                 ),

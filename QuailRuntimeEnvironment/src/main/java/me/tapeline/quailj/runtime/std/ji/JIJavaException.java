@@ -8,7 +8,7 @@ import me.tapeline.quailj.typing.classes.errors.QException;
 
 public class JIJavaException extends QException {
 
-    public static JIJavaException prototype = new JIJavaException(
+    public static final JIJavaException prototype = new JIJavaException(
             new Table(),
             "JavaException",
             QException.prototype,

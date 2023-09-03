@@ -9,8 +9,8 @@ import me.tapeline.quailj.typing.utils.FuncArgument;
 import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 import me.tapeline.quailj.runtime.RuntimeStriker;
 
-import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,11 +19,11 @@ public class FsAbsolutePath extends QBuiltinFunc {
     public FsAbsolutePath(Runtime runtime) {
         super(
                 "absolutePath",
-                Arrays.asList(
+                Collections.singletonList(
                         new FuncArgument(
-                               "path",
+                                "path",
                                 QObject.Val(),
-                                new int[] {ModifierConstants.STR},
+                                new int[]{ModifierConstants.STR},
                                 LiteralFunction.Argument.POSITIONAL
                         )
                 ),

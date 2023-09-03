@@ -11,7 +11,7 @@ public class QUnsupportedSubscriptException extends QException {
 
     public static final String OPERAND_FIELD = "operand";
 
-    public static QUnsupportedSubscriptException prototype = new QUnsupportedSubscriptException(
+    public static final QUnsupportedSubscriptException prototype = new QUnsupportedSubscriptException(
             new Table(
                     Dict.make(
                             new Pair<>(OPERAND_FIELD, QObject.Val())

@@ -12,7 +12,7 @@ public class QException extends QObject {
 
     public static final String MESSAGE_FIELD = "message";
 
-    public static QException prototype = new QException(
+    public static final QException prototype = new QException(
             new Table(
                     Dict.make(
                             new Pair<>(MESSAGE_FIELD, QObject.Val("Unknown error"))

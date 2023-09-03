@@ -9,9 +9,7 @@ import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
 
 public class SurfaceFuncGetColorRGBA extends QBuiltinFunc {
@@ -20,11 +18,11 @@ public class SurfaceFuncGetColorRGBA extends QBuiltinFunc {
     public SurfaceFuncGetColorRGBA(Runtime runtime) {
         super(
                 "getColorRGBA",
-                Arrays.asList(
+                Collections.singletonList(
                         new FuncArgument(
                                 "this",
                                 QObject.Val(),
-                                new int[] {},
+                                new int[]{},
                                 LiteralFunction.Argument.POSITIONAL
                         )
                 ),

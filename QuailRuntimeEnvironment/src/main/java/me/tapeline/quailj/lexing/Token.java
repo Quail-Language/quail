@@ -13,7 +13,7 @@ public class Token {
     /**
      * Utility token
      * */
-    public static Token UNDEFINED = new Token(TokenType.EOL, "\n", 1, 0, 1);
+    public static final Token UNDEFINED = new Token(TokenType.EOL, "\n", 1, 0, 1);
 
     /**
      * Type of this token

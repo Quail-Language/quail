@@ -18,7 +18,7 @@ The Quail is a general-purpose, multiparadigmal, object-oriented, interpretable 
 Specification is split into chapters:
 
 1. A brief introduction
-   Contains general information, organization of specification, couple of "Hello, World!" programs and contact info.
+   Contains general information, organization of specification, a couple of "Hello, World!" programs and contact info.
 
 2. Grammar and execution flow
    Contains grammar definition arranged in block-schemas.

@@ -17,7 +17,7 @@ public abstract class ScannedDirective {
      */
     public abstract AbstractDirective directive();
 
-    public Object[] args;
+    public final Object[] args;
 
     public ScannedDirective(Object... args) {
         this.args = args;

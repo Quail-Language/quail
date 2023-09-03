@@ -10,6 +10,7 @@ import me.tapeline.quailj.typing.utils.FuncArgument;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,11 +20,11 @@ public class WindowFuncIsFullscreen extends QBuiltinFunc {
     public WindowFuncIsFullscreen(Runtime runtime) {
         super(
                 "isFullscreen",
-                Arrays.asList(
+                Collections.singletonList(
                         new FuncArgument(
                                 "this",
                                 QObject.Val(),
-                                new int[] {},
+                                new int[]{},
                                 LiteralFunction.Argument.POSITIONAL
                         )
                 ),

@@ -7,10 +7,10 @@ import me.tapeline.quailj.parsing.nodes.variable.VariableNode;
 
 public class ListThroughGeneratorNode extends Node {
 
-    public Node value;
-    public VariableNode iterator;
-    public RangeNode range;
-    public @Nullable Node condition;
+    public final Node value;
+    public final VariableNode iterator;
+    public final RangeNode range;
+    public final @Nullable Node condition;
 
     public ListThroughGeneratorNode(Token token, Node value,
                                     VariableNode iterator,

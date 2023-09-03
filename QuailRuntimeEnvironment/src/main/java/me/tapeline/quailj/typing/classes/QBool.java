@@ -6,7 +6,7 @@ import me.tapeline.quailj.runtime.Table;
 
 public class QBool extends QObject {
 
-    public static QBool prototype = new QBool(
+    public static final QBool prototype = new QBool(
             new Table(),
             "Bool",
             QObject.superObject,

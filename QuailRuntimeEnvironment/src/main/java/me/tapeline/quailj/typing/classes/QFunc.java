@@ -17,7 +17,7 @@ import java.util.List;
 
 public class QFunc extends QObject {
 
-    public static QFunc prototype = new QFunc(
+    public static final QFunc prototype = new QFunc(
             new Table(),
             "Func",
             QObject.superObject,

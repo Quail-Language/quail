@@ -3,9 +3,6 @@ package me.tapeline.quailj.runtime.std.qml.font;
 import me.tapeline.quailj.runtime.Runtime;
 import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.runtime.Table;
-import me.tapeline.quailj.runtime.std.qml.surface.SurfaceFuncGetHeight;
-import me.tapeline.quailj.runtime.std.qml.surface.SurfaceFuncGetWidth;
-import me.tapeline.quailj.runtime.std.qml.window.*;
 import me.tapeline.quailj.typing.classes.QObject;
 import me.tapeline.quailj.typing.classes.utils.Initializable;
 import me.tapeline.quailj.utils.Dict;
@@ -16,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 
 public class QMLFont extends QObject implements Initializable {
 

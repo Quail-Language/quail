@@ -7,7 +7,6 @@ import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.runtime.Table;
 import me.tapeline.quailj.typing.classes.QFunc;
 import me.tapeline.quailj.typing.classes.QObject;
-import me.tapeline.quailj.typing.utils.AlternativeCall;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 
 import java.lang.reflect.InvocationTargetException;

@@ -8,11 +8,11 @@ import java.util.List;
 
 public class DictForGeneratorNode extends Node {
 
-    public Node key;
-    public Node value;
-    public List<String> iterators;
-    public Node iterable;
-    public @Nullable Node condition;
+    public final Node key;
+    public final Node value;
+    public final List<String> iterators;
+    public final Node iterable;
+    public final @Nullable Node condition;
 
     public DictForGeneratorNode(Token token, Node key, Node value,
                                 List<String> iterators,

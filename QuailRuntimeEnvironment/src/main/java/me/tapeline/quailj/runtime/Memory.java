@@ -10,8 +10,8 @@ import java.util.HashMap;
 
 public class Memory {
 
-    public Table table = new Table();
-    public Memory enclosing;
+    public final Table table = new Table();
+    public final Memory enclosing;
 
     public Memory() {
         this.enclosing = null;

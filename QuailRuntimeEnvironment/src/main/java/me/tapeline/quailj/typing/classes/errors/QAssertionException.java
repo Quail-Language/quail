@@ -7,7 +7,7 @@ import me.tapeline.quailj.typing.classes.QObject;
 
 public class QAssertionException extends QException {
 
-    public static QAssertionException prototype = new QAssertionException(
+    public static final QAssertionException prototype = new QAssertionException(
             new Table(),
             "AssertionException",
             QException.prototype,

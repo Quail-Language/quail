@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class QDict extends QObject {
 
-    public static QDict prototype = new QDict(
+    public static final QDict prototype = new QDict(
             new Table(),
             "Dict",
             QObject.superObject,

@@ -7,10 +7,10 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class BinaryOperatorNode extends Node {
 
-    public TokenType op;
-    public TokenModifier mod;
-    public Node left;
-    public Node right;
+    public final TokenType op;
+    public final TokenModifier mod;
+    public final Node left;
+    public final Node right;
 
     public BinaryOperatorNode(Token token, Node left, Node right) {
         super(token);

@@ -13,7 +13,7 @@ public class QUnsupportedOperationException extends QException {
     public static final String RIGHT_FIELD = "right";
     public static final String OPERATOR_FIELD = "operator";
 
-    public static QUnsupportedOperationException prototype = new QUnsupportedOperationException(
+    public static final QUnsupportedOperationException prototype = new QUnsupportedOperationException(
             new Table(
                     Dict.make(
                             new Pair<>(LEFT_FIELD, QObject.Val()),

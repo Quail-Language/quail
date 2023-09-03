@@ -47,7 +47,7 @@ public class SurfaceFuncSetColorHSB extends QBuiltinFunc {
             runtime.error(new QUnsuitableTypeException("Surface", args.get("this")));
         QMLSurface thisSurface = ((QMLSurface) args.get("this"));
         if (!thisSurface.isInitialized())
-            runtime.error(new QMLSurfaceNotInitializedException());;
+            runtime.error(new QMLSurfaceNotInitializedException());
         List<QObject> colorComponents = args.get("color").listValue();
         if (colorComponents == null || colorComponents.size() != 3)
             runtime.error(new QUnsuitableValueException("Expected list of [num h, num s, num b]", args.get("color")));

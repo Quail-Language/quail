@@ -18,6 +18,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 
+@SuppressWarnings("BlockingMethodInNonBlockingContext")
 public class FsWriteBinary extends QBuiltinFunc {
 
     public FsWriteBinary(Runtime runtime) {

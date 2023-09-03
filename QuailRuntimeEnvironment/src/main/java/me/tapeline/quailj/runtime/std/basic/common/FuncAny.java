@@ -34,8 +34,8 @@ public class FuncAny extends QBuiltinFunc {
     public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) {
         List<QObject> values = args.get("collection").listValue();
         int size = values.size();
-        for (int i = 0; i < size; i++)
-            if (values.get(i).isTrue())
+        for (QObject value : values)
+            if (value.isTrue())
                 return QObject.Val(true);
         return QObject.Val(false);
     }

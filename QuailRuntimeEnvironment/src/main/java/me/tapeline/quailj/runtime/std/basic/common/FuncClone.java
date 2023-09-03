@@ -3,7 +3,6 @@ package me.tapeline.quailj.runtime.std.basic.common;
 import me.tapeline.quailj.parsing.nodes.literals.LiteralFunction;
 import me.tapeline.quailj.runtime.Runtime;
 import me.tapeline.quailj.typing.classes.QObject;
-import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 

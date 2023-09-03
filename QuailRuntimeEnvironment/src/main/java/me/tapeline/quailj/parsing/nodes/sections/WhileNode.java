@@ -5,8 +5,8 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class WhileNode extends Node {
 
-    public Node condition;
-    public Node code;
+    public final Node condition;
+    public final Node code;
 
     public WhileNode(Token token, Node condition, Node code) {
         super(token);

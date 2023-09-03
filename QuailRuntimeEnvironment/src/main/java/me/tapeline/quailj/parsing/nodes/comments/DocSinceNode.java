@@ -4,7 +4,7 @@ import me.tapeline.quailj.lexing.Token;
 
 public class DocSinceNode extends DocNode {
 
-    public String since;
+    public final String since;
 
     public DocSinceNode(Token token) {
         super(token);

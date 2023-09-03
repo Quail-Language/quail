@@ -6,8 +6,8 @@ import me.tapeline.quailj.parsing.nodes.variable.VariableNode;
 
 public class VarAssignNode extends Node {
 
-    public VariableNode variable;
-    public Node value;
+    public final VariableNode variable;
+    public final Node value;
 
     public VarAssignNode(Token token, VariableNode variable, Node value) {
         super(token);

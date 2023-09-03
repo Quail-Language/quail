@@ -17,8 +17,8 @@ import java.util.regex.Matcher;
 
 public class LibraryLoader {
 
-    private Set<String> libraryRoots = new HashSet<>();
-    private HashMap<String, BuiltinLibrary> builtinLibraries = new HashMap<>();
+    private Set<String> libraryRoots;
+    private final HashMap<String, BuiltinLibrary> builtinLibraries = new HashMap<>();
     private static final Set<String> pathsCurrentlyLoading = new HashSet<>();
 
     public LibraryLoader(Set<String> libraryRoots) {

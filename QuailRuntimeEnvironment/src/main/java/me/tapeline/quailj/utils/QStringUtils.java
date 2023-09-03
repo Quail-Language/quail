@@ -32,7 +32,7 @@ public class QStringUtils {
     }
 
     public static String capitalize(String s) {
-        return (s.charAt(0) + "").toUpperCase() + s.substring(1).toLowerCase();
+        return (String.valueOf(s.charAt(0))).toUpperCase() + s.substring(1).toLowerCase();
     }
 
     public static String shift(String s, int amount) {

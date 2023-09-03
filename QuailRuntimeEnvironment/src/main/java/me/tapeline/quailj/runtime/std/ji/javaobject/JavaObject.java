@@ -9,7 +9,6 @@ import me.tapeline.quailj.runtime.std.ji.javamethod.JavaMethod;
 import me.tapeline.quailj.typing.classes.QObject;
 import me.tapeline.quailj.utils.Dict;
 import me.tapeline.quailj.utils.Pair;
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
@@ -82,7 +81,7 @@ public class JavaObject extends QObject {
     }
 
     @Override
-    public void set(Runtime runtime, String name, QObject value) throws RuntimeStriker {
+    public void set(Runtime runtime, String name, QObject value) {
         if (object == null) {
             super.set(name, value);
             return;
@@ -159,11 +158,11 @@ public class JavaObject extends QObject {
         Method[] methods = object.getClass().getMethods();
         Class<?>[] classes = Arg.getClassesFromArgs(args);
         Method foundMethod = null;
-        for (int i = 0; i < methods.length; i++) {
-            if (!methods[i].getName().equals(func))
+        for (Method method : methods) {
+            if (!method.getName().equals(func))
                 continue;
-            if (Arg.isApplicable(methods[i].getParameterTypes(), classes)) {
-                foundMethod = methods[i];
+            if (Arg.isApplicable(method.getParameterTypes(), classes)) {
+                foundMethod = method;
                 break;
             }
         }

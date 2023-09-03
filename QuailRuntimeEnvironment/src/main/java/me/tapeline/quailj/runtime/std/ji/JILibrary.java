@@ -13,8 +13,6 @@ import me.tapeline.quailj.runtime.std.ji.sketchedjavainheritance.SketchedJavaInh
 import me.tapeline.quailj.runtime.std.ji.sketchedjavamethod.SketchedJavaMethod;
 import me.tapeline.quailj.runtime.std.ji.sketchedjavapackage.SketchedJavaPackage;
 import me.tapeline.quailj.typing.classes.QObject;
-import org.burningwave.core.LoggingLevel;
-import org.burningwave.core.SimpleManagedLoggerRepository;
 
 import java.util.HashMap;
 
@@ -31,7 +29,7 @@ public class JILibrary implements BuiltinLibrary {
     }
 
     @Override
-    public QObject constructLibrary(Runtime runtime) throws RuntimeStriker {
+    public QObject constructLibrary(Runtime runtime) {
         HashMap<String, QObject> contents = new HashMap<>();
         contents.put("JavaClass", JavaClass.prototype(runtime));
         contents.put("JavaMethod", JavaMethod.prototype(runtime));

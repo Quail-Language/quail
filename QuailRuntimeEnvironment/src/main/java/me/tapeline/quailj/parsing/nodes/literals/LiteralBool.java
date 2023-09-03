@@ -5,7 +5,7 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class LiteralBool extends Node {
 
-    public boolean value;
+    public final boolean value;
 
     public LiteralBool(Token token, boolean value) {
         super(token);

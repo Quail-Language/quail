@@ -7,8 +7,8 @@ import java.util.HashMap;
 
 public class JIMethodRegistry {
 
-    private static HashMap<Long, QFunc> methods = new HashMap<>();
-    private static HashMap<Long, Runtime> assignedRuntimes = new HashMap<>();
+    private static final HashMap<Long, QFunc> methods = new HashMap<>();
+    private static final HashMap<Long, Runtime> assignedRuntimes = new HashMap<>();
 
     public static void add(long id, QFunc method, Runtime runtime) {
         methods.put(id, method);

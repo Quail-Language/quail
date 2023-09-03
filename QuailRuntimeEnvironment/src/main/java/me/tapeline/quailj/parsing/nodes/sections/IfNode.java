@@ -9,9 +9,9 @@ import java.util.List;
 
 public class IfNode extends Node {
 
-    public List<BlockNode> branches;
+    public final List<BlockNode> branches;
     public BlockNode elseBranch;
-    public List<Node> conditions;
+    public final List<Node> conditions;
 
     public IfNode(Token token, List<Node> conditions, List<BlockNode> branches, BlockNode elseBranch) {
         super(token);

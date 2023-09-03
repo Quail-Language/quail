@@ -7,7 +7,6 @@ import me.tapeline.quailj.typing.classes.QObject;
 import me.tapeline.quailj.utils.Dict;
 import me.tapeline.quailj.utils.Pair;
 import org.burningwave.core.classes.UnitSourceGenerator;
-import org.burningwave.core.classes.VariableSourceGenerator;
 
 
 public class SketchedJavaPackage extends QObject {

@@ -11,6 +11,7 @@ import me.tapeline.quailj.typing.utils.FuncArgument;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,10 +20,10 @@ public class FuncReadFile extends QBuiltinFunc {
     public FuncReadFile(Runtime runtime) {
         super(
                 "readFile",
-                Arrays.asList(
+                Collections.singletonList(
                         new FuncArgument("filePath",
                                 QObject.Val(),
-                                new int[] {ModifierConstants.STR},
+                                new int[]{ModifierConstants.STR},
                                 LiteralFunction.Argument.POSITIONAL
                         )
                 ),

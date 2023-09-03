@@ -7,7 +7,7 @@ import me.tapeline.quailj.typing.classes.QObject;
 
 public class QIOException extends QException {
 
-    public static QIOException prototype = new QIOException(
+    public static final QIOException prototype = new QIOException(
             new Table(),
             "IOException",
             QException.prototype,

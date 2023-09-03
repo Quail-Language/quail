@@ -12,8 +12,8 @@ public class Decoration {
 
     private Annotation annotation;
     private Node name;
-    private List<Node> args;
-    private Token token;
+    private final List<Node> args;
+    private final Token token;
 
     public Decoration(Token token, Node name, List<Node> args) {
         this.token = token;

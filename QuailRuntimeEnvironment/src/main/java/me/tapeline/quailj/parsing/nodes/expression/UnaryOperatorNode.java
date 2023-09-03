@@ -7,9 +7,9 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class UnaryOperatorNode extends Node {
 
-    public TokenType op;
-    public TokenModifier mod;
-    public Node value;
+    public final TokenType op;
+    public final TokenModifier mod;
+    public final Node value;
 
     public UnaryOperatorNode(Token token, Node value) {
         super(token);

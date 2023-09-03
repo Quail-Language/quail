@@ -6,7 +6,7 @@ import me.tapeline.quailj.runtime.Table;
 
 public class QNumber extends QObject {
 
-    public static QNumber prototype = new QNumber(
+    public static final QNumber prototype = new QNumber(
             new Table(),
             "Number",
             QObject.superObject,

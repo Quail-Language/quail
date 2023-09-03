@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import static org.burningwave.core.assembler.StaticComponentContainer.ClassLoaders;
-import static org.burningwave.core.assembler.StaticComponentContainer.Methods;
 
 public class JIFuncDeployPackage extends QBuiltinFunc {
 

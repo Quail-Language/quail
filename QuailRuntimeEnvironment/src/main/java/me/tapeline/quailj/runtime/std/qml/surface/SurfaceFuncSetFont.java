@@ -7,12 +7,9 @@ import me.tapeline.quailj.runtime.std.qml.font.QMLFont;
 import me.tapeline.quailj.runtime.std.qml.font.QMLFontNotInitializedException;
 import me.tapeline.quailj.typing.classes.QObject;
 import me.tapeline.quailj.typing.classes.errors.QUnsuitableTypeException;
-import me.tapeline.quailj.typing.classes.errors.QUnsuitableValueException;
 import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
-import me.tapeline.quailj.typing.modifiers.ModifierConstants;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +46,7 @@ public class SurfaceFuncSetFont extends QBuiltinFunc {
             runtime.error(new QUnsuitableTypeException("Surface", args.get("this")));
         QMLSurface thisSurface = ((QMLSurface) args.get("this"));
         if (!thisSurface.isInitialized())
-            runtime.error(new QMLSurfaceNotInitializedException());;
+            runtime.error(new QMLSurfaceNotInitializedException());
         if (!(args.get("font") instanceof QMLFont))
             runtime.error(new QUnsuitableTypeException("Font", args.get("this")));
         QMLFont font = ((QMLFont) args.get("font"));

@@ -41,7 +41,7 @@ public class AliasDirective extends AbstractDirective {
                 parts.add(part.toString());
                 substitute.add(true);
                 inString = true;
-                part = new StringBuilder("" + code.charAt(i));
+                part = new StringBuilder(String.valueOf(code.charAt(i)));
             } else if (inString && boundaries.isStringEnding(i)) {
                 part.append(code.charAt(i));
                 parts.add(part.toString());

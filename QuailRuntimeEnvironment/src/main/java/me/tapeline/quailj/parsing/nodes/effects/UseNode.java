@@ -5,8 +5,8 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class UseNode extends Node {
 
-    public String path;
-    public String var;
+    public final String path;
+    public final String var;
 
     public UseNode(Token token, String path, String var) {
         super(token);

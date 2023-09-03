@@ -2,8 +2,8 @@ package me.tapeline.quail.qdk.templater;
 
 public class TemplatedFile {
 
-    private String code;
-    private String name;
+    private final String code;
+    private final String name;
 
     public TemplatedFile(String name, String code) {
         this.code = code;

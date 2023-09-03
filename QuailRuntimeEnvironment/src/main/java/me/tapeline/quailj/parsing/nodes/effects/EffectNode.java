@@ -7,7 +7,7 @@ import java.util.Locale;
 
 public class EffectNode extends Node {
 
-    public Node value;
+    public final Node value;
 
     public EffectNode(Token token, Node value) {
         super(token);

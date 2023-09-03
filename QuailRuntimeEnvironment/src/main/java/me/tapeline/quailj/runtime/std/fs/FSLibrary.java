@@ -20,7 +20,7 @@ public class FSLibrary implements BuiltinLibrary {
     }
 
     @Override
-    public QObject constructLibrary(Runtime runtime) throws RuntimeStriker {
+    public QObject constructLibrary(Runtime runtime) {
         HashMap<String, QObject> contents = new HashMap<>();
         contents.put("absolutePath", new FsAbsolutePath(runtime));
         contents.put("createBlank", new FsCreateBlank(runtime));

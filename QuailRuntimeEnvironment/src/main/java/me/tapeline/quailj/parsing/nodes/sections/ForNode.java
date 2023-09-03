@@ -7,9 +7,9 @@ import java.util.List;
 
 public class ForNode extends Node {
 
-    public List<String> iterators;
-    public Node iterable;
-    public Node code;
+    public final List<String> iterators;
+    public final Node iterable;
+    public final Node code;
 
     public ForNode(Token token, List<String> iterators, Node iterable, Node code) {
         super(token);

@@ -37,9 +37,9 @@ public class StringifiedSignature {
         return new StringifiedSignature(null, name, mod);
     }
 
-    private Class<?> type;
-    private String name;
-    private Integer modifier;
+    private final Class<?> type;
+    private final String name;
+    private final Integer modifier;
 
     public StringifiedSignature(Class<?> type, String name, Integer modifier) {
         this.type = type;
@@ -62,12 +62,12 @@ public class StringifiedSignature {
     public static Integer parseJavaModifier(String modifiers) {
         String[] parts = modifiers.split(" ");
         int mod = 0;
-        for (int i = 0; i < parts.length; i++) {
-            if (parts[i].equals("public")) mod |= Modifier.PUBLIC;
-            if (parts[i].equals("private")) mod |= Modifier.PRIVATE;
-            if (parts[i].equals("protected")) mod |= Modifier.PROTECTED;
-            if (parts[i].equals("final")) mod |= Modifier.FINAL;
-            if (parts[i].equals("static")) mod |= Modifier.STATIC;
+        for (String part : parts) {
+            if (part.equals("public")) mod |= Modifier.PUBLIC;
+            if (part.equals("private")) mod |= Modifier.PRIVATE;
+            if (part.equals("protected")) mod |= Modifier.PROTECTED;
+            if (part.equals("final")) mod |= Modifier.FINAL;
+            if (part.equals("static")) mod |= Modifier.STATIC;
         }
         return mod;
     }

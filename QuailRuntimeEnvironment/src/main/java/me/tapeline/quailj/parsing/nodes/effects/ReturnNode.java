@@ -7,7 +7,7 @@ import me.tapeline.quailj.parsing.nodes.Node;
 
 public class ReturnNode extends Node {
 
-    public @Nullable Node value;
+    public final @Nullable Node value;
 
     public ReturnNode(Token token) {
         this(token, null);

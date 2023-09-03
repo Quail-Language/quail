@@ -2,12 +2,13 @@ package me.tapeline.quailj.runtime.std.ji;
 
 public class ValueCaster<T> {
 
-    private Object value;
+    private final Object value;
 
     public ValueCaster(Object value) {
         this.value = value;
     }
 
+    @SuppressWarnings("unchecked")
     public T cast(Class<? extends T> to) {
         if (value instanceof Number) {
             if (to == Integer.class)

@@ -9,9 +9,9 @@ import java.util.List;
 
 public class CallNode extends Node {
 
-    public Node callee;
-    public List<Node> args;
-    public HashMap<String, Node> kwargs;
+    public final Node callee;
+    public final List<Node> args;
+    public final HashMap<String, Node> kwargs;
     public boolean isFieldCall;
     public Node parentField;
     public String field;

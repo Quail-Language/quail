@@ -5,7 +5,7 @@ import me.tapeline.quailj.lexing.Token;
 public class DocBadgeNode extends DocNode {
 
     public String badgeString;
-    public String badgeColor;
+    public final String badgeColor;
 
     public DocBadgeNode(Token token) {
         super(token);

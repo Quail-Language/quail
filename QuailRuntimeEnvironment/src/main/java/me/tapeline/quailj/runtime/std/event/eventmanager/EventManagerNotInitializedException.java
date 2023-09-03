@@ -8,7 +8,7 @@ import me.tapeline.quailj.typing.classes.errors.QException;
 
 public class EventManagerNotInitializedException extends QException {
 
-    public static EventManagerNotInitializedException prototype = new EventManagerNotInitializedException(
+    public static final EventManagerNotInitializedException prototype = new EventManagerNotInitializedException(
             new Table(),
             "EventManagerNotInitializedException",
             QException.prototype,
