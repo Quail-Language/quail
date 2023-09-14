@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/QuailDevelopmentKit/qdk.iml" filepath="$PROJECT_DIR$/QuailDevelopmentKit/qdk.iml" />
-      <module fileurl="file://$PROJECT_DIR$/QuailRuntimeEnvironment/qre.iml" filepath="$PROJECT_DIR$/QuailRuntimeEnvironment/qre.iml" />
-    </modules>
-  </component>
-</project>

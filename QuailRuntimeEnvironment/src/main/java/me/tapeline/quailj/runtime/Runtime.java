@@ -701,7 +701,7 @@ public class Runtime {
             DictForGeneratorNode thisNode = ((DictForGeneratorNode) node);
             Memory enclosing = new Memory(scope);
             QDict generated = Val(new HashMap<>());
-            enclosing.table.put(this, "generated", generated);
+            enclosing.table.put(this, "_this", generated);
             QObject iterable = run(thisNode.iterable, scope);
             loopFor(iterable, thisNode.iterators, (runtime, memory) -> {
                 if (thisNode.condition != null) {
@@ -723,7 +723,7 @@ public class Runtime {
             DictThroughGeneratorNode thisNode = ((DictThroughGeneratorNode) node);
             Memory enclosing = new Memory(scope);
             QDict generated = Val(new HashMap<>());
-            enclosing.table.put(this, "generated", generated);
+            enclosing.table.put(this, "_this", generated);
             QObject start = run(thisNode.range.rangeStart, scope);
             QObject end = run(thisNode.range.rangeEnd, scope);
             QObject step = thisNode.range.rangeStep != null? run(thisNode.range.rangeStep, scope) : null;
@@ -747,7 +747,7 @@ public class Runtime {
             ListForGeneratorNode thisNode = ((ListForGeneratorNode) node);
             Memory enclosing = new Memory(scope);
             QList generated = Val(new ArrayList<>());
-            enclosing.table.put(this, "generated", generated);
+            enclosing.table.put(this, "_this", generated);
             QObject iterable = run(thisNode.iterable, scope);
             loopFor(iterable, thisNode.iterators, (runtime, memory) -> {
                 if (thisNode.condition != null) {
@@ -764,7 +764,7 @@ public class Runtime {
             ListThroughGeneratorNode thisNode = ((ListThroughGeneratorNode) node);
             Memory enclosing = new Memory(scope);
             QList generated = Val(new ArrayList<>());
-            enclosing.table.put(this, "generated", generated);
+            enclosing.table.put(this, "_this", generated);
             QObject start = run(thisNode.range.rangeStart, scope);
             QObject end = run(thisNode.range.rangeEnd, scope);
             QObject step = thisNode.range.rangeStep != null? run(thisNode.range.rangeStep, scope) : null;

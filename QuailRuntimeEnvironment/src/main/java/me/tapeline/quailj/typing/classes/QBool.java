@@ -13,6 +13,9 @@ public class QBool extends QObject {
             true
     );
 
+    public static final QBool globalTrue = new QBool(true);
+    public static final QBool globalFalse = new QBool(false);
+
     protected boolean value;
 
     public QBool(Table table, String className, QObject parent, boolean isPrototype) {

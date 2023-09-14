@@ -1041,16 +1041,18 @@ public class Parser {
     private Node parsePrimary(ParsingPolicy policy) throws ParserException {
         if (match(LPAR) != null) {
             Node expr = parseExpression(null);
+            List<Node> collection = new ArrayList<>();
+            collection.add(expr);
             if (current() != null && current().getType() == COMMA) {
-                List<Node> args = new ArrayList<>();
-                args.add(expr);
-                while (match(COMMA) != null) args.add(parseExpression(null));
-                require(RPAR);
-                Token arrow = require(LAMBDA_ARROW);
-                Node statement = parseStatement();
-                return new LiteralLambda(arrow, convertDefinedArguments(args), statement);
+                while (match(COMMA) != null) collection.add(parseExpression(null));
+                //require(RPAR);
             }
             require(RPAR);
+            if (match(LAMBDA_ARROW) != null) {
+                Token arrow = getPrevious();
+                Node statement = parseStatement();
+                return new LiteralLambda(arrow, convertDefinedArguments(collection), statement);
+            }
             return expr;
         }
         if (match(LITERAL_NUM) != null) return new LiteralNum(getPrevious());

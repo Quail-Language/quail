@@ -147,6 +147,8 @@ public class QList extends QObject {
         if (index.isNum()) {
             if (values.size() <= index.numValue())
                 runtime.error(new QIndexOutOfBoundsException(index, Val(values.size())));
+            else if (index.numValue() < 0)
+                return values.get(values.size() + (int) index.numValue());
             else
                 return values.get((int) index.numValue());
         }
@@ -158,8 +160,11 @@ public class QList extends QObject {
         if (index.isNum()) {
             if (values.size() <= index.numValue())
                 runtime.error(new QIndexOutOfBoundsException(index, Val(values.size())));
-            values.set((int) index.numValue(), value);
-            return Val();
+            else if (index.numValue() < 0)
+                values.set(values.size() + (int) index.numValue(), value);
+            else
+                values.set((int) index.numValue(), value);
+            return value;
         }
         return super.indexSet(runtime, index, value);
     }

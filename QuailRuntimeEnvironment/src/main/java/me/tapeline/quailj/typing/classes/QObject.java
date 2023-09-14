@@ -10,13 +10,13 @@ import java.util.*;
 public class QObject {
 
     public static QNull Val() {
-        return new QNull();
+        return QNull.globalNull;
     }
     public static QNumber Val(double value) {
         return new QNumber(value);
     }
     public static QBool Val(boolean value) {
-        return new QBool(value);
+        return value? QBool.globalTrue : QBool.globalFalse;
     }
     public static QString Val(String value) {
         return new QString(value);
@@ -164,8 +164,7 @@ public class QObject {
     public QObject getOverridable(Runtime runtime, String name) throws RuntimeStriker {
         if (table.containsKey("_get"))
             return callFromThis(runtime, "_get", Collections.singletonList(Val(name)), new HashMap<>());
-        if (table.containsKey("_get_" + name))
-            return callFromThis(runtime, "_get_" + name, new ArrayList<>(), new HashMap<>());
+
         return get(name);
     }
 

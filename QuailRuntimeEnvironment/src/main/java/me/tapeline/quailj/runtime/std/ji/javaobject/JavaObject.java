@@ -1,5 +1,6 @@
 package me.tapeline.quailj.runtime.std.ji.javaobject;
 
+import me.tapeline.quailj.GlobalFlags;
 import me.tapeline.quailj.runtime.Runtime;
 import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.runtime.Table;
@@ -10,13 +11,12 @@ import me.tapeline.quailj.typing.classes.QObject;
 import me.tapeline.quailj.utils.Dict;
 import me.tapeline.quailj.utils.Pair;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class JavaObject extends QObject {
 
@@ -36,6 +36,10 @@ public class JavaObject extends QObject {
     }
 
     private Object object;
+    protected FieldCache fieldCache = new FieldCache(GlobalFlags.jiFieldCacheSize);
+    protected Set<String> fieldNames = new HashSet<>();
+    protected Set<String> methodNames = new HashSet<>();
+    protected MethodCache methodCache = new MethodCache(GlobalFlags.jiMethodCacheSize);
 
     public Object getObject() {
         return object;
@@ -53,10 +57,18 @@ public class JavaObject extends QObject {
                       Object object) {
         super(table, className, parent, isPrototype);
         this.object = object;
+        initializeNameCache();
     }
 
     public JavaObject(Object object) {
         this(new Table(), prototype.className, prototype, false, object);
+    }
+
+    protected void initializeNameCache() {
+        for (Field field : FieldUtils.getAllFields(object.getClass()))
+            fieldNames.add(field.getName());
+        for (Method method : object.getClass().getMethods())
+            methodNames.add(method.getName());
     }
 
     @Override
@@ -105,16 +117,24 @@ public class JavaObject extends QObject {
             return;
         }
         try {
-            for (Field field : FieldUtils.getAllFields(object.getClass())) {
-                if (field.getName().equals(name)) {
-                    if (!field.isAccessible()) {
-                        field.setAccessible(true);
-                        field.set(object, Arg.transform(value));
-                        field.setAccessible(false);
-                    } else {
-                        field.set(object, Arg.transform(value));
+            Field target = fieldCache.tryToGetCachedValue(name);
+            if (target == null) {
+                for (Field field : FieldUtils.getAllFields(object.getClass())) {
+                    if (field.getName().equals(name)) {
+                        target = field;
+                        break;
                     }
                 }
+                if (target != null)
+                    fieldCache.cacheValue(target);
+            }
+            if (target == null) return;
+            if (!target.isAccessible()) {
+                target.setAccessible(true);
+                target.set(object, Arg.transform(value));
+                target.setAccessible(false);
+            } else {
+                target.set(object, Arg.transform(value));
             }
         } catch (IllegalAccessException e) {
             super.set(name, value);
@@ -124,33 +144,47 @@ public class JavaObject extends QObject {
     @Override
     public QObject get(String name) {
         if (object == null) return super.get(name);
-        try {
-            for (Field field : FieldUtils.getAllFields(object.getClass())) {
-                if (field.getName().equals(name)) {
-                    if (!field.isAccessible()) {
-                        field.setAccessible(true);
-                        Object value = field.get(object);
-                        field.setAccessible(false);
-                        return Arg.transformBack(value);
+        if (fieldNames.contains(name)) {
+            try {
+                Field target = fieldCache.tryToGetCachedValue(name);
+                if (target == null) {
+                    for (Field field : FieldUtils.getAllFields(object.getClass())) {
+                        if (field.getName().equals(name)) {
+                            target = field;
+                            break;
+                        }
                     }
-                    return Arg.transformBack(field.get(object));
+                    fieldCache.cacheValue(target);
                 }
+                if (!target.isAccessible()) {
+                    target.setAccessible(true);
+                    Object value = target.get(object);
+                    target.setAccessible(false);
+                    return Arg.transformBack(value);
+                } else {
+                    return Arg.transformBack(target.get(object));
+                }
+            } catch (IllegalAccessException e) {
+                return super.get(name);
             }
-        } catch (IllegalAccessException e) {
+        } else if (methodNames.contains(name)) {
+            JavaMethod target = methodCache.tryToGetCachedValue(name);
+            if (target == null) {
+                List<Method> foundMethods = new ArrayList<>();
+                for (Method method : object.getClass().getMethods()) {
+                    if (method.getName().equals(name))
+                        foundMethods.add(method);
+                }
+                target = new JavaMethod(
+                        object,
+                        null,
+                        foundMethods.toArray(new Method[]{})
+                );
+                methodCache.cacheValue(target);
+            }
+            return target;
+        } else
             return super.get(name);
-        }
-        List<Method> foundMethods = new ArrayList<>();
-        for (Method method : object.getClass().getMethods()) {
-            if (method.getName().equals(name))
-                foundMethods.add(method);
-        }
-        if (foundMethods.size() > 0) {
-            return new JavaMethod(
-                    object,
-                    null,
-                    foundMethods.toArray(new Method[] {})
-            );
-        } else return super.get(name);
     }
 
     @Override

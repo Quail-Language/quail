@@ -13,6 +13,8 @@ public class QNull extends QObject {
             true
     );
 
+    public static final QNull globalNull = new QNull();
+
     public QNull(Table table, String className, QObject parent, boolean isPrototype) {
         super(table, className, parent, isPrototype);
     }

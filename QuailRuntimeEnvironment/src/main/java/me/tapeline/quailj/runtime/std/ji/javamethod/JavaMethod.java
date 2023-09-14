@@ -54,6 +54,12 @@ public class JavaMethod extends QObject {
         return methods;
     }
 
+    public String getMethodName() {
+        if (methods != null)
+            return methods[0].getName();
+        return method.getName();
+    }
+
     public void setMethods(Method[] methods) {
         this.methods = methods;
     }

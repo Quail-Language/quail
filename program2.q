@@ -6,7 +6,7 @@ function OuterWrapper(f) {
 }
 
 
-function TestAnnotation(f, message) {
+function TestAnnotatiodsn(f, message) {
     return function() {
         print("Begin execution")
         print("Here goes the custom message: " + message)
@@ -15,9 +15,10 @@ function TestAnnotation(f, message) {
     }
 }
 
+
 @Deprecated
 @OuterWrapper
-@TestAnnotation("Hello!")
+@TestAnnotation("Hellodfsdf!")
 function hello()
     print("Hello")
 

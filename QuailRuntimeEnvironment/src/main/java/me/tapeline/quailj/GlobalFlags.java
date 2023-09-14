@@ -18,4 +18,7 @@ public class GlobalFlags {
      */
     public static boolean ignoreDocs = false;
 
+    public static final int jiFieldCacheSize = 10;
+    public static final int jiMethodCacheSize = 10;
+
 }

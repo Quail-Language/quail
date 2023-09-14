@@ -68,6 +68,7 @@ public class QuailLauncher {
                 GlobalFlags.encoding);
         File scriptHome = new File(launchCommandParser.getTargetScript()).getAbsoluteFile().getParentFile();
 
+        Preprocessor.resetDirectives();
         Preprocessor preprocessor = new Preprocessor(code, scriptHome);
         String preprocessedCode = preprocessor.preprocess();
 

@@ -1,8 +1,6 @@
 package me.tapeline.quailj.preprocessing;
 
-import me.tapeline.quailj.preprocessing.directives.AbstractDirective;
-import me.tapeline.quailj.preprocessing.directives.DirectiveArgument;
-import me.tapeline.quailj.preprocessing.directives.ScannedDirective;
+import me.tapeline.quailj.preprocessing.directives.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,6 +9,12 @@ import java.util.List;
 public class Preprocessor {
     // TODO Test and fix aliases
     public static final List<AbstractDirective> registeredDirectives = new ArrayList<>();
+
+    public static void resetDirectives() {
+        registeredDirectives.clear();
+        registeredDirectives.add(new IncludeDirective());
+        registeredDirectives.add(new AliasDirective());
+    }
 
     private int pos;
     private String code;

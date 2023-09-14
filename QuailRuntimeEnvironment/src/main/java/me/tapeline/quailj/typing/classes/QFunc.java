@@ -102,7 +102,8 @@ public class QFunc extends QObject {
                     "Value " + args.get(i) + " is inapplicable for " +
                     TextUtils.modifiersToStringRepr(argument.getModifiers()));
         }
-        enclosing.table.putAll(kwargs);
+        if (kwargs != null)
+            enclosing.table.putAll(kwargs);
         return enclosing;
     }
 
