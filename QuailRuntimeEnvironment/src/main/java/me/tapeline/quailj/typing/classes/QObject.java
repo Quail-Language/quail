@@ -362,6 +362,10 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
+        if (other.isDict()) {
+            table.putAll(other.dictValue());
+            return this;
+        }
         runtime.error(new QUnsupportedOperationException(this, "%", other));
         return Val();
     }

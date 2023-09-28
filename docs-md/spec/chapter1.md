@@ -18,43 +18,57 @@ The Quail is a general-purpose, multiparadigmal, object-oriented, interpretable 
 Specification is split into chapters:
 
 1. A brief introduction
+
    Contains general information, organization of specification, a couple of "Hello, World!" programs and contact info.
 
 2. Grammar and execution flow
+
    Contains grammar definition arranged in block-schemas.
+   
    Describes execution flow.
 
 3. Preprocessing
+
    Describes the work of preprocessor.
 
 4. Lexical analysis
+
    Describes the work of lexical analyser.
 
 5. Parsing
+
    Describes type of nodes and the work of parser.
 
 6. Typing and classes
+
    Describes Quail's type and OOP system
 
 7. Memory system
+
    Describes how memory and scopes in Quail work.
 
 8. Statement executions
+
    Describes how statements and expressions are executed in Quail.
 
 9. External Libraries
+
     Describes how external libraries in Quail are imported.
 
 10. Exceptions and errors
+
     Describes how exceptions and errors are raised and handled.
 
 11. Standard library
+
     Describes Quail's standard library
 
 12. Console operation
+
     Describes how you should operate Quail in terminal
 
 13. Documentation
+
     Describes inbuilt documentation engine
 
 ### 1.2 Example programs
