@@ -522,6 +522,10 @@ num cosh(num n) {
     #? Hyperbolic cosine of given number
 }
 
+num sum(list values) {
+    #? Returns sum of all numbers in given collection
+}
+
 num max(list values) {
     #? Returns maximal value from given collection
 }

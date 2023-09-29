@@ -4,13 +4,13 @@
 
 [Chapter 1: A brief introduction](chapter1.md)
 
-[Chapter 2: Grammar and execution flow](chapter2.md) `Grammar Not Finished`
+[Chapter 2: Grammar and execution flow](chapter2.md)
 
 [Chapter 3: Preprocessing](chapter3.md)
 
 [Chapter 4: Lexical analysis](chapter4.md)
 
-[Chapter 5: Parsing](chapter5.md) `Not Finished`
+[Chapter 5: Parsing](chapter5.md)
 
 [Chapter 6: Typing and object system](chapter6.md)
 

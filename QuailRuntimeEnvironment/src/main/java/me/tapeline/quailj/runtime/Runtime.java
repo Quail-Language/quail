@@ -213,6 +213,7 @@ public class Runtime {
         memory.set("atan2", new FuncAtan2(this));
         memory.set("cos", new FuncCos(this));
         memory.set("cosh", new FuncCosh(this));
+        memory.set("sum", new FuncSum(this));
         memory.set("max", new FuncMax(this));
         memory.set("min", new FuncMin(this));
         memory.set("sin", new FuncSin(this));
