@@ -86,11 +86,14 @@ that allows user to override get/set behaviour with
   2. Run code from collected string, catching exception.
      
      If exception is caught, an Exception is raised
+
 ###### 8.2.1.3 InstructionNode
 - If break: Throw runtime striker (break)
 - If continue: Throw runtime striker (continue)
+
 ###### 8.2.1.4 ReturnNode
 Return provided value
+
 ###### 8.2.1.5 UseNode
 Load library with provided id (see $9)
 
@@ -106,6 +109,7 @@ classes. They can raise various exceptions.
   
   Assign variable and write its modifiers. Exception
   cannot happen.
+
 ###### 8.2.2.2 BinaryOperatorNode
 1. Evaluate left and right parts
 2. - If singular operator: perform bin op
@@ -116,6 +120,7 @@ classes. They can raise various exceptions.
      match. Returns resulting list.
    - If matrix operator: same as array, but does double
      unwrap. Returns resulting matrix
+
 ###### 8.2.2.3 CallNode
 1. Determine callee and parent:
    - If is field call: parent and callee obtained
@@ -133,23 +138,29 @@ classes. They can raise various exceptions.
        Perform usual call
    - Else:
      Perform usual call
+
 ###### 8.2.2.4 FieldReferenceNode
 1. Obtain parent
 2. Get (overridable) provided field from parent
+
 ###### 8.2.2.5 FieldSetNode
 1. Obtain parent
 2. Set (overridable) provided field in parent
+
 ###### 8.2.2.6 IndexingNode
 1. Obtain parent
 2. Get at index from parent
+
 ###### 8.2.2.7 IndexSetNode
 1. Obtain parent
 2. Set at index in parent
+
 ###### 8.2.2.8 SubscriptNode
 1. Obtain parent and all not-null subscript parts
    (start, end, step)
 2. Perform subscript or stepped subscript on parent
    (based on whether step was provided or not)
+
 ###### 8.2.2.9 TypecastNode
 1. Obtain conversion subject
 2. If conversion to:
@@ -161,6 +172,7 @@ classes. They can raise various exceptions.
      try to convert to bool
    
    Else: Raise UnsupportedConversionException
+
 ###### 8.2.2.10 UnaryOperatorNode
 Same as 8.2.2.2 (BinaryOperatorNode), but with only
 one operand (which removes size equality check)
@@ -180,14 +192,19 @@ pattern:
      1. Evaluate value or key-value pair
      2. Add value or key-value pair
 6. Return generated, destroy new scope
+
 ###### 8.2.3.2 DictForGeneratorNode
 See 8.2.3.1
+
 ###### 8.2.3.3 DictThroughGeneratorNode
 See 8.2.3.1
+
 ###### 8.2.3.4 ListForGeneratorNode
 See 8.2.3.1
+
 ###### 8.2.3.5 ListThroughGeneratorNode
 See 8.2.3.1
+
 ###### 8.2.3.6 RangeNode
 1. Start, end and step object are evaluated.
 2. If any of there 3 are not numbers, 
@@ -210,6 +227,7 @@ See 8.2.3.1
 #### 8.2.4 Literals
 ###### 8.2.4.1 LiteralBool
 Bool is evaluated
+
 ###### 8.2.4.2 LiteralClass
 1. New scope is created
 2. Parent object is obtained (if not provided - Object)
@@ -219,24 +237,30 @@ Bool is evaluated
 6. Inheritance is registered
 7. Object table is set to the new scope contents
 8. Place class into outer scope
+
 ###### 8.2.4.3 LiteralDict
 Every key-value pair evaluated and put into dict.
 Quail will try to convert every key to string (8.2.2.9)
+
 ###### 8.2.4.4 LiteralFunction
 1. Arguments are initialized
 2. If current scope already contains a function with
    same name, evaluated function is treated as an
    alternative call to existing function
 3. Else - function is constructed and placed into scope
+
 ###### 8.2.4.5 LiteralLambda
 Function is created and returned
+
 ###### 8.2.4.6 LiteralList
-Every value is evaluated and added to list. List is 
-returned
+Every value is evaluated and added to list. List is returned
+
 ###### 8.2.4.7 LiteralNull
 Null is returned
+
 ###### 8.2.4.8 LiteralNum
 Number is returned
+
 ###### 8.2.4.9 LiteralStr
 String is returned
 
@@ -244,6 +268,7 @@ String is returned
 #### 8.2.5 Sections
 ###### 8.2.5.1 BlockNode
 Every node in block is evaluated one-by-one
+
 ###### 8.2.5.2 ForNode
 ###### 8.2.5.3 IfNode
 ###### 8.2.5.4 LoopStopNode
