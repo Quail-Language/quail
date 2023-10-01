@@ -4,8 +4,10 @@ public class TemplatedFile {
 
     private final String code;
     private final String name;
+    private final String filePackage;
 
-    public TemplatedFile(String name, String code) {
+    public TemplatedFile(String filePackage, String name, String code) {
+        this.filePackage = filePackage;
         this.code = code;
         this.name = name;
     }
@@ -16,6 +18,10 @@ public class TemplatedFile {
 
     public String getName() {
         return name;
+    }
+
+    public String getFilePackage() {
+        return filePackage;
     }
 
 }
