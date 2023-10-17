@@ -11,6 +11,7 @@
     <modules>
         <module>QuailRuntimeEnvironment</module>
         <module>QuailDevelopmentKit</module>
+        <module>QuailWebEnvironment</module>
     </modules>
 
     <properties>

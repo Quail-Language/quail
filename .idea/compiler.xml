@@ -10,5 +10,8 @@
         <module name="qre" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="qwe" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

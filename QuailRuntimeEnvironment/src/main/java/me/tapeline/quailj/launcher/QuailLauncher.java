@@ -3,6 +3,7 @@ package me.tapeline.quailj.launcher;
 import me.tapeline.quailj.GlobalFlags;
 import me.tapeline.quailj.docgen.DocumentationGenerator;
 import me.tapeline.quailj.io.DefaultIO;
+import me.tapeline.quailj.io.IO;
 import me.tapeline.quailj.lexing.Lexer;
 import me.tapeline.quailj.lexing.LexerException;
 import me.tapeline.quailj.lexing.Token;
@@ -115,6 +116,11 @@ public class QuailLauncher {
 
     public QObject launchWithAnonymousCode(String code, File scriptHome, String[] args)
             throws LauncherException, PreprocessorException, LexerException, ParserException {
+        return launchWithAnonymousCode(code, scriptHome, args, new DefaultIO());
+    }
+
+    public QObject launchWithAnonymousCode(String code, File scriptHome, String[] args, IO io)
+            throws LauncherException, PreprocessorException, LexerException, ParserException {
         LaunchCommandParser launchCommandParser = new LaunchCommandParser(args);
         launchCommandParser.parseReceivedArgs();
         localFlags = launchCommandParser.getUserFlags();
@@ -134,7 +140,7 @@ public class QuailLauncher {
         Parser parser = new Parser(preprocessedCode, tokens);
         BlockNode parsedCode = parser.parse();
 
-        Runtime runtime = new Runtime(parsedCode, preprocessedCode, scriptHome, new DefaultIO(), doProfile);
+        Runtime runtime = new Runtime(parsedCode, preprocessedCode, scriptHome, io, doProfile);
         QObject returnValue = QObject.Val(0);
         try {
             runtime.run(parsedCode, runtime.getMemory());

@@ -142,20 +142,20 @@ public class Templater {
                 TemplatedFile methodFile = template(method.getValue(), selectedPackage + "."
                     + className.toLowerCase(Locale.ROOT), className);
                 files.add(methodFile);
-                methodImports.append("import ").append(methodFile.getFilePackage()).append("+")
-                        .append(methodFile.getName()).append(";\n");
+                methodImports.append("import ").append(methodFile.getFilePackage()).append(".")
+                        .append(methodFile.getName(), 0, methodFile.getName().length() - 5).append(";\n");
                 tableCode.append("                            new Pair<>(\"")
                         .append(method.getKey()).append("\", new ")
                         .append(methodFile.getName(), 0, methodFile.getName().length() - 5)
-                        .append("(this),\n");
+                        .append("(runtime)),\n");
             }
             if (tableCode.toString().endsWith(",\n"))
                 tableCode.deleteCharAt(tableCode.lastIndexOf(",\n"));
             tableCode.append("                    ))");
 
             StringBuilder code = new StringBuilder();
-            code.append("package ").append(selectedPackage).append(";\n\n");
-            code.append("package ").append(selectedPackage).append(";\n\n");
+            code.append("package ").append(selectedPackage).append(".").append(className.toLowerCase())
+                    .append(";\n\n");
             code.append("import me.tapeline.quailj.runtime.Runtime;\n" +
                     "import me.tapeline.quailj.runtime.RuntimeStriker;\n" +
                     "import me.tapeline.quailj.runtime.Table;\n" +
@@ -214,7 +214,8 @@ public class Templater {
                     "    }\n" +
                     "\n" +
                     "}").replace("CLASS", prefix + className));
-            return new TemplatedFile(selectedPackage, prefix + className + ".java", code.toString());
+            return new TemplatedFile(selectedPackage + '.' + className.toLowerCase(),
+                    prefix + className + ".java", code.toString());
         }
         return null;
     }
