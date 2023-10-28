@@ -3,6 +3,7 @@ package me.tapeline.quailj.runtime.std.ji;
 import me.tapeline.quailj.runtime.std.ji.javaclass.JavaClass;
 import me.tapeline.quailj.runtime.std.ji.javaobject.JavaObject;
 import me.tapeline.quailj.typing.classes.*;
+import me.tapeline.quailj.typing.classes.utils.ObjectAdapter;
 import org.apache.commons.lang3.ClassUtils;
 
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public class Arg {
             return ((JavaClass) object).getClazz();
         } else if (object instanceof JavaObject) {
             return ((JavaObject) object).getObject();
+        } else if (object instanceof ObjectAdapter<?>) {
+            return ((ObjectAdapter<?>) object).getAdaptedObject();
         }
         return object;
     }
@@ -78,6 +81,8 @@ public class Arg {
             return Class.class;
         } else if (object instanceof JavaObject) {
             return ((JavaObject) object).getObject().getClass();
+        } else if (object instanceof ObjectAdapter<?>) {
+            return ((ObjectAdapter<?>) object).getAdaptedObject().getClass();
         }
         return object.getClass();
     }
