@@ -6,6 +6,9 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Stream;
@@ -46,8 +49,25 @@ public class Converter {
 
     private void loadSelectedClasses() throws ClassNotFoundException {
         System.out.println("Loading classes");
+        List<String> jarsToLoad = new ArrayList<>();
+        for (int i = 0; i < classesToConvert.length; i++) {
+            String[] parts = classesToConvert[i].split(":");
+            if (parts.length == 2) {
+                jarsToLoad.add(parts[0]);
+                classesToConvert[i] = parts[1];
+            }
+        }
+        URLClassLoader systemLoader = ((URLClassLoader) ClassLoader.getSystemClassLoader());
+        CustomClassLoader customClassLoader = new CustomClassLoader(systemLoader.getURLs());
+        jarsToLoad.forEach(jarPath -> {
+            try {
+                customClassLoader.addURL(new File(jarPath).toURI().toURL());
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+        });
         for (String name : classesToConvert) {
-            classesScope.add(Class.forName(name));
+            classesScope.add(customClassLoader.loadClass(name));
             System.out.println("Loaded " + name);
         }
     }

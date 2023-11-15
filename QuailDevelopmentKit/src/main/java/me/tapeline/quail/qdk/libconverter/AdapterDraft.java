@@ -63,6 +63,13 @@ public class AdapterDraft {
 
     private DraftedMethod draftMethod(Method method) {
         StringBuilder arguments = new StringBuilder();
+        if (!Modifier.isStatic(method.getModifiers()))
+            arguments.append("new FuncArgument(\n")
+                    .append("                                 \"this\",\n")
+                    .append("                                 QObject.Val(),\n")
+                    .append("                                 new int[0],\n")
+                    .append("                                 LiteralFunction.Argument.POSITIONAL\n")
+                    .append("                        ),\n                        ");
         for (Parameter parameter : method.getParameters()) {
             if (parameter.isImplicit()) {
                 arguments.append("new FuncArgument(\n")
@@ -73,22 +80,23 @@ public class AdapterDraft {
                         .append("),\n");
             } else {
                 arguments.append("new FuncArgument(\n")
-                        .append("        \"" + parameter.getName() + "\",\n")
-                        .append("        QObject.Val(),\n");
+                        .append("                                 \"" + parameter.getName() + "\",\n")
+                        .append("                                 QObject.Val(),\n");
 
-                arguments.append("       new int[] {")
+                arguments.append("                                 new int[] {")
                         .append(StringUtils.join(TemplateUtils.modifiersToStrings(
                                 new int[]{Utils.javaClassToModifier(parameter.getType())}
                         ), ", "))
                         .append("},\n");
                 if (parameter.isVarArgs())
-                    arguments.append("        LiteralFunction.Argument.POSITIONAL_CONSUMER\n");
+                    arguments.append("                                 LiteralFunction.Argument.POSITIONAL_CONSUMER\n");
                 else
-                    arguments.append("        LiteralFunction.Argument.POSITIONAL\n");
-                arguments.append("),\n");
+                    arguments.append("                                 LiteralFunction.Argument.POSITIONAL\n");
+                arguments.append("                        ),\n                         ");
             }
         }
-        if (arguments.toString().endsWith(",\n")) arguments.deleteCharAt(arguments.length() - 2);
+        if (arguments.toString().endsWith(",\n                         "))
+            arguments.deleteCharAt(arguments.length() - 27);
 
         StringBuilder code = new StringBuilder();
         code.append("import me.tapeline.quailj.parsing.nodes.literals.LiteralFunction;\n" +
@@ -109,14 +117,14 @@ public class AdapterDraft {
                 "\n" +
                 "    public " + getNameForMethod(method.getName()) + "(Runtime runtime, Memory closure) {\n");
         code.append("        super(\n")
-                .append("        \"" + method.getName()).append("\"\n")
-                .append("        " + "         Arrays.asList(\n")
-                .append("        " + arguments).append("\n")
-                .append("        " + "         ),\n")
-                .append("        " + "         runtime,\n")
-                .append("        " + "         closure,\n")
-                .append("        " + "         false\n")
-                .append("        " + ");\n");
+                .append("                \"" + method.getName()).append("\",\n")
+                .append("                Arrays.asList(\n")
+                .append("                        " + arguments).append("\n")
+                .append("                ),\n")
+                .append("                runtime,\n")
+                .append("                closure,\n")
+                .append("                false\n")
+                .append("        );\n");
         code.append("    }\n\n")
                 .append("    public " + getNameForMethod(method.getName()) + "(Runtime runtime) {\n")
                 .append("        this(runtime, runtime.getMemory());\n")
@@ -158,7 +166,7 @@ public class AdapterDraft {
                             ", "
                     ) + ");\n"
             );
-            code.append("        return QObject.Val();");
+            code.append("        return QObject.Val();\n");
         } else {
             code.append(
                     "        Object returnValue = thisObject." + method.getName() + "(" + StringUtils.join(
@@ -183,194 +191,6 @@ public class AdapterDraft {
         code.append("    }\n\n").append("}\n");
 
         return new DraftedMethod(method.getName(), getNameForMethod(method.getName()), code.toString());
-    }
-
-//    private DraftedMethod draftMethodL(Method method) {
-//        FunctionSourceGenerator constructor1 = FunctionSourceGenerator.create();
-//        constructor1.addModifier(Modifier.PUBLIC);
-//        constructor1.addParameter(VariableSourceGenerator.create(Runtime.class, "runtime"));
-//        constructor1.addParameter(VariableSourceGenerator.create(Memory.class, "closure"));
-//        StringBuilder arguments = new StringBuilder();
-//        for (Parameter parameter : method.getParameters()) {
-//            if (parameter.isImplicit()) {
-//                arguments.append("new FuncArgument(\n")
-//                        .append("        \"this\",\n")
-//                        .append("        QObject.Val(),\n")
-//                        .append("        new int[0],\n")
-//                        .append("        LiteralFunction.Argument.POSITIONAL\n")
-//                        .append("),\n");
-//            } else {
-//                arguments.append("new FuncArgument(\n")
-//                        .append("        \"" + parameter.getName() + "\",\n")
-//                        .append("        QObject.Val(),\n");
-//
-//                arguments.append("       new int[] {")
-//                        .append(StringUtils.join(TemplateUtils.modifiersToStrings(
-//                                new int[]{Utils.javaClassToModifier(parameter.getType())}
-//                        ), ", "))
-//                        .append("},\n");
-//                if (parameter.isVarArgs())
-//                    arguments.append("        LiteralFunction.Argument.POSITIONAL_CONSUMER\n");
-//                else
-//                    arguments.append("        LiteralFunction.Argument.POSITIONAL\n");
-//                arguments.append("),\n");
-//            }
-//        }
-//        if (arguments.toString().endsWith(",\n")) arguments.deleteCharAt(arguments.length() - 2);
-//        constructor1.addBodyCodeLine(
-//                "super(",
-//                "        \"" + method.getName() + "\",",
-//                "         Arrays.asList(",
-//                arguments.toString(),
-//                "         ),",
-//                "         runtime,",
-//                "         closure,",
-//                "         false",
-//                ");"
-//        );
-//
-//        FunctionSourceGenerator constructor2 = FunctionSourceGenerator.create();
-//        constructor2.addModifier(Modifier.PUBLIC);
-//        constructor2.addParameter(VariableSourceGenerator.create(Runtime.class, "runtime"));
-//        constructor2.addBodyCodeLine("this(runtime, runtime.getMemory());");
-//
-//        FunctionSourceGenerator func = FunctionSourceGenerator.create("action");
-//        func.useType(
-//                LiteralFunction.class,
-//                Runtime.class,
-//                ModifierConstants.class,
-//                QObject.class,
-//                FuncArgument.class,
-//                QBuiltinFunc.class,
-//                Memory.class,
-//                RuntimeStriker.class,
-//                Arrays.class,
-//                HashMap.class,
-//                List.class,
-//                QUnsuitableTypeException.class,
-//                QNotInitializedException.class,
-//                adaptingClass
-//        );
-//        func.setReturnType(QObject.class);
-//        func.addParameter(VariableSourceGenerator.create(Runtime.class, "runtime"));
-//        func.addParameter(VariableSourceGenerator.create(
-//                TypeDeclarationSourceGenerator.create(
-//                        GenericSourceGenerator.create(HashMap.class)
-//                                .expands(TypeDeclarationSourceGenerator.create(String.class))
-//                                .expands(TypeDeclarationSourceGenerator.create(QObject.class))
-//                ),
-//                "args")
-//        );
-//        func.addParameter(VariableSourceGenerator.create(
-//                TypeDeclarationSourceGenerator.create(
-//                        GenericSourceGenerator.create(List.class)
-//                                .expands(TypeDeclarationSourceGenerator.create(QObject.class))
-//                ),
-//                "argList")
-//        );
-//        func.addThrowable(TypeDeclarationSourceGenerator.create(RuntimeStriker.class));
-//        func.addBodyCodeLine(
-//                "if (!(args.get(\"this\") instanceof " + name + "))",
-//                "   runtime.error(new QUnsuitableTypeException(\"" + name + "\", args.get(\"this\")));",
-//                name + " thisObject = ((" + name + ") args.get(\"this\"));",
-//                "if (!thisObject.isInitialized())",
-//                "   runtime.error(new QNotInitializedException(\"" + name + "\"));"
-//        );
-//        for (Parameter parameter : method.getParameters()) {
-//            func.addBodyCodeLine(parameter.getType().getCanonicalName() + " arg" + StringUtils.capitalize(parameter.getName()) + ";");
-//            ValueRepresenter representer = ValueRepresenter.getRepresenterForType(
-//                    parameter.getParameterizedType());
-//            if (representer == null) {
-//                func.addBodyCodeLine("arg" + StringUtils.capitalize(parameter.getName()) + " = DEFINE_A_VALUE;");
-//            } else {
-//                ValueRepresenter.Result result = representer.convertToJava(
-//                        parameter.getParameterizedType(),
-//                        "arg" + StringUtils.capitalize(parameter.getName()),
-//                        parameter.getName()
-//                );
-//                func.useType(result.getImports());
-//                func.addBodyCodeLine(result.getResult());
-//            }
-//        }
-//        func.addBodyCodeLine(
-//                "thisObject." + method.getName() + "(" + StringUtils.join(
-//                        Arrays.stream(method.getParameters())
-//                                .map(p -> "arg" + StringUtils.capitalize(p.getName()))
-//                                .toArray(),
-//                        ", "
-//                ) + ");\n"
-//        );
-//        func.addModifier(Modifier.PUBLIC);
-//
-//        ClassSourceGenerator methodClass = ClassSourceGenerator.create(
-//                TypeDeclarationSourceGenerator.create(getNameForMethod(method.getName())));
-//        methodClass.addConstructor(constructor1, constructor2);
-//        methodClass.expands(QBuiltinFunc.class);
-//        methodClass.addMethod(func);
-//
-//        return new DraftedMethod(method.getName(), getNameForMethod(method.getName()), methodClass);
-//    }
-
-    private void draftClassL() {
-        List<String> methodInitializers = new ArrayList<>();
-        for (DraftedMethod method : draftedMethods)
-            methodInitializers.add("new Pair<>(\"" + method.getName() + "\", new " +
-                    method.getMethodClassName() + "(runtime))");
-        String prototypeTable = StringUtils.join(methodInitializers, ",\n");
-
-        FunctionSourceGenerator prototypeBuilder = FunctionSourceGenerator.create("prototype");
-        prototypeBuilder.addModifier(Modifier.STATIC);
-        prototypeBuilder.addModifier(Modifier.PUBLIC);
-        prototypeBuilder.setReturnType(getName());
-        prototypeBuilder.addParameter(VariableSourceGenerator.create(Runtime.class, "runtime"));
-        prototypeBuilder.addBodyCodeLine("if (prototype == null)");
-        prototypeBuilder.addBodyCodeLine("    prototype = new Event(");
-        prototypeBuilder.addBodyCodeLine("            new Table(Dict.make(");
-        prototypeBuilder.addBodyCodeLine(prototypeTable);
-        prototypeBuilder.addBodyCodeLine("            )),");
-        prototypeBuilder.addBodyCodeLine("            \"" + getName() + "\",");
-        prototypeBuilder.addBodyCodeLine("            FILL_THIS_IN,");
-        prototypeBuilder.addBodyCodeLine("            true");
-        prototypeBuilder.addBodyCodeLine("    );");
-        prototypeBuilder.addBodyCodeLine("return prototype;");
-
-        FunctionSourceGenerator constructor = FunctionSourceGenerator.create();
-        constructor.addModifier(Modifier.PUBLIC);
-        constructor.addParameter(VariableSourceGenerator.create(Table.class, "table"));
-        constructor.addParameter(VariableSourceGenerator.create(String.class, "className"));
-        constructor.addParameter(VariableSourceGenerator.create(QObject.class, "parent"));
-        constructor.addParameter(VariableSourceGenerator.create(boolean.class, "isPrototype"));
-        constructor.addBodyCodeLine("super(table, className, parent, isPrototype);");
-
-        ClassSourceGenerator classGenerator = ClassSourceGenerator.create(
-                TypeDeclarationSourceGenerator.create(getName()));
-
-        classGenerator.addOuterCodeLine("public static " + getName() + " prototype = null;");
-        classGenerator.addMethod(prototypeBuilder);
-        classGenerator.addConstructor(constructor);
-        classGenerator.setStaticInitializer(BodySourceGenerator.create().addCode(
-                ("@Override\n" +
-                        "    public QObject derive(Runtime runtime) throws RuntimeStriker {\n" +
-                        "        if (!isPrototype)\n" +
-                        "            runtime.error(\"Attempt to inherit from non-prototype value\");\n" +
-                        "        return new $$$(new Table(), className, this, false);\n" +
-                        "    }\n" +
-                        "\n" +
-                        "    @Override\n" +
-                        "    public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {\n" +
-                        "        if (!isPrototype)\n" +
-                        "            runtime.error(\"Attempt to inherit from non-prototype value\");\n" +
-                        "        return new $$$(new Table(), className, this, true);\n" +
-                        "    }\n" +
-                        "\n" +
-                        "    @Override\n" +
-                        "    public QObject copy() {\n" +
-                        "        QObject copy = new $$$(table, className, parent, isPrototype);\n" +
-                        "        copy.setInheritableFlag(isInheritable);\n" +
-                        "        return copy;\n" +
-                        "    }").replaceAll("\\$\\$\\$", getName())
-        ));
-        //draftedClass = classGenerator;
     }
 
     private void draftClass() {

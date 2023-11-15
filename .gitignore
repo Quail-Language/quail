@@ -31,3 +31,4 @@ replay_pid*
 /cloc.exe
 /target/
 /src/main/java/me/tapeline/quailj/parsing/Parser2L.java
+/gen-converted/

@@ -4,6 +4,8 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public interface ValueRepresenter {
@@ -29,16 +31,23 @@ public interface ValueRepresenter {
     Result convertToJava(Type type, String variableName, String value);
     Result convertFromJava(Type type, String variableName, String value);
 
+    static List<ValueRepresenter> loadedRepresenters = new ArrayList<>();
     static ValueRepresenter getRepresenterForType(Type type) {
-        Reflections reflections = new Reflections();
-        Set<Class<? extends ValueRepresenter>> subTypes = reflections.getSubTypesOf(ValueRepresenter.class);
-        for (Class<?> subType : subTypes) {
-            try {
-                ValueRepresenter representer = (ValueRepresenter) subType.getConstructor().newInstance();
-                if (representer.appliesTo(type)) return representer;
-            } catch (InstantiationException | InvocationTargetException | NoSuchMethodException |
-                     IllegalAccessException ignored) { }
+        if (loadedRepresenters.isEmpty()) {
+            Reflections reflections = new Reflections();
+            Set<Class<? extends ValueRepresenter>> subTypes = reflections.getSubTypesOf(ValueRepresenter.class);
+            for (Class<?> subType : subTypes) {
+                try {
+                    ValueRepresenter representer = (ValueRepresenter) subType.getConstructor().newInstance();
+                    loadedRepresenters.add(representer);
+                } catch (InstantiationException | InvocationTargetException | NoSuchMethodException |
+                         IllegalAccessException ignored) {
+                }
+            }
         }
+        for (ValueRepresenter representer : loadedRepresenters)
+            if (representer.appliesTo(type))
+                return representer;
         return null;
     }
 

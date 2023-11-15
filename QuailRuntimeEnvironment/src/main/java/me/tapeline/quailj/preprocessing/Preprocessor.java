@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Preprocessor {
-    // TODO Test and fix aliases
     public static final List<AbstractDirective> registeredDirectives = new ArrayList<>();
 
     public static void resetDirectives() {

@@ -12,6 +12,8 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -49,7 +51,7 @@ public class Main {
         System.out.println("    templateBuiltIns <quail file.q> <package> <prefix> <target folder>");
         System.out.println("    | Creates templates for Java-implemented functions \n" +
                            "    | based on given quail file");
-        System.out.println("    convert <com.pkg.Class1;org.xyz.Class2...> <package> <prefix> <target folder>");
+        System.out.println("    convert <com.pkg.C1;lib.jar:org.xyz.C2...> <package> <prefix> <target folder>");
         System.out.println("    | Creates templates for Java-implemented Quail classes and methods based\n" +
                            "    | on given Java classes");
         System.exit(0);
