@@ -489,10 +489,16 @@ public class Runtime {
             AssignNode thisNode = (AssignNode) node;
             QObject value = run(thisNode.value, scope);
             VariableNode variable = (VariableNode) thisNode.variable;
-            if (scope.contains(variable.name))
+            if (scope.contains(variable.name) && !ModifierConstants.isLocal(variable.accessModifiers))
                 scope.set(this, variable.name, value);
-            else
-                scope.set(variable.name, value, variable.modifiers);
+            else {
+                if (!ModifierConstants.matchesOnAssign(variable.modifiers, value))
+                    error("Attempt to assign wrong data type to clarified variable");
+                int[] modifiers = variable.modifiers.clone();
+                if (modifiers.length > 0 && ModifierConstants.isFinal(variable.accessModifiers))
+                    modifiers[0] |= ModifierConstants.FINAL_ASSIGNED;
+                scope.set(variable.name, value, modifiers);
+            }
             if (doProfile) end(node);
             return value;
         } else if (node instanceof BinaryOperatorNode) {
@@ -1083,6 +1089,8 @@ public class Runtime {
             } catch (RuntimeStriker striker) {
                 if (striker.getType() != RuntimeStriker.Type.EXCEPTION) {
                     if (doProfile) end(node);
+                    if (striker.getType() == RuntimeStriker.Type.RETURN)
+                        throw striker;
                     return Val();
                 }
                 QObject error = striker.getCarryingError();

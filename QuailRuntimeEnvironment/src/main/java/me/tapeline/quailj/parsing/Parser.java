@@ -442,7 +442,7 @@ public class Parser {
     }
 
     private Node applyDecorations(List<Decoration> decorations, Node target) {
-        if (decorations.size() < 1) return target;
+        if (decorations.isEmpty()) return target;
         decorations = new ArrayList<>(decorations);
         Collections.reverse(decorations);
         String name = null;
@@ -1216,44 +1216,52 @@ public class Parser {
 
     private Node parseModifiers(ParsingPolicy policy) throws ParserException {
         List<Integer> modifiers = null;
-        int currentModifier = ModifierConstants.UNCLARIFIED;
+        int currentModifier;
         do {
+            currentModifier = ModifierConstants.UNCLARIFIED;
+            do {
+                Integer parsedModifier = parseModifier();
+                if (parsedModifier == null) return null;
+                currentModifier |= parsedModifier;
+                if (match(LPAR) != null) {
+                    Token parent = getPrevious();
+                    Node expr = parseExpression(null);
+                    require(RPAR);
+                    return new TypecastNode(parent, currentModifier, expr);
+                }
+                if (forseePattern(VAR, LPAR)) {
+                    Token functionName = require(VAR);
+                    List<Node> args = parseArgs(null, true);
+                    Node statement = parseStatement();
+                    LiteralFunction function = new LiteralFunction(
+                            functionName,
+                            functionName.getLexeme(),
+                            convertDefinedArguments(args),
+                            statement,
+                            IntFlags.check(currentModifier, ModifierConstants.STATIC)
+                    );
+                    function.funcModifier = currentModifier;
+                    return function;
+                }
+                if (forseeToken(VAR)) {
+                    int[] modifiersArray;
+                    if (modifiers != null) {
+                        modifiersArray = new int[modifiers.size() + 1];
+                        for (int i = 0; i < modifiers.size(); i++)
+                            if (modifiers.get(i) == null)
+                                error("(INTERNAL) Unexpected null modifiers.get(i) at " +
+                                        "parseModifiers->do-while->if forseeToken(VAR)");
+                            else
+                                modifiersArray[i] = modifiers.get(i);
+                        modifiersArray[modifiers.size()] = currentModifier;
+                    } else
+                        modifiersArray = new int[] {currentModifier};
+                    return new IncompleteModifierNode(modifiersArray);
+                }
+            } while (!forseeToken(PILLAR));
             if (modifiers == null) modifiers = new ArrayList<>();
-            Integer parsedModifier = parseModifier();
-            if (parsedModifier == null) return null;
-            currentModifier |= parsedModifier;
             modifiers.add(currentModifier);
-            if (match(LPAR) != null) {
-                Token parent = getPrevious();
-                Node expr = parseExpression(null);
-                require(RPAR);
-                return new TypecastNode(parent, currentModifier, expr);
-            }
-            if (forseePattern(VAR, LPAR)) {
-                Token functionName = require(VAR);
-                List<Node> args = parseArgs(null, true);
-                Node statement = parseStatement();
-                LiteralFunction function = new LiteralFunction(
-                        functionName,
-                        functionName.getLexeme(),
-                        convertDefinedArguments(args),
-                        statement,
-                        IntFlags.check(currentModifier, ModifierConstants.STATIC)
-                );
-                function.funcModifier = currentModifier;
-                return function;
-            }
-            if (forseeToken(VAR)) {
-                int[] modifiersArray = new int[modifiers.size()];
-                for (int i = 0; i < modifiersArray.length; i++)
-                    if (modifiers.get(i) == null)
-                        error("(INTERNAL) Unexpected null modifiers.get(i) at " +
-                                "parseModifiers->do-while->if forseeToken(VAR)");
-                    else
-                        modifiersArray[i] = modifiers.get(i);
-                return new IncompleteModifierNode(modifiersArray);
-            }
-        } while (match(PILLAR) == null);
+        } while (match(PILLAR) != null);
         return null;
     }
 

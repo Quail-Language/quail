@@ -22,10 +22,11 @@ public class ModifierConstants {
     public static final int FINAL_ASSIGNED = 16384;
 
     public static boolean matchesOnAssign(int[] flags, QObject value) {
+        if (flags == null || flags.length == 0) return true;
         for (int flag : flags)
-            if (!matchesOnAssign(flag, value))
-                return false;
-        return true;
+            if (matchesOnAssign(flag, value))
+                return true;
+        return false;
     }
 
     @SuppressWarnings("RedundantIfStatement")
@@ -50,6 +51,18 @@ public class ModifierConstants {
             else if (IntFlags.check(flag, NULL) || IntFlags.check(flag, VOID))
                 return true;
         return true;
+    }
+
+    public static boolean isLocal(int flags) {
+        return (flags & LOCAL) == LOCAL;
+    }
+
+    public static boolean isFinal(int flags) {
+        return (flags & FINAL) == FINAL;
+    }
+
+    public static boolean isFinalAndAssigned(int flags) {
+        return (flags & FINAL_ASSIGNED) == FINAL_ASSIGNED;
     }
 
     public static void main(String[] args) {

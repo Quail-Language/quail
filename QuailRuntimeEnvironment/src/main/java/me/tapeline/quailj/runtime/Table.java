@@ -28,6 +28,8 @@ public class Table {
         if (modifiers.containsKey(name) && modifiers.get(name).length > 0) {
             int[] modifier = modifiers.get(name);
             boolean hadMatch = false;
+            if (ModifierConstants.isFinalAndAssigned(modifier[0]))
+                runtime.error("Attempt to assign data to finalized variable");
             if (modifier.length == 1) hadMatch = ModifierConstants.matchesOnAssign(modifier[0], value);
             else for (Integer flags : modifier)
                if (ModifierConstants.matchesOnAssign(flags, value)) {
@@ -36,6 +38,8 @@ public class Table {
                 }
             if (!hadMatch)
                 runtime.error("Attempt to assign wrong data to clarified variable");
+            if (ModifierConstants.isFinal(modifier[0]))
+                modifier[0] |= ModifierConstants.FINAL_ASSIGNED;
             values.put(name, value);
         } else {
             values.put(name, value);
