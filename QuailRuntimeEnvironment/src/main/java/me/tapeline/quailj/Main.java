@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         QuailLauncher launcher = new QuailLauncher();
         QObject returnValue = launcher.launchAndHandleErrors(args);
-        if (returnValue != null)
+        if (returnValue != null && GlobalFlags.displayReturnValue)
             System.out.println("Script finished with result " + returnValue);
     }
 

@@ -33,14 +33,19 @@ public class QuailLauncher {
 
     private HashMap<String, Object> localFlags;
 
+    private boolean parseBoolFlag(String flag) {
+        return flag.equalsIgnoreCase("true") ||
+                flag.equalsIgnoreCase("1") ||
+                flag.equalsIgnoreCase("enable");
+    }
+
     private void setupGlobalFlags(HashMap<String, Object> flags) {
         if (flags.containsKey("encoding"))
             GlobalFlags.encoding = flags.get("encoding").toString();
         if (flags.containsKey("ignoreDocs"))
-            GlobalFlags.ignoreDocs =
-                    flags.get("ignoreDocs").toString().equalsIgnoreCase("true") ||
-                    flags.get("ignoreDocs").toString().equalsIgnoreCase("1") ||
-                    flags.get("ignoreDocs").toString().equalsIgnoreCase("enable");
+            GlobalFlags.ignoreDocs = parseBoolFlag(flags.get("ignoreDocs").toString());
+        if (flags.containsKey("displayReturnValue"))
+            GlobalFlags.displayReturnValue = parseBoolFlag(flags.get("displayReturnValue").toString());
     }
 
     public QObject launch(String[] args) throws IOException, PreprocessorException,
