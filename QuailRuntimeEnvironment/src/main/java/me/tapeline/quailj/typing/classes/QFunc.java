@@ -111,7 +111,7 @@ public class QFunc extends QObject {
                           Node code, List<QObject> args) throws RuntimeStriker {
         try {
             runtime.run(code, enclosing);
-            if (name.equals("_constructor") && args.size() > 0)
+            if (name.equals("_constructor") && !args.isEmpty())
                 return args.get(0);
         } catch (RuntimeStriker striker) {
             if (striker.getType() == RuntimeStriker.Type.RETURN) {

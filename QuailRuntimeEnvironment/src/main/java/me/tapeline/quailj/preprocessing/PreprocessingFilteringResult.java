@@ -4,7 +4,7 @@ import java.util.List;
 
 public class PreprocessingFilteringResult {
 
-    private List<String> directives;
+    private final List<String> directives;
     private final String filteredCode;
 
     public PreprocessingFilteringResult(List<String> directives, String filteredCode) {

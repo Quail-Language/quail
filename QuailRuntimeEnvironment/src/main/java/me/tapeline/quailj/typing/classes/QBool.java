@@ -66,4 +66,38 @@ public class QBool extends QObject {
         return Boolean.toString(value);
     }
 
+    @Override
+    public QObject not(Runtime runtime) {
+        return value? QBool.globalFalse : QBool.globalTrue;
+    }
+
+    @Override
+    public QObject convertToString(Runtime runtime) {
+        return Val(toString());
+    }
+
+    @Override
+    public QObject convertToBool(Runtime runtime) {
+        return this;
+    }
+
+    @Override
+    public QObject convertToNumber(Runtime runtime) {
+        return value? Val(1) : Val(0);
+    }
+
+    @Override
+    public QObject and(Runtime runtime, QObject other) throws RuntimeStriker {
+        if (other.isBool())
+            return Val(value && ((QBool) other).value);
+        return super.and(runtime, other);
+    }
+
+    @Override
+    public QObject or(Runtime runtime, QObject other) throws RuntimeStriker {
+        if (other.isBool())
+            return Val(value || other.boolValue());
+        return super.or(runtime, other);
+    }
+
 }

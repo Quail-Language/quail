@@ -7,11 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class Converter {
 
@@ -22,15 +20,15 @@ public class Converter {
     // v  Generate code
     // v  Save code
 
-    private String[] classesToConvert;
-    private File outputFolder;
-    private String targetPackage;
-    private String classPrefix;
-    private HashMap<Class<?>, Class<?>[]> usedClasses = new HashMap<>();
+    private final String[] classesToConvert;
+    private final File outputFolder;
+    private final String targetPackage;
+    private final String classPrefix;
+    private final HashMap<Class<?>, Class<?>[]> usedClasses = new HashMap<>();
 
-    private HashSet<Class<?>> classesScope = new HashSet<>();
-    private List<AdapterDraft> drafts = new ArrayList<>();
-    private List<TemplatedFile> templatedFiles = new ArrayList<>();
+    private final HashSet<Class<?>> classesScope = new HashSet<>();
+    private final List<AdapterDraft> drafts = new ArrayList<>();
+    private final List<TemplatedFile> templatedFiles = new ArrayList<>();
 
     public Converter(String[] classesToConvert, File outputFolder, String targetPackage, String classPrefix) {
         this.classesToConvert = classesToConvert;

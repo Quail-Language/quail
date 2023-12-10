@@ -9,7 +9,6 @@ import me.tapeline.quailj.typing.utils.FuncArgument;
 import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 import me.tapeline.quailj.runtime.RuntimeStriker;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;

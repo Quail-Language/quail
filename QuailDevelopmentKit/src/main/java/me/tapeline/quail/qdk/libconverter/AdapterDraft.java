@@ -2,20 +2,7 @@ package me.tapeline.quail.qdk.libconverter;
 
 import me.tapeline.quail.qdk.templater.TemplateUtils;
 import me.tapeline.quail.qdk.templater.TemplatedFile;
-import me.tapeline.quailj.parsing.nodes.literals.LiteralFunction;
-import me.tapeline.quailj.runtime.Memory;
-import me.tapeline.quailj.runtime.Runtime;
-import me.tapeline.quailj.runtime.RuntimeStriker;
-import me.tapeline.quailj.runtime.Table;
-import me.tapeline.quailj.typing.classes.QObject;
-import me.tapeline.quailj.typing.classes.errors.QNotInitializedException;
-import me.tapeline.quailj.typing.classes.errors.QUnsuitableTypeException;
-import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
-import me.tapeline.quailj.typing.modifiers.ModifierConstants;
-import me.tapeline.quailj.typing.utils.FuncArgument;
 import org.apache.commons.lang3.StringUtils;
-import org.burningwave.core.classes.*;
-import org.reflections.Reflections;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -24,11 +11,11 @@ import java.util.*;
 
 public class AdapterDraft {
 
-    private Class<?> adaptingClass;
-    private String name;
+    private final Class<?> adaptingClass;
+    private final String name;
     private String[] usedDrafts;
-    private List<DraftedMethod> draftedMethods = new ArrayList<>();
-    private List<TemplatedFile> resultingFiles = new ArrayList<>();
+    private final List<DraftedMethod> draftedMethods = new ArrayList<>();
+    private final List<TemplatedFile> resultingFiles = new ArrayList<>();
     private String draftedClass;
 
     public AdapterDraft(Class<?> adaptingClass, String name, String[] usedDrafts) {
@@ -79,8 +66,7 @@ public class AdapterDraft {
                         .append("        LiteralFunction.Argument.POSITIONAL\n")
                         .append("),\n");
             } else {
-                arguments.append("new FuncArgument(\n")
-                        .append("                                 \"" + parameter.getName() + "\",\n")
+                arguments.append("new FuncArgument(\n").append("                                 \"").append(parameter.getName()).append("\",\n")
                         .append("                                 QObject.Val(),\n");
 
                 arguments.append("                                 new int[] {")
@@ -99,53 +85,27 @@ public class AdapterDraft {
             arguments.deleteCharAt(arguments.length() - 27);
 
         StringBuilder code = new StringBuilder();
-        code.append("import me.tapeline.quailj.parsing.nodes.literals.LiteralFunction;\n" +
-                "import me.tapeline.quailj.runtime.Runtime;\n" +
-                "import me.tapeline.quailj.runtime.RuntimeStriker;\n" +
-                "import me.tapeline.quailj.typing.classes.QObject;\n" +
-                "import me.tapeline.quailj.typing.classes.errors.QUnsuitableTypeException;\n" +
-                "import me.tapeline.quailj.typing.classes.errors.QNotInitializedException;\n" +
-                "import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;\n" +
-                "import me.tapeline.quailj.typing.utils.FuncArgument;\n" +
-                "\n" +
-                "import java.util.Arrays;\n" +
-                "import java.util.HashMap;\n" +
-                "import java.util.List;\n" +
-                "\n" +
-                "public class " + getNameForMethod(method.getName()) + " extends QBuiltinFunc {\n" +
-                "\n" +
-                "\n" +
-                "    public " + getNameForMethod(method.getName()) + "(Runtime runtime, Memory closure) {\n");
-        code.append("        super(\n")
-                .append("                \"" + method.getName()).append("\",\n")
-                .append("                Arrays.asList(\n")
-                .append("                        " + arguments).append("\n")
+        code.append("import me.tapeline.quailj.parsing.nodes.literals.LiteralFunction;\n" + "import me.tapeline.quailj.runtime.Runtime;\n" + "import me.tapeline.quailj.runtime.RuntimeStriker;\n" + "import me.tapeline.quailj.typing.classes.QObject;\n" + "import me.tapeline.quailj.typing.classes.errors.QUnsuitableTypeException;\n" + "import me.tapeline.quailj.typing.classes.errors.QNotInitializedException;\n" + "import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;\n" + "import me.tapeline.quailj.typing.utils.FuncArgument;\n" + "\n" + "import java.util.Arrays;\n" + "import java.util.HashMap;\n" + "import java.util.List;\n" + "\n" + "public class ").append(getNameForMethod(method.getName())).append(" extends QBuiltinFunc {\n").append("\n").append("\n").append("    public ").append(getNameForMethod(method.getName())).append("(Runtime runtime, Memory closure) {\n");
+        code.append("        super(\n").append("                \"").append(method.getName()).append("\",\n")
+                .append("                Arrays.asList(\n").append("                        ").append(arguments).append("\n")
                 .append("                ),\n")
                 .append("                runtime,\n")
                 .append("                closure,\n")
                 .append("                false\n")
                 .append("        );\n");
-        code.append("    }\n\n")
-                .append("    public " + getNameForMethod(method.getName()) + "(Runtime runtime) {\n")
+        code.append("    }\n\n").append("    public ").append(getNameForMethod(method.getName())).append("(Runtime runtime) {\n")
                 .append("        this(runtime, runtime.getMemory());\n")
                 .append("    }\n\n");
         code.append("    @Override\n" +
                 "    public QObject action(Runtime runtime, HashMap<String, QObject> args, " +
                 "List<QObject> argList) throws RuntimeStriker {\n");
-        code.append(
-                "        if (!(args.get(\"this\") instanceof " + name + "))\n" +
-                "           runtime.error(new QUnsuitableTypeException(\"" + name + "\", args.get(\"this\")));\n" +
-                "        " + name + " thisObject = ((" + name + ") args.get(\"this\"));\n" +
-                "        if (!thisObject.isInitialized())\n" +
-                "           runtime.error(new QNotInitializedException(\"" + name + "\"));\n"
-        );
+        code.append("        if (!(args.get(\"this\") instanceof ").append(name).append("))\n").append("           runtime.error(new QUnsuitableTypeException(\"").append(name).append("\", args.get(\"this\")));\n").append("        ").append(name).append(" thisObject = ((").append(name).append(") args.get(\"this\"));\n").append("        if (!thisObject.isInitialized())\n").append("           runtime.error(new QNotInitializedException(\"").append(name).append("\"));\n");
         for (Parameter parameter : method.getParameters()) {
-            code.append("        ").append(parameter.getType().getCanonicalName() + " arg" +
-                    StringUtils.capitalize(parameter.getName()) + ";\n");
+            code.append("        ").append(parameter.getType().getCanonicalName()).append(" arg").append(StringUtils.capitalize(parameter.getName())).append(";\n");
             ValueRepresenter representer = ValueRepresenter.getRepresenterForType(
                     parameter.getParameterizedType());
             if (representer == null) {
-                code.append("        arg" + StringUtils.capitalize(parameter.getName()) + " = DEFINE_A_VALUE;\n");
+                code.append("        arg").append(StringUtils.capitalize(parameter.getName())).append(" = DEFINE_A_VALUE;\n");
             } else {
                 ValueRepresenter.Result result = representer.convertToJava(
                         parameter.getParameterizedType(),
@@ -158,24 +118,20 @@ public class AdapterDraft {
             }
         }
         if (method.getReturnType().equals(Void.class) || method.getReturnType().equals(void.class)) {
-            code.append(
-                    "        thisObject." + method.getName() + "(" + StringUtils.join(
-                            Arrays.stream(method.getParameters())
-                                    .map(p -> "arg" + StringUtils.capitalize(p.getName()))
-                                    .toArray(),
-                            ", "
-                    ) + ");\n"
-            );
+            code.append("        thisObject.").append(method.getName()).append("(").append(StringUtils.join(
+                    Arrays.stream(method.getParameters())
+                            .map(p -> "arg" + StringUtils.capitalize(p.getName()))
+                            .toArray(),
+                    ", "
+            )).append(");\n");
             code.append("        return QObject.Val();\n");
         } else {
-            code.append(
-                    "        Object returnValue = thisObject." + method.getName() + "(" + StringUtils.join(
-                            Arrays.stream(method.getParameters())
-                                    .map(p -> "arg" + StringUtils.capitalize(p.getName()))
-                                    .toArray(),
-                            ", "
-                    ) + ");\n"
-            );
+            code.append("        Object returnValue = thisObject.").append(method.getName()).append("(").append(StringUtils.join(
+                    Arrays.stream(method.getParameters())
+                            .map(p -> "arg" + StringUtils.capitalize(p.getName()))
+                            .toArray(),
+                    ", "
+            )).append(");\n");
             code.append("        QObject returnQValue;\n");
             ValueRepresenter representer = ValueRepresenter.getRepresenterForType(method.getGenericReturnType());
             if (representer != null) {
@@ -205,9 +161,9 @@ public class AdapterDraft {
         prototypeBuilder.append("        if (prototype == null)\n");
         prototypeBuilder.append("            prototype = new Event(\n");
         prototypeBuilder.append("                    new Table(Dict.make(\n");
-        prototypeBuilder.append("                            " + prototypeTable + "\n");
+        prototypeBuilder.append("                            ").append(prototypeTable).append("\n");
         prototypeBuilder.append("                    )),\n");
-        prototypeBuilder.append("                    \"" + getName() + "\",\n");
+        prototypeBuilder.append("                    \"").append(getName()).append("\",\n");
         prototypeBuilder.append("                    FILL_THIS_IN,\n");
         prototypeBuilder.append("                    true\n");
         prototypeBuilder.append("            );\n");

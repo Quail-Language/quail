@@ -189,7 +189,7 @@ public class Preprocessor {
         String code = this.code;
         while (true) {
             PreprocessingFilteringResult result = filterDirectives(code);
-            if (result.getDirectives().size() == 0) break;
+            if (result.getDirectives().isEmpty()) break;
             code = result.getFilteredCode();
             StringBoundariesMap boundaries = resolveStringBoundaries(result.getFilteredCode());
             List<ScannedDirective> directives = parseDirectives(result.getDirectives());

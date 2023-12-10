@@ -36,8 +36,7 @@ public class FuncSum extends QBuiltinFunc {
         List<QObject> values = args.get("values").listValue();
         int count = values.size();
         double sum = 0;
-        for (int i = 0; i < count; i++) {
-            QObject val = values.get(i);
+        for (QObject val : values) {
             if (!val.isNum()) runtime.error("Cannot find max among non-num values: " + val);
             sum += val.numValue();
         }

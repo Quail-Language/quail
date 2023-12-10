@@ -1,7 +1,6 @@
 package me.tapeline.quailj.runtime.std.fs;
 
 import me.tapeline.quailj.runtime.Runtime;
-import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.runtime.librarymanagement.BuiltinLibrary;
 import me.tapeline.quailj.typing.classes.QObject;
 

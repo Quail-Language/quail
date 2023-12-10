@@ -10,7 +10,6 @@ import me.tapeline.quailj.typing.modifiers.ModifierConstants;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;

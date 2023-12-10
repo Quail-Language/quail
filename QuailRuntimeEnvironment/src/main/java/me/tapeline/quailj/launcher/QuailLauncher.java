@@ -113,7 +113,6 @@ public class QuailLauncher {
 
         throw new LauncherException("Invalid mode " + mode);
     }
-
     public QObject launchWithAnonymousCode(String code, File scriptHome, String[] args)
             throws LauncherException, PreprocessorException, LexerException, ParserException {
         return launchWithAnonymousCode(code, scriptHome, args, new DefaultIO());

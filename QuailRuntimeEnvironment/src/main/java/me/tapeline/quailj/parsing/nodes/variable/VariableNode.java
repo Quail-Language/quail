@@ -2,9 +2,6 @@ package me.tapeline.quailj.parsing.nodes.variable;
 
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.parsing.nodes.Node;
-import me.tapeline.quailj.typing.modifiers.ModifierConstants;
-
-import java.awt.image.PackedColorModel;
 
 public class VariableNode extends Node {
 

@@ -1,15 +1,8 @@
 package me.tapeline.quailj.test.runtime.caching;
 
-import me.tapeline.quailj.runtime.Runtime;
-import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.runtime.std.ji.javaobject.FieldCache;
-import me.tapeline.quailj.typing.classes.*;
-import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
-import me.tapeline.quailj.typing.utils.FuncArgument;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.*;
 
 public class CacheTests {
 

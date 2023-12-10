@@ -147,7 +147,7 @@ public class JavaClass extends QObject {
             if (method.getName().equals(name))
                 foundMethods.add(method);
         }
-        if (foundMethods.size() > 0) {
+        if (!foundMethods.isEmpty()) {
             return new JavaMethod(
                     clazz,
                     null,

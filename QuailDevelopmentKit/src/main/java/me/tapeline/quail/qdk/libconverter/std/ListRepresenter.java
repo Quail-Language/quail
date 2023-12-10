@@ -1,15 +1,12 @@
 package me.tapeline.quail.qdk.libconverter.std;
 
 import me.tapeline.quail.qdk.libconverter.ValueRepresenter;
-import me.tapeline.quailj.typing.classes.QObject;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ListRepresenter implements ValueRepresenter {
 

@@ -13,8 +13,8 @@ import java.util.*;
 
 public class TypeSystemTests {
 
-    public Memory memory = new Memory();
-    public Runtime runtime = new Runtime();
+    public final Memory memory = new Memory();
+    public final Runtime runtime = new Runtime();
 
     @Test
     public void builtinTypesInitialization() {

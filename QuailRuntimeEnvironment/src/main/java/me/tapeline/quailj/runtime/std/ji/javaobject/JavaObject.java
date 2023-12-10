@@ -11,7 +11,6 @@ import me.tapeline.quailj.typing.classes.QObject;
 import me.tapeline.quailj.utils.Dict;
 import me.tapeline.quailj.utils.Pair;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.apache.commons.lang3.reflect.MethodUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -36,10 +35,10 @@ public class JavaObject extends QObject {
     }
 
     private Object object;
-    protected FieldCache fieldCache = new FieldCache(GlobalFlags.jiFieldCacheSize);
-    protected Set<String> fieldNames = new HashSet<>();
-    protected Set<String> methodNames = new HashSet<>();
-    protected MethodCache methodCache = new MethodCache(GlobalFlags.jiMethodCacheSize);
+    protected final FieldCache fieldCache = new FieldCache(GlobalFlags.jiFieldCacheSize);
+    protected final Set<String> fieldNames = new HashSet<>();
+    protected final Set<String> methodNames = new HashSet<>();
+    protected final MethodCache methodCache = new MethodCache(GlobalFlags.jiMethodCacheSize);
 
     public Object getObject() {
         return object;

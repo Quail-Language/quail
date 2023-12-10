@@ -136,7 +136,7 @@ public class QDict extends QObject {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("{");
-        if (values.size() == 0)
+        if (values.isEmpty())
             return sb.append("}").toString();
         int i = 0;
         for (Map.Entry<String, QObject> entry : values.entrySet()) {

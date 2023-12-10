@@ -42,7 +42,7 @@ public class EventManagerFuncHandleEvents extends QBuiltinFunc {
         if (thisManager.eventHandlers == null || thisManager.eventQueue == null)
             runtime.error(new EventManagerNotInitializedException());
 
-        while (thisManager.eventQueue.size() > 0) {
+        while (!thisManager.eventQueue.isEmpty()) {
             Event event = thisManager.eventQueue.remove();
             String eventName = event.get("name").strValue();
             if (!thisManager.eventHandlers.containsKey(eventName))

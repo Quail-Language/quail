@@ -11,8 +11,8 @@ import java.util.Set;
 public interface ValueRepresenter {
 
     class Result {
-        private String result;
-        private Class<?>[] imports;
+        private final String result;
+        private final Class<?>[] imports;
 
         public Result(String result, Class<?>[] imports) {
             this.result = result;
@@ -31,7 +31,7 @@ public interface ValueRepresenter {
     Result convertToJava(Type type, String variableName, String value);
     Result convertFromJava(Type type, String variableName, String value);
 
-    static List<ValueRepresenter> loadedRepresenters = new ArrayList<>();
+    List<ValueRepresenter> loadedRepresenters = new ArrayList<>();
     static ValueRepresenter getRepresenterForType(Type type) {
         if (loadedRepresenters.isEmpty()) {
             Reflections reflections = new Reflections();

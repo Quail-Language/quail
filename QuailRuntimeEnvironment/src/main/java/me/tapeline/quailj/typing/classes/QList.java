@@ -214,7 +214,7 @@ public class QList extends QObject {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[");
-        if (values.size() == 0)
+        if (values.isEmpty())
             return sb.append("]").toString();
         for (int i = 0; i < values.size(); i++)
             if (i + 1 == values.size())
@@ -222,6 +222,11 @@ public class QList extends QObject {
             else
                 sb.append(values.get(i).toString()).append(", ");
         return sb.toString();
+    }
+
+    @Override
+    public QObject convertToString(Runtime runtime) throws RuntimeStriker {
+        return Val(toString());
     }
 
 }

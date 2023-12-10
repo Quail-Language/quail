@@ -6,12 +6,13 @@ import me.tapeline.quailj.typing.classes.QObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class QListUtils {
 
     public static List<QObject> multiply(List<QObject> values, int value) {
         List<QObject> v = new ArrayList<>();
-        for (int i = 0; i < value; i++) v.addAll(values);
+        for (int i = 0; i < value; i++) v.addAll(values.stream().map(QObject::copy).collect(Collectors.toList()));
         return v;
     }
 

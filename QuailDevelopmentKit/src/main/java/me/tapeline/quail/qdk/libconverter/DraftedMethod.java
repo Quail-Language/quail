@@ -1,13 +1,11 @@
 package me.tapeline.quail.qdk.libconverter;
 
-import org.burningwave.core.classes.ClassSourceGenerator;
-
 public class DraftedMethod {
 
-    private String name;
-    private String methodClassName;
+    private final String name;
+    private final String methodClassName;
     //private ClassSourceGenerator generator;
-    private String code;
+    private final String code;
 
     public DraftedMethod(String name, String methodClassName, String code) {
         this.name = name;

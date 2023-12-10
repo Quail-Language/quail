@@ -113,14 +113,14 @@ public class DocumentationGenerator {
                 tocEntries.add(((DocTOCNode) node));
         }
         StringBuilder sb = new StringBuilder();
-        if (docBadges.size() != 0) {
+        if (!docBadges.isEmpty()) {
             sb.append("<p>");
             for (DocBadgeNode badge : docBadges)
                 sb.append("<span class=\"badge bg-").append(colorAssociations.get(badge.badgeColor))
                         .append("\">").append(badge.badgeString).append("</span>");
             sb.append("</p>");
         }
-        if (docStrings.size() != 0) {
+        if (!docStrings.isEmpty()) {
             sb.append("<p>");
             for (String docString : docStrings)
                 sb.append(docString).append("<br>");
@@ -158,7 +158,7 @@ public class DocumentationGenerator {
             sb.append(compileAllDocNodes(classNode.initialize));
             sb.append("<div class=\"m-3\"></div>");
             sb.append("<h6>Fields</h6>");
-            if (classNode.contents.size() == 0)
+            if (classNode.contents.isEmpty())
                 sb.append("<div class=\"ps-3\"><p>None</p></div>");
             else {
                 sb.append("<ul class=\"ps-3\">");
@@ -168,7 +168,7 @@ public class DocumentationGenerator {
             }
 
             sb.append("<h6>Methods</h6><div class=\"ps-3\">");
-            if (classNode.methods.size() == 0)
+            if (classNode.methods.isEmpty())
                 sb.append("<p>None</p></div>");
             else {
                 classNode.methods.entrySet()

@@ -558,8 +558,10 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        runtime.error(new QUnsupportedOperationException(this, "or", other));
-        return Val();
+        if (isNull())
+            return other;
+        else
+            return this;
     }
 
     public QObject index(Runtime runtime, QObject index) throws RuntimeStriker {

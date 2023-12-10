@@ -1,7 +1,6 @@
 package me.tapeline.quailj.runtime.std.ji;
 
 import me.tapeline.quailj.runtime.Runtime;
-import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.runtime.librarymanagement.BuiltinLibrary;
 import me.tapeline.quailj.runtime.std.ji.javaclass.JavaClass;
 import me.tapeline.quailj.runtime.std.ji.javamethod.JavaMethod;

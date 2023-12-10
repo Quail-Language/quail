@@ -6,7 +6,7 @@ import java.lang.reflect.Array;
 
 public abstract class UseOrderingCache<T, K> {
 
-    protected T[] cache;
+    protected final T[] cache;
     protected int ptr = 0;
 
     public UseOrderingCache(Class<T> clazz, int size) {
