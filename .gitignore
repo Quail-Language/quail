@@ -1,6 +1,5 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java
 # Edit at https://www.toptal.com/developers/gitignore?templates=java
-
 ### Java ###
 # Compiled class file
 *.class
@@ -31,3 +30,5 @@ replay_pid*
 /docs/
 /cloc.exe
 /target/
+/src/main/java/me/tapeline/quailj/parsing/Parser2L.java
+/gen-converted/

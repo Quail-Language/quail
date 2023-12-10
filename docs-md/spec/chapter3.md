@@ -46,7 +46,7 @@ Directives can accept following types of arguments:
 
 - integer `3` `4000`
 
-- boolean `true` `false` `0` `1` `YES` `NO` `ENABLE` `DISABLE` (case-insensetive)
+- boolean `true` `false` `0` `1` `YES` `NO` `ENABLE` `DISABLE` (case-insensitive)
 
 - code (it's like a string, but it can contain whitespaces without necessity to quote. But `code` argument can be only the last argument and there cannot be more than one of them in one directive)
 
