@@ -14,6 +14,7 @@ public class Main {
         QObject returnValue = launcher.launchAndHandleErrors(args);
         if (returnValue != null && GlobalFlags.displayReturnValue)
             System.out.println("Script finished with result " + returnValue);
+        System.exit(0);
     }
 
 }

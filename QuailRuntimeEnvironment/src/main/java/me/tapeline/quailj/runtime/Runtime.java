@@ -1,5 +1,6 @@
 package me.tapeline.quailj.runtime;
 
+import me.tapeline.quailj.debugging.DebugServer;
 import me.tapeline.quailj.io.DefaultIO;
 import me.tapeline.quailj.io.IO;
 import me.tapeline.quailj.lexing.*;
@@ -46,8 +47,10 @@ import java.util.*;
 public class Runtime {
 
     private final File scriptHome;
+    private final File scriptFile;
     private final Node root;
     private final boolean doProfile;
+    private final boolean doDebug;
     private final String code;
     private final IO io;
     private Node current = new Node(Token.UNDEFINED) {
@@ -59,19 +62,23 @@ public class Runtime {
     private final LibraryCache libraryCache;
     private final LibraryLoader libraryLoader;
     private final Set<String> librariesRoots;
-
+    public int nextLineToStop = -1;
 
     public Runtime() {
-        this(null, "", new File(""), new DefaultIO(), false);
+        this(null, "", new File(""),
+                new File(""), new DefaultIO(), false, false);
     }
 
-    public Runtime(Node root, String code, File scriptHome, IO io, boolean doProfile) {
+    public Runtime(Node root, String code, File scriptFile, File scriptHome,
+                   IO io, boolean doProfile, boolean doDebug) {
         this.scriptHome = scriptHome;
+        this.scriptFile = scriptFile;
         this.root = root;
         this.doProfile = doProfile;
         this.io = io;
         this.memory = new Memory();
         this.code = code;
+        this.doDebug = doDebug;
         librariesRoots = new HashSet<>();
         librariesRoots.add("$cwd$/?");
         librariesRoots.add("$script$/?");
@@ -81,6 +88,10 @@ public class Runtime {
         if (io instanceof DefaultIO)
             ((DefaultIO) io).setDefaultCwd(scriptHome.getAbsolutePath());
         io.resetCwd();
+    }
+
+    public File getScriptFile() {
+        return scriptFile;
     }
 
     public File getScriptHome() {
@@ -268,7 +279,8 @@ public class Runtime {
         Parser parser = new Parser(preprocessedCode, tokens);
         BlockNode parsedCode = parser.parse();
 
-        Runtime runtime = new Runtime(parsedCode, preprocessedCode, scriptHome, io, doProfile);
+        Runtime runtime = new Runtime(parsedCode, preprocessedCode, scriptFile, scriptHome,
+                io, doProfile, false);
         QObject returnValue = QObject.Val(0);
         try {
             runtime.run(parsedCode, scope);
@@ -402,6 +414,18 @@ public class Runtime {
     }
 
     public QObject run(Node node, Memory scope) throws RuntimeStriker {
+        if (doDebug) {
+            if (DebugServer.breakpoints.containsKey(scriptFile) &&
+                DebugServer.breakpoints.get(scriptFile).contains(node.getToken().getLine()) ||
+                node.getToken().getLine() == this.nextLineToStop) {
+                try {
+                    DebugServer.enterBreakpoint(this, scope, node.getToken().getLine());
+                    DebugServer.breakpoints.get(scriptFile).remove(node.getToken().getLine());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
         if (doProfile) begin(node);
         current = node;
         Token currentToken = current.getToken();

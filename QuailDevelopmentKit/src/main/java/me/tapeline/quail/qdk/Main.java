@@ -1,5 +1,6 @@
 package me.tapeline.quail.qdk;
 
+import me.tapeline.quail.qdk.debugclient.DebugClient;
 import me.tapeline.quail.qdk.libconverter.Converter;
 import me.tapeline.quail.qdk.templater.Templater;
 import me.tapeline.quailj.lexing.Lexer;
@@ -40,6 +41,11 @@ public class Main {
                     args[3]
             );
             converter.convert();
+        } else if (args[0].equalsIgnoreCase("debugClient")) {
+            if (args.length != 3) printUsage();
+
+            DebugClient client = new DebugClient(args[1], Short.parseShort(args[2]));
+            client.run();
         }
 
     }
@@ -52,6 +58,8 @@ public class Main {
         System.out.println("    convert <com.pkg.C1;lib.jar:org.xyz.C2...> <package> <prefix> <target folder>");
         System.out.println("    | Creates templates for Java-implemented Quail classes and methods based\n" +
                            "    | on given Java classes");
+        System.out.println("    debugClient <host> <port>");
+        System.out.println("    | Start a QSDb client");
         System.exit(0);
     }
 

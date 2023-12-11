@@ -1,6 +1,7 @@
 package me.tapeline.quailj.launcher;
 
 import me.tapeline.quailj.GlobalFlags;
+import me.tapeline.quailj.debugging.DebugServer;
 import me.tapeline.quailj.docgen.DocumentationGenerator;
 import me.tapeline.quailj.io.DefaultIO;
 import me.tapeline.quailj.io.IO;
@@ -28,7 +29,7 @@ public class QuailLauncher {
     public static final int QUAIL_MINOR_VERSION = 0;
     public static final int QUAIL_PATCH_VERSION = 0;
     public static final String QUAIL_VERSION_STATUS = "alpha";
-    public static final int QUAIL_SUBVERSION = 1;
+    public static final int QUAIL_SUBVERSION = 5;
     public static final boolean QUAIL_VERSION_IS_STABLE = false;
 
     private HashMap<String, Object> localFlags;
@@ -46,6 +47,15 @@ public class QuailLauncher {
             GlobalFlags.ignoreDocs = parseBoolFlag(flags.get("ignoreDocs").toString());
         if (flags.containsKey("displayReturnValue"))
             GlobalFlags.displayReturnValue = parseBoolFlag(flags.get("displayReturnValue").toString());
+        if (flags.containsKey("debugPort"))
+            GlobalFlags.debugPort = (short) flags.get("debugPort");
+    }
+
+    private void setupDebugger() throws IOException {
+        DebugServer.initialize(GlobalFlags.debugPort);
+        DebugServer.awaitConnection();
+        DebugServer.acceptInitial();
+        DebugServer.startServer();
     }
 
     public QObject launch(String[] args) throws IOException, PreprocessorException,
@@ -69,6 +79,7 @@ public class QuailLauncher {
         }
 
         boolean doProfile = mode.equalsIgnoreCase("profile");
+        boolean doDebug = mode.equalsIgnoreCase("debug");
 
         String code = FileUtils.readFileToString(new File(launchCommandParser.getTargetScript()),
                 GlobalFlags.encoding);
@@ -99,8 +110,20 @@ public class QuailLauncher {
             FileUtils.writeStringToFile(new File(launchCommandParser.getOutputFile()),
                     documentation, GlobalFlags.encoding);
             return null;
-        } else if (mode.equalsIgnoreCase("run") || mode.equalsIgnoreCase("profile")) {
-            Runtime runtime = new Runtime(parsedCode, preprocessedCode, scriptHome, new DefaultIO(), doProfile);
+        } else if (mode.equalsIgnoreCase("run") || mode.equalsIgnoreCase("profile")
+            || mode.equalsIgnoreCase("debug")) {
+            if (doDebug) {
+                try {
+                    setupDebugger();
+                } catch (IOException e) {
+                    System.err.println("Tried to initialize debugger, but got IOException");
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+            }
+            Runtime runtime = new Runtime(parsedCode, preprocessedCode,
+                    new File(launchCommandParser.getTargetScript()),
+                    scriptHome, new DefaultIO(), doProfile, doDebug);
             QObject returnValue = QObject.Val(0);
             try {
                 runtime.run(parsedCode, runtime.getMemory());
@@ -113,6 +136,7 @@ public class QuailLauncher {
                 } else if (striker.getType() == RuntimeStriker.Type.EXIT)
                     returnValue = QObject.Val(striker.getExitCode());
             }
+            if (doDebug) DebugServer.markProgramEnd();
             return returnValue;
         }
 
@@ -131,9 +155,11 @@ public class QuailLauncher {
         setupGlobalFlags(launchCommandParser.getGlobalFlags());
         String mode = launchCommandParser.getSelectedRunStrategy();
 
-        if (!mode.equalsIgnoreCase("run") && !mode.equalsIgnoreCase("profile"))
+        if (!mode.equalsIgnoreCase("run") && !mode.equalsIgnoreCase("profile")
+            && !mode.equalsIgnoreCase("debug"))
             throw new LauncherException("Invalid mode " + mode);
         boolean doProfile = mode.equalsIgnoreCase("profile");
+        boolean doDebug = mode.equalsIgnoreCase("debug");
 
         Preprocessor preprocessor = new Preprocessor(code, scriptHome);
         String preprocessedCode = preprocessor.preprocess();
@@ -144,7 +170,8 @@ public class QuailLauncher {
         Parser parser = new Parser(preprocessedCode, tokens);
         BlockNode parsedCode = parser.parse();
 
-        Runtime runtime = new Runtime(parsedCode, preprocessedCode, scriptHome, io, doProfile);
+        Runtime runtime = new Runtime(parsedCode, preprocessedCode, new File(""),
+                scriptHome, io, doProfile, doDebug);
         QObject returnValue = QObject.Val(0);
         try {
             runtime.run(parsedCode, runtime.getMemory());
