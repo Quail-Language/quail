@@ -71,6 +71,14 @@ Specification is split into chapters:
 
     Describes inbuilt documentation engine
 
+14. Debugger
+    
+    Describes debugger protocol, usage of debugger and how it works in general
+
+15. QRE and QDK
+
+    Contains information about QRE and QDK
+
 ### 1.2 Example programs
 
 Hello, World!:
@@ -120,3 +128,8 @@ print(fact(5))
 For reporting any bugs please use [Issues · Quail-Language/quail · GitHub](https://github.com/Quail-Language/quail/issues)
 
 If you want to ask a question, write to our [Discord server](https://discord.gg/8smQAa8whM), or to email: `dev.quail.lang@gmail.com`
+
+Keep in mind that Quail is still in development, so if you spot a bug,
+a variance in Documentation/Specification or if you have a great idea
+about improving Quail, you are **very** welcome to one of the above
+written locations.

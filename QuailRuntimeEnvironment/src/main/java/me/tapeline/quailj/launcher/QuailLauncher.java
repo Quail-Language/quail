@@ -29,7 +29,7 @@ public class QuailLauncher {
     public static final int QUAIL_MINOR_VERSION = 0;
     public static final int QUAIL_PATCH_VERSION = 0;
     public static final String QUAIL_VERSION_STATUS = "alpha";
-    public static final int QUAIL_SUBVERSION = 5;
+    public static final int QUAIL_SUBVERSION = 6;
     public static final boolean QUAIL_VERSION_IS_STABLE = false;
 
     private HashMap<String, Object> localFlags;

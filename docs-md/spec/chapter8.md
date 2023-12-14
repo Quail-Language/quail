@@ -184,7 +184,7 @@ All generators (8.2.3.2-8.2.3.5) fall for the same
 pattern:
 1. A new scope is created
 2. Generated dict/list created (empty for now)
-3. Generated dict/list put in new scope under name `_this`
+3. Generated dict/list is put in new scope under name `_this`
 4. Iterable is evaluated
 5. Iteration: (see also 8.2.5.2 and 8.2.5.5)
    - If condition is present and met or condition not

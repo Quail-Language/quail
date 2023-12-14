@@ -61,7 +61,9 @@ public class Main {
         System.out.println("    | Creates templates for Java-implemented Quail classes and methods based\n" +
                            "    | on given Java classes");
         System.out.println("    debugClient <host> <port>");
-        System.out.println("    | Start a QSDb client");
+        System.out.println("    | Start a CLI QSDb client");
+        System.out.println("    debugClientGui");
+        System.out.println("    | Start a GUI QSDb client");
         System.exit(0);
     }
 
