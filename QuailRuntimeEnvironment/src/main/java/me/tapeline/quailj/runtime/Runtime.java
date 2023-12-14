@@ -268,6 +268,36 @@ public class Runtime {
         node.executionTime = System.currentTimeMillis() - node.executionStart;
     }
 
+    public QObject evalExpression(String code, Memory scope)
+            throws PreprocessorException, LexerException, ParserException {
+        Preprocessor preprocessor = new Preprocessor(code, scriptHome);
+        String preprocessedCode = preprocessor.preprocess();
+
+        Lexer lexer = new Lexer(preprocessedCode);
+        List<Token> tokens = lexer.scan();
+
+        Parser parser = new Parser(preprocessedCode, tokens);
+        BlockNode parsedCode = parser.parse();
+        if (parsedCode.nodes.isEmpty()) return Val();
+        Node expr = parsedCode.nodes.get(0);
+
+        Runtime runtime = new Runtime(parsedCode, preprocessedCode, scriptFile, scriptHome,
+                io, doProfile, false);
+        try {
+            return runtime.run(expr, scope);
+        } catch (RuntimeStriker striker) {
+            if (striker.getType() == RuntimeStriker.Type.RETURN)
+                return striker.getCarryingReturnValue();
+            else if (striker.getType() == RuntimeStriker.Type.EXCEPTION) {
+                System.err.println("Runtime error:");
+                System.err.println(striker.formatError(preprocessedCode));
+                return striker.getCarryingError();
+            } else if (striker.getType() == RuntimeStriker.Type.EXIT)
+                return QObject.Val(striker.getExitCode());
+        }
+        return Val();
+    }
+
     public QObject runString(String code, Memory scope)
             throws PreprocessorException, LexerException, ParserException {
         Preprocessor preprocessor = new Preprocessor(code, scriptHome);
@@ -414,7 +444,7 @@ public class Runtime {
     }
 
     public QObject run(Node node, Memory scope) throws RuntimeStriker {
-        if (doDebug) {
+        if (doDebug && !DebugServer.malfunction) {
             if (DebugServer.breakpoints.containsKey(scriptFile) &&
                 DebugServer.breakpoints.get(scriptFile).contains(node.getToken().getLine()) ||
                 node.getToken().getLine() == this.nextLineToStop) {

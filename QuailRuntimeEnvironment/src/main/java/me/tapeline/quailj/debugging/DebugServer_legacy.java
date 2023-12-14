@@ -11,10 +11,9 @@ import me.tapeline.quailj.utils.Pair;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.*;
 
-public class DebugServer {
+public class DebugServer_legacy {
 
     private static Socket clientSocket;
     private static ServerSocket server;
@@ -27,7 +26,6 @@ public class DebugServer {
     private static volatile Runtime currentRuntime;
     private static volatile Memory currentScope;
     private static volatile Queue<String> codeToBeExecuted = new ArrayDeque<>();
-    public static boolean malfunction = false;
 
     public static HashMap<File, Set<Integer>> breakpoints = new HashMap<>();
 
@@ -51,18 +49,17 @@ public class DebugServer {
             Set<Integer> breakpoints = new HashSet<>();
             for (String s : message.split(";"))
                 breakpoints.add(Integer.parseInt(s));
-            DebugServer.breakpoints.put(file, breakpoints);
+            DebugServer_legacy.breakpoints.put(file, breakpoints);
         } while (message.equalsIgnoreCase("endheader"));
     }
 
     public static void startServer() {
         isRunning = true;
-        serverThread = new Thread(DebugServer::run);
+        serverThread = new Thread(DebugServer_legacy::run);
         serverThread.start();
     }
 
     public static void markProgramEnd() {
-        if (malfunction) return;
         try {
             out.write("end\n");
             out.flush();
@@ -87,10 +84,6 @@ public class DebugServer {
             } finally {
                 server.close();
             }
-        } catch (SocketException e) {
-            malfunction = true;
-            System.err.println(e);
-            System.err.println("Debug client disconnected. Execution continued as normal");
         } catch (IOException e) {
             System.err.println(e);
         }
@@ -110,16 +103,16 @@ public class DebugServer {
         String messageType = in.readLine();
         if (messageType.equalsIgnoreCase("ab")) {
             Pair<File, Set<Integer>> breakpoints = acceptBreakpoints();
-            if (DebugServer.breakpoints.containsKey(breakpoints.key))
-                DebugServer.breakpoints.get(breakpoints.key).addAll(breakpoints.value);
+            if (DebugServer_legacy.breakpoints.containsKey(breakpoints.key))
+                DebugServer_legacy.breakpoints.get(breakpoints.key).addAll(breakpoints.value);
             else
-                DebugServer.breakpoints.put(breakpoints.key, breakpoints.value);
+                DebugServer_legacy.breakpoints.put(breakpoints.key, breakpoints.value);
         } else if (messageType.equalsIgnoreCase("rb")) {
             Pair<File, Set<Integer>> breakpoints = acceptBreakpoints();
-            if (DebugServer.breakpoints.containsKey(breakpoints.key)) {
-                DebugServer.breakpoints.get(breakpoints.key).removeAll(breakpoints.value);
-                if (DebugServer.breakpoints.get(breakpoints.key).isEmpty())
-                    DebugServer.breakpoints.remove(breakpoints.key);
+            if (DebugServer_legacy.breakpoints.containsKey(breakpoints.key)) {
+                DebugServer_legacy.breakpoints.get(breakpoints.key).removeAll(breakpoints.value);
+                if (DebugServer_legacy.breakpoints.get(breakpoints.key).isEmpty())
+                    DebugServer_legacy.breakpoints.remove(breakpoints.key);
             }
         } else if (messageType.equalsIgnoreCase("stop")) {
             isRunning = false;
@@ -139,12 +132,10 @@ public class DebugServer {
 
     private static void sendMemContents() throws IOException {
         if (currentScope == null) {
-            out.write("memresult\n");
-            out.write("mem not present\n");
+            out.write("mem not present");
             out.flush();
             return;
         }
-        out.write("memresult\n");
         Set<Map.Entry<String, QObject>> entries = currentScope.getAllEntries();
         out.write((entries.size() + 1) + "\n");
         for (Map.Entry<String, QObject> entry : entries) {
@@ -154,7 +145,6 @@ public class DebugServer {
                 out.write(key + ";" + value + "\n");
             } catch (Exception ignored) {}
         }
-        out.write("endmem\n");
         out.flush();
     }
 
@@ -165,16 +155,13 @@ public class DebugServer {
         currentRuntime = runtime;
         currentScope = scope;
         while (!continueFlag) {
-            if (malfunction) return;
             if (!codeToBeExecuted.isEmpty()) {
                 String code = codeToBeExecuted.poll();
                 try {
                     QObject result = runtime.evalExpression(code, scope);
-                    out.write("evalresult\n");
                     out.write(result.toString() + "\n");
                     out.flush();
                 } catch (PreprocessorException | ParserException | LexerException e) {
-                    out.write("evalresult\n");
                     out.write(Base64.getEncoder().encodeToString(e.toString().getBytes()) + "\n");
                     out.flush();
                 }

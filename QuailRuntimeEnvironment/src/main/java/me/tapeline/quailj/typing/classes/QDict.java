@@ -136,6 +136,8 @@ public class QDict extends QObject {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("{");
+        if (values == null)
+            return "{}";
         if (values.isEmpty())
             return sb.append("}").toString();
         int i = 0;

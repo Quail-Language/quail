@@ -214,6 +214,8 @@ public class QList extends QObject {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[");
+        if (values == null)
+            return "[]";
         if (values.isEmpty())
             return sb.append("]").toString();
         for (int i = 0; i < values.size(); i++)

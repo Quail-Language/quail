@@ -1,6 +1,7 @@
 package me.tapeline.quail.qdk;
 
 import me.tapeline.quail.qdk.debugclient.DebugClient;
+import me.tapeline.quail.qdk.debugclient.gui.DebuggerWindow;
 import me.tapeline.quail.qdk.libconverter.Converter;
 import me.tapeline.quail.qdk.templater.Templater;
 import me.tapeline.quailj.lexing.Lexer;
@@ -42,10 +43,11 @@ public class Main {
             );
             converter.convert();
         } else if (args[0].equalsIgnoreCase("debugClient")) {
-            if (args.length != 3) printUsage();
-
+            if (args.length < 3) printUsage();
             DebugClient client = new DebugClient(args[1], Short.parseShort(args[2]));
             client.run();
+        } else if (args[0].equalsIgnoreCase("debugClientGui")) {
+            DebuggerWindow.runGuiDebugger();
         }
 
     }

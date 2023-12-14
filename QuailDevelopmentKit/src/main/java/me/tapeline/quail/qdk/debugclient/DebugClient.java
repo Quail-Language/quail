@@ -2,7 +2,9 @@ package me.tapeline.quail.qdk.debugclient;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.Scanner;
 
 public class DebugClient {
@@ -19,12 +21,24 @@ public class DebugClient {
         reader = new BufferedReader(new InputStreamReader(System.in));
         socketIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         socketOut = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+        System.out.println("Connected to remote debug session on " + host + ":" + port);
     }
 
     public void run() {
         try {
             try {
-                socketOut.write("program.q;2\n");
+                System.out.println("Specify breakpoints in format filename.ext;a;b;c where a,b,c - line numbers.");
+                System.out.println("When you're done, type end");
+                Scanner scanner = new Scanner(System.in);
+                String bp;
+                List<String> breakpoints = new ArrayList<>();
+                while (true) {
+                    bp = scanner.nextLine();
+                    if (bp.equalsIgnoreCase("end")) break;
+                    breakpoints.add(bp);
+                }
+                for (String breakpoint : breakpoints)
+                    socketOut.write(breakpoint + "\n");
                 socketOut.write("endheader\n");
                 socketOut.flush();
                 while (isRunning) {
@@ -78,18 +92,22 @@ public class DebugClient {
                 }
                 int iCount = Integer.parseInt(count);
                 for (int i = 0; i < iCount; i++) {
-                    String entry = socketIn.readLine();
-                    String key = new String(Base64.getDecoder().decode(
-                            message.substring(0, message.indexOf(';'))));
-                    String value = new String(Base64.getDecoder().decode(
-                            message.substring(message.indexOf(';') + 1)));
-                    System.out.println(key + " -> " + value);
+                    try {
+                        String entry = socketIn.readLine();
+                        if (entry.equalsIgnoreCase("endmem"))
+                            break;
+                        String key = new String(Base64.getDecoder().decode(
+                                entry.substring(0, entry.indexOf(';'))));
+                        String value = new String(Base64.getDecoder().decode(
+                                entry.substring(entry.indexOf(';') + 1)));
+                        System.out.println(key + " -> " + value);
+                    } catch (Exception ignored) {}
                 }
             } else if (command.equalsIgnoreCase("c")) {
                 socketOut.write("continue\n");
                 socketOut.flush();
             } else if (command.equalsIgnoreCase("nl")) {
-                socketOut.write("nl\n");
+                socketOut.write("next\n");
                 socketOut.flush();
             } else if (command.equalsIgnoreCase("stop")) {
                 socketOut.write("stop\n");
@@ -102,6 +120,9 @@ public class DebugClient {
                 socketOut.write("eval\n");
                 socketOut.write(Base64.getEncoder().encodeToString(code.getBytes()) + "\n");
                 socketOut.flush();
+                socketIn.readLine();
+                String result = socketIn.readLine();
+                System.out.println(" ?= " + result);
             }
         }
     }
