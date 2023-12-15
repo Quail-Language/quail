@@ -4,7 +4,6 @@ import me.tapeline.quailj.launcher.QuailLauncher;
 import me.tapeline.quailj.typing.classes.QObject;
 
 // TODO fix error display
-// TODO create classes for all exceptions
 
 public class Main {
 
