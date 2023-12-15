@@ -4,6 +4,7 @@ import me.tapeline.quailj.parsing.nodes.literals.LiteralFunction;
 import me.tapeline.quailj.runtime.Runtime;
 import me.tapeline.quailj.typing.classes.QObject;
 import me.tapeline.quailj.runtime.RuntimeStriker;
+import me.tapeline.quailj.typing.classes.errors.QUnsuitableTypeException;
 import me.tapeline.quailj.typing.modifiers.ModifierConstants;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
@@ -38,7 +39,7 @@ public class FuncMin extends QBuiltinFunc {
         double minValue = values.get(0).numValue();
         for (int i = 0; i < count; i++) {
             QObject val = values.get(i);
-            if (!val.isNum()) runtime.error("Cannot find min among non-num values: " + val);
+            if (!val.isNum()) runtime.error(new QUnsuitableTypeException("Number", val));
             if (val.numValue() < minValue) minValue = val.numValue();
         }
         return QObject.Val(minValue);

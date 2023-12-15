@@ -6,6 +6,7 @@ import me.tapeline.quailj.runtime.Table;
 import me.tapeline.quailj.runtime.std.event.event.Event;
 import me.tapeline.quailj.typing.classes.QFunc;
 import me.tapeline.quailj.typing.classes.QObject;
+import me.tapeline.quailj.typing.classes.errors.QDerivationException;
 import me.tapeline.quailj.utils.Dict;
 import me.tapeline.quailj.utils.Pair;
 
@@ -43,14 +44,14 @@ public class EventManager extends QObject {
     @Override
     public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
         return new EventManager(new Table(), className, this, false);
     }
 
     @Override
     public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
         return new EventManager(new Table(), className, this, true);
     }
 

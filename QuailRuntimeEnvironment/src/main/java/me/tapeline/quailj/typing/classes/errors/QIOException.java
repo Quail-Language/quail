@@ -29,14 +29,14 @@ public class QIOException extends QException {
     @Override
     public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to derive from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to derive from non-prototype value", this));
         return new QIOException(new Table(), className, this, false);
     }
 
     @Override
     public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
         return new QIOException(new Table(), className, this, true);
     }
 

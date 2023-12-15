@@ -7,38 +7,38 @@ import me.tapeline.quailj.typing.classes.QObject;
 import me.tapeline.quailj.utils.Dict;
 import me.tapeline.quailj.utils.Pair;
 
-public class QUnsuitableTypeException extends QException {
+public class QFinalAssignedException extends QException {
 
     public static final String VALUE_FIELD = "value";
 
-    public static final QUnsuitableTypeException prototype = new QUnsuitableTypeException(
+    public static final QFinalAssignedException prototype = new QFinalAssignedException(
             new Table(
                     Dict.make(
                             new Pair<>(VALUE_FIELD, QObject.Val())
                     )
             ),
-            "UnsuitableTypeException",
+            "FinalAssignedException",
             QException.prototype,
             true
     );
 
-    public QUnsuitableTypeException(Table table, String className, QObject parent, boolean isPrototype) {
+    public QFinalAssignedException(Table table, String className, QObject parent, boolean isPrototype) {
         super(table, className, parent, isPrototype);
     }
 
-    public QUnsuitableTypeException(Table table, String className,
-                                    QObject parent, boolean isPrototype,
-                                    String message, QObject target) {
+    public QFinalAssignedException(Table table, String className,
+                                   QObject parent, boolean isPrototype,
+                                   String message, QObject target) {
         super(table, className, parent, isPrototype, message);
         set(VALUE_FIELD, target, null);
     }
 
-    public QUnsuitableTypeException(String expected, QObject target) {
+    public QFinalAssignedException(QObject target) {
         this(new Table(), prototype.className, prototype, false,
-                "Expected " + expected + ", but got " + target.getClassName(), target);
+                "Attempt to assign data to finalized variable", target);
     }
 
-    public QUnsuitableTypeException(QObject target, String message) {
+    public QFinalAssignedException(QObject target, String message) {
         this(new Table(), prototype.className, prototype, false, message, target);
     }
 
@@ -46,19 +46,19 @@ public class QUnsuitableTypeException extends QException {
     public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
             runtime.error(new QDerivationException("Attempt to derive from non-prototype value", this));
-        return new QUnsuitableTypeException(new Table(), className, this, false);
+        return new QFinalAssignedException(new Table(), className, this, false);
     }
 
     @Override
     public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
             runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
-        return new QUnsuitableTypeException(new Table(), className, this, true);
+        return new QFinalAssignedException(new Table(), className, this, true);
     }
 
     @Override
     public QObject copy() {
-        QObject copy = new QUnsuitableTypeException(table, className, parent, isPrototype);
+        QObject copy = new QFinalAssignedException(table, className, parent, isPrototype);
         copy.setInheritableFlag(isInheritable);
         return copy;
     }

@@ -65,14 +65,14 @@ public class JavaClass extends QObject {
     @Override
     public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
         return new JavaClass(new Table(), className, this, false, clazz);
     }
 
     @Override
     public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
         return new JavaClass(new Table(), className, this, true, clazz);
     }
 

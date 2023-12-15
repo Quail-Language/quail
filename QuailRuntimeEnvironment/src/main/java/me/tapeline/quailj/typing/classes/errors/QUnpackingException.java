@@ -7,40 +7,45 @@ import me.tapeline.quailj.typing.classes.QObject;
 import me.tapeline.quailj.utils.Dict;
 import me.tapeline.quailj.utils.Pair;
 
-public class QUnsupportedSubscriptException extends QException {
+public class QUnpackingException extends QException {
 
-    public static final String OPERAND_FIELD = "operand";
+    public static final String PRESENT_FIELD = "present";
+    public static final String EXPECTED_FIELD = "expected";
 
-    public static final QUnsupportedSubscriptException prototype = new QUnsupportedSubscriptException(
+    public static final QUnpackingException prototype = new QUnpackingException(
             new Table(
                     Dict.make(
-                            new Pair<>(OPERAND_FIELD, QObject.Val())
+                            new Pair<>(PRESENT_FIELD, QObject.Val()),
+                            new Pair<>(EXPECTED_FIELD, QObject.Val())
                     )
             ),
-            "UnsupportedSubscriptException",
+            "UnpackingException",
             QException.prototype,
             true
     );
 
-    public QUnsupportedSubscriptException(Table table, String className, QObject parent, boolean isPrototype) {
+    public QUnpackingException(Table table, String className, QObject parent, boolean isPrototype) {
         super(table, className, parent, isPrototype);
     }
 
-    public QUnsupportedSubscriptException(Table table, String className,
-                                          QObject parent, boolean isPrototype,
-                                          String message, QObject left) {
+    public QUnpackingException(Table table, String className,
+                               QObject parent, boolean isPrototype,
+                               String message,
+                               int expected, int present) {
         super(table, className, parent, isPrototype, message);
-        set(OPERAND_FIELD, left, null);
+        set(PRESENT_FIELD, Val(present), null);
+        set(EXPECTED_FIELD, Val(expected), null);
     }
 
-    public QUnsupportedSubscriptException(QObject left) {
+    public QUnpackingException(int expected, int present) {
         this(
                 new Table(),
                 prototype.className,
                 prototype,
                 false,
-                "Unsupported subscript for " + left.getClassName(),
-                left
+                "Unpacking failed: collection size = " + present + ", expected size = " + expected,
+                expected,
+                present
         );
     }
 
@@ -48,19 +53,19 @@ public class QUnsupportedSubscriptException extends QException {
     public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
             runtime.error(new QDerivationException("Attempt to derive from non-prototype value", this));
-        return new QUnsupportedSubscriptException(new Table(), className, this, false);
+        return new QUnpackingException(new Table(), className, this, false);
     }
 
     @Override
     public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
             runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
-        return new QUnsupportedSubscriptException(new Table(), className, this, true);
+        return new QUnpackingException(new Table(), className, this, true);
     }
 
     @Override
     public QObject copy() {
-        QObject copy = new QUnsupportedSubscriptException(table, className, parent, isPrototype);
+        QObject copy = new QUnpackingException(table, className, parent, isPrototype);
         copy.setInheritableFlag(isInheritable);
         return copy;
     }

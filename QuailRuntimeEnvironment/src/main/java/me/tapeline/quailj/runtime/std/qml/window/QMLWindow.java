@@ -6,6 +6,7 @@ import me.tapeline.quailj.runtime.Table;
 import me.tapeline.quailj.runtime.std.event.event.Event;
 import me.tapeline.quailj.runtime.std.event.eventmanager.EventManager;
 import me.tapeline.quailj.typing.classes.QObject;
+import me.tapeline.quailj.typing.classes.errors.QDerivationException;
 import me.tapeline.quailj.typing.classes.utils.Initializable;
 import me.tapeline.quailj.utils.Dict;
 import me.tapeline.quailj.utils.Pair;
@@ -71,14 +72,14 @@ public class QMLWindow extends QObject implements Initializable {
     @Override
     public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
         return new QMLWindow(new Table(), className, this, false);
     }
 
     @Override
     public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
         return new QMLWindow(new Table(), className, this, true);
     }
 

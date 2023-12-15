@@ -8,6 +8,7 @@ import me.tapeline.quailj.runtime.std.ji.Arg;
 import me.tapeline.quailj.runtime.std.ji.JIJavaException;
 import me.tapeline.quailj.runtime.std.ji.javamethod.JavaMethod;
 import me.tapeline.quailj.typing.classes.QObject;
+import me.tapeline.quailj.typing.classes.errors.QDerivationException;
 import me.tapeline.quailj.utils.Dict;
 import me.tapeline.quailj.utils.Pair;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -73,14 +74,14 @@ public class JavaObject extends QObject {
     @Override
     public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
         return new JavaObject(new Table(), className, this, false, object);
     }
 
     @Override
     public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
         return new JavaObject(new Table(), className, this, true, object);
     }
 
