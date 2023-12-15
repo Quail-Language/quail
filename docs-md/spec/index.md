@@ -27,3 +27,7 @@
 [Chapter 12: Console operation](chapter12.md)
 
 [Chapter 13: Documentation](chapter13.md)
+
+[Chapter 14: Debugger](chapter14.md)
+
+[Chapter 15: QRE and QDK](chapter15.md)

@@ -6,6 +6,8 @@ import me.tapeline.quailj.runtime.Memory;
 import me.tapeline.quailj.runtime.Runtime;
 import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.runtime.Table;
+import me.tapeline.quailj.typing.classes.errors.QArgumentClarificationException;
+import me.tapeline.quailj.typing.classes.errors.QDerivationException;
 import me.tapeline.quailj.typing.modifiers.ModifierConstants;
 import me.tapeline.quailj.typing.utils.AlternativeCall;
 import me.tapeline.quailj.typing.utils.FuncArgument;
@@ -73,8 +75,11 @@ public class QFunc extends QObject {
             FuncArgument argument = arguments.get(i);
             if (i >= argsCount) {
                 if (!ModifierConstants.couldBeNull(argument.getModifiers()))
-                    runtime.error("Argument mapping failed for argument #" + (i + 1) + ".\n" +
-                            "Expected not null, but got null");
+                    runtime.error(new QArgumentClarificationException(
+                            TextUtils.modifiersToStringRepr(argument.getModifiers()),
+                            argument.getName(),
+                            args.get(i)
+                    ));
                 enclosing.set(
                         argument.getName(),
                         argument.getDefaultValue(),
@@ -98,9 +103,11 @@ public class QFunc extends QObject {
                         args.get(i),
                         argument.getModifiers()
                 );
-            } else runtime.error("Argument mapping failed for argument #" + (i + 1) + ".\n" +
-                    "Value " + args.get(i) + " is inapplicable for " +
-                    TextUtils.modifiersToStringRepr(argument.getModifiers()));
+            } else runtime.error(new QArgumentClarificationException(
+                    TextUtils.modifiersToStringRepr(argument.getModifiers()),
+                    argument.getName(),
+                    args.get(i)
+            ));
         }
         if (kwargs != null)
             enclosing.table.putAll(kwargs);
@@ -144,7 +151,7 @@ public class QFunc extends QObject {
     @Override
     public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to derive from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to derive from non-prototype value", this));
         return new QFunc(new Table(), className, this, false, name, arguments, code,
                 boundRuntime, isStatic, alternatives, closure);
     }
@@ -152,7 +159,7 @@ public class QFunc extends QObject {
     @Override
     public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
         return new QFunc(new Table(), className, this, true, name, arguments, code,
                 boundRuntime, isStatic, alternatives, closure);
     }

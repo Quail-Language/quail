@@ -7,6 +7,8 @@ import me.tapeline.quailj.utils.IntFlags;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class Memory {
 
@@ -79,6 +81,20 @@ public class Memory {
             table.put(id, newObject, node.modifiers);
             return newObject;
         } else return alreadyUsed;
+    }
+
+    public Set<String> getAllKeys() {
+        Set<String> keys = table.keySet();
+        if (enclosing != null)
+            keys.addAll(enclosing.getAllKeys());
+        return keys;
+    }
+
+    public Set<Map.Entry<String, QObject>> getAllEntries() {
+        Set<Map.Entry<String, QObject>> entries = table.getValues().entrySet();
+        if (enclosing != null)
+            entries.addAll(enclosing.getAllEntries());
+        return entries;
     }
 
 }

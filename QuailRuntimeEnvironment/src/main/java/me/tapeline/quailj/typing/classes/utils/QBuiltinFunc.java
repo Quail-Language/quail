@@ -7,6 +7,7 @@ import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.runtime.Table;
 import me.tapeline.quailj.typing.classes.QFunc;
 import me.tapeline.quailj.typing.classes.QObject;
+import me.tapeline.quailj.typing.classes.errors.QDerivationException;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 
 import java.lang.reflect.InvocationTargetException;
@@ -43,7 +44,7 @@ public abstract class QBuiltinFunc extends QFunc {
     @Override
     public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to derive from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to derive from non-prototype value", this));
         try {
             return getClass().getConstructor(
                     Table.class, String.class, QObject.class, boolean.class,
@@ -62,7 +63,7 @@ public abstract class QBuiltinFunc extends QFunc {
     @Override
     public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
         try {
             return getClass().getConstructor(
                     Table.class, String.class, QObject.class, boolean.class,

@@ -6,6 +6,7 @@ import me.tapeline.quailj.runtime.Table;
 import me.tapeline.quailj.runtime.std.ji.Arg;
 import me.tapeline.quailj.runtime.std.ji.JIJavaException;
 import me.tapeline.quailj.typing.classes.QObject;
+import me.tapeline.quailj.typing.classes.errors.QDerivationException;
 import me.tapeline.quailj.typing.classes.errors.QUnsuitableValueException;
 import me.tapeline.quailj.utils.Dict;
 
@@ -84,7 +85,7 @@ public class JavaMethod extends QObject {
     @Override
     public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
         return new JavaMethod(new Table(), className, this, false,
                 method, object, methods);
     }
@@ -92,7 +93,7 @@ public class JavaMethod extends QObject {
     @Override
     public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
         return new JavaMethod(new Table(), className, this, true,
                 method, object, methods);
     }

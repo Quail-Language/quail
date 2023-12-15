@@ -6,6 +6,8 @@ import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.typing.classes.QObject;
 import me.tapeline.quailj.typing.classes.errors.QCircularDependencyException;
 import me.tapeline.quailj.typing.classes.errors.QIOException;
+import me.tapeline.quailj.typing.classes.errors.QUnknownLibraryException;
+import me.tapeline.quailj.typing.classes.errors.QUnsuitableValueException;
 import me.tapeline.quailj.utils.TextUtils;
 
 import java.io.File;
@@ -57,19 +59,17 @@ public class LibraryLoader {
                     QuailLauncher launcher = new QuailLauncher();
                     QObject result = launcher.launchAnonymousAndHandleErrors(code, runtime.getScriptHome(),
                             new String[] {"run", name});
-                    if (result == null) {
-                        runtime.error("Library " + possibleFile + " does not return (provide) anything");
+                    if (result == null)
                         return QObject.Val();
-                    }
                     pathsCurrentlyLoading.remove(possibleFile.getAbsolutePath());
                     registry.cacheLibrary(name, result);
                     return result;
                 }
             }
-            runtime.error("Unable to find library " + name + "\n" +
+            runtime.error(new QUnknownLibraryException("Unable to find library " + name + "\n" +
                     "Library wasn't found neither in registry or in following directories:\n" +
                     TextUtils.collectionToString(libraryRoots, "\n") + "\n" +
-                    "Please check library installation and/or correct library root dir(s) definition");
+                    "Please check library installation and/or correct library root dir(s) definition"));
             return null;
         } else return registry.getCachedLibrary(name);
     }

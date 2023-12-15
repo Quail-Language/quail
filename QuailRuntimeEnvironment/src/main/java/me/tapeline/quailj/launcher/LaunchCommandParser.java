@@ -49,7 +49,8 @@ public class LaunchCommandParser {
             } else {
                 targetScript = arg;
                 if (selectedRunStrategy.equalsIgnoreCase("run") ||
-                    selectedRunStrategy.equalsIgnoreCase("profile"))
+                    selectedRunStrategy.equalsIgnoreCase("profile") ||
+                    selectedRunStrategy.equalsIgnoreCase("debug"))
                     break;
             }
         }

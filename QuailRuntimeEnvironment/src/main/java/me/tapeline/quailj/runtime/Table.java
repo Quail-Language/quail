@@ -1,7 +1,10 @@
 package me.tapeline.quailj.runtime;
 
 import me.tapeline.quailj.typing.classes.QObject;
+import me.tapeline.quailj.typing.classes.errors.QClarificationException;
+import me.tapeline.quailj.typing.classes.errors.QFinalAssignedException;
 import me.tapeline.quailj.typing.modifiers.ModifierConstants;
+import me.tapeline.quailj.utils.TextUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,7 +32,7 @@ public class Table {
             int[] modifier = modifiers.get(name);
             boolean hadMatch = false;
             if (ModifierConstants.isFinalAndAssigned(modifier[0]))
-                runtime.error("Attempt to assign data to finalized variable");
+                runtime.error(new QFinalAssignedException(value));
             if (modifier.length == 1) hadMatch = ModifierConstants.matchesOnAssign(modifier[0], value);
             else for (Integer flags : modifier)
                if (ModifierConstants.matchesOnAssign(flags, value)) {
@@ -37,7 +40,7 @@ public class Table {
                     break;
                 }
             if (!hadMatch)
-                runtime.error("Attempt to assign wrong data to clarified variable");
+                runtime.error(new QClarificationException(TextUtils.modifiersToStringRepr(modifier), value));
             if (ModifierConstants.isFinal(modifier[0]))
                 modifier[0] |= ModifierConstants.FINAL_ASSIGNED;
             values.put(name, value);

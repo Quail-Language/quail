@@ -4,6 +4,7 @@ import me.tapeline.quailj.runtime.Runtime;
 import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.runtime.Table;
 import me.tapeline.quailj.typing.classes.QObject;
+import me.tapeline.quailj.typing.classes.errors.QDerivationException;
 import me.tapeline.quailj.typing.classes.errors.QException;
 
 public class QMLFontNotInitializedException extends QException {
@@ -33,14 +34,14 @@ public class QMLFontNotInitializedException extends QException {
     @Override
     public QObject derive(Runtime runtime) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to derive from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to derive from non-prototype value", this));
         return new QMLFontNotInitializedException(new Table(), className, this, false);
     }
 
     @Override
     public QObject extendAs(Runtime runtime, String className) throws RuntimeStriker {
         if (!isPrototype)
-            runtime.error("Attempt to inherit from non-prototype value");
+            runtime.error(new QDerivationException("Attempt to inherit from non-prototype value", this));
         return new QMLFontNotInitializedException(new Table(), className, this, true);
     }
 

@@ -1,5 +1,6 @@
 package me.tapeline.quailj.runtime;
 
+import me.tapeline.quailj.debugging.DebugServer;
 import me.tapeline.quailj.io.DefaultIO;
 import me.tapeline.quailj.io.IO;
 import me.tapeline.quailj.lexing.*;
@@ -37,6 +38,8 @@ import me.tapeline.quailj.utils.IntFlags;
 import me.tapeline.quailj.utils.TextUtils;
 import org.jetbrains.annotations.Nullable;
 
+import javax.xml.soap.Text;
+
 import static me.tapeline.quailj.typing.classes.QObject.Val;
 
 import java.io.File;
@@ -46,8 +49,10 @@ import java.util.*;
 public class Runtime {
 
     private final File scriptHome;
+    private final File scriptFile;
     private final Node root;
     private final boolean doProfile;
+    private final boolean doDebug;
     private final String code;
     private final IO io;
     private Node current = new Node(Token.UNDEFINED) {
@@ -59,19 +64,23 @@ public class Runtime {
     private final LibraryCache libraryCache;
     private final LibraryLoader libraryLoader;
     private final Set<String> librariesRoots;
-
+    public int nextLineToStop = -1;
 
     public Runtime() {
-        this(null, "", new File(""), new DefaultIO(), false);
+        this(null, "", new File(""),
+                new File(""), new DefaultIO(), false, false);
     }
 
-    public Runtime(Node root, String code, File scriptHome, IO io, boolean doProfile) {
+    public Runtime(Node root, String code, File scriptFile, File scriptHome,
+                   IO io, boolean doProfile, boolean doDebug) {
         this.scriptHome = scriptHome;
+        this.scriptFile = scriptFile;
         this.root = root;
         this.doProfile = doProfile;
         this.io = io;
         this.memory = new Memory();
         this.code = code;
+        this.doDebug = doDebug;
         librariesRoots = new HashSet<>();
         librariesRoots.add("$cwd$/?");
         librariesRoots.add("$script$/?");
@@ -81,6 +90,10 @@ public class Runtime {
         if (io instanceof DefaultIO)
             ((DefaultIO) io).setDefaultCwd(scriptHome.getAbsolutePath());
         io.resetCwd();
+    }
+
+    public File getScriptFile() {
+        return scriptFile;
     }
 
     public File getScriptHome() {
@@ -193,6 +206,12 @@ public class Runtime {
         memory.set("UnsupportedSubscriptException", QUnsupportedSubscriptException.prototype);
         memory.set("UnsupportedUnaryOperationException", QUnsupportedUnaryOperationException.prototype);
         memory.set("IndexOutOfBoundsException", QIndexOutOfBoundsException.prototype);
+        memory.set("ClarificationException", QClarificationException.prototype);
+        memory.set("ArgumentClarificationException", QArgumentClarificationException.prototype);
+        memory.set("FinalAssignedException", QFinalAssignedException.prototype);
+        memory.set("InternalException", QInternalException.prototype);
+        memory.set("UnpackingException", QUnpackingException.prototype);
+        memory.set("UnknownLibraryException", QUnknownLibraryException.prototype);
 
         memory.set("all", new FuncAll(this));
         memory.set("any", new FuncAny(this));
@@ -257,6 +276,36 @@ public class Runtime {
         node.executionTime = System.currentTimeMillis() - node.executionStart;
     }
 
+    public QObject evalExpression(String code, Memory scope)
+            throws PreprocessorException, LexerException, ParserException {
+        Preprocessor preprocessor = new Preprocessor(code, scriptHome);
+        String preprocessedCode = preprocessor.preprocess();
+
+        Lexer lexer = new Lexer(preprocessedCode);
+        List<Token> tokens = lexer.scan();
+
+        Parser parser = new Parser(preprocessedCode, tokens);
+        BlockNode parsedCode = parser.parse();
+        if (parsedCode.nodes.isEmpty()) return Val();
+        Node expr = parsedCode.nodes.get(0);
+
+        Runtime runtime = new Runtime(parsedCode, preprocessedCode, scriptFile, scriptHome,
+                io, doProfile, false);
+        try {
+            return runtime.run(expr, scope);
+        } catch (RuntimeStriker striker) {
+            if (striker.getType() == RuntimeStriker.Type.RETURN)
+                return striker.getCarryingReturnValue();
+            else if (striker.getType() == RuntimeStriker.Type.EXCEPTION) {
+                System.err.println("Runtime error:");
+                System.err.println(striker.formatError(preprocessedCode));
+                return striker.getCarryingError();
+            } else if (striker.getType() == RuntimeStriker.Type.EXIT)
+                return QObject.Val(striker.getExitCode());
+        }
+        return Val();
+    }
+
     public QObject runString(String code, Memory scope)
             throws PreprocessorException, LexerException, ParserException {
         Preprocessor preprocessor = new Preprocessor(code, scriptHome);
@@ -268,7 +317,8 @@ public class Runtime {
         Parser parser = new Parser(preprocessedCode, tokens);
         BlockNode parsedCode = parser.parse();
 
-        Runtime runtime = new Runtime(parsedCode, preprocessedCode, scriptHome, io, doProfile);
+        Runtime runtime = new Runtime(parsedCode, preprocessedCode, scriptFile, scriptHome,
+                io, doProfile, false);
         QObject returnValue = QObject.Val(0);
         try {
             runtime.run(parsedCode, scope);
@@ -298,7 +348,7 @@ public class Runtime {
                 else if (next.isList()) {
                     List<QObject> list = next.listValue();
                     if (list.size() != iteratorSize)
-                        error("Unpacking failed. List size = " + list.size() + "; Iterators = " + iteratorSize);
+                        error(new QUnpackingException(list.size(), iteratorSize));
                     for (int i = 0; i < iteratorSize; i++)
                         enclosing.table.put(this, iterators.get(i), list.get(i));
                 } else if (iteratorSize == 2) {
@@ -308,7 +358,7 @@ public class Runtime {
                         enclosing.table.put(keyVar, Val(key));
                         enclosing.table.put(valVar, value);
                     });
-                } else error("Iterator unpacking error. Unknown error");
+                } else error(new QUnsuitableTypeException("List or Dict", next));
                 action.action(this, enclosing);
             } catch (RuntimeStriker striker) {
                 if (striker.getType() == RuntimeStriker.Type.BREAK) {
@@ -388,8 +438,9 @@ public class Runtime {
             case EQUALS: return operandA.equalsObject(this, operandB);
             case NOT_EQUALS: return operandA.notEqualsObject(this, operandB);
             case INSTANCEOF: return Val(operandA.instanceOf(operandB));
+            default: error(new QInternalException("Unknown binary operation " + op));
         }
-        return null;
+        return Val();
     }
 
     private QObject performUnaryOperation(TokenType op, QObject operandA)
@@ -397,11 +448,24 @@ public class Runtime {
         switch (op) {
             case NOT: return operandA.not(this);
             case MINUS: return operandA.negate(this);
+            default: error(new QInternalException("Unknown unary operation " + op));
         }
         return null;
     }
 
     public QObject run(Node node, Memory scope) throws RuntimeStriker {
+        if (doDebug && !DebugServer.malfunction) {
+            if (DebugServer.breakpoints.containsKey(scriptFile) &&
+                DebugServer.breakpoints.get(scriptFile).contains(node.getToken().getLine()) ||
+                node.getToken().getLine() == this.nextLineToStop) {
+                try {
+                    DebugServer.enterBreakpoint(this, scope, node.getToken().getLine());
+                    DebugServer.breakpoints.get(scriptFile).remove(node.getToken().getLine());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
         if (doProfile) begin(node);
         current = node;
         Token currentToken = current.getToken();
@@ -493,7 +557,10 @@ public class Runtime {
                 scope.set(this, variable.name, value);
             else {
                 if (!ModifierConstants.matchesOnAssign(variable.modifiers, value))
-                    error("Attempt to assign wrong data type to clarified variable");
+                    error(new QClarificationException(
+                            TextUtils.modifiersToStringRepr(variable.modifiers),
+                            value
+                    ));
                 int[] modifiers = variable.modifiers.clone();
                 if (modifiers.length > 0 && ModifierConstants.isFinal(variable.accessModifiers))
                     modifiers[0] |= ModifierConstants.FINAL_ASSIGNED;
@@ -536,8 +603,6 @@ public class Runtime {
                             thisNode.op,
                             listB.get(i)
                     );
-                    if (value == null)
-                        error("Unknown binary operation");
                     result.add(value);
                 }
                 return QObject.Val(result);
@@ -562,8 +627,6 @@ public class Runtime {
                                 thisNode.op,
                                 sublistB.get(y)
                         );
-                        if (value == null)
-                            error("Unknown binary operation");
                         subResult.add(value);
                     }
                     result.add(QObject.Val(subResult));
@@ -571,8 +634,6 @@ public class Runtime {
                 return QObject.Val(result);
             }
             QObject value = performBinaryOperation(operandA, thisNode.op, operandB);
-            if (value == null)
-                error("Unknown binary operation");
             if (doProfile) end(node);
             return value;
         } else if (node instanceof CallNode) {
@@ -673,8 +734,6 @@ public class Runtime {
                             thisNode.op,
                             qObject
                     );
-                    if (value == null)
-                        error("Unknown unary operation");
                     result.add(value);
                 }
                 return QObject.Val(result);
@@ -691,8 +750,6 @@ public class Runtime {
                                 thisNode.op,
                                 qObject
                         );
-                        if (value == null)
-                            error("Unknown unary operation");
                         subResult.add(value);
                     }
                     result.add(QObject.Val(subResult));
@@ -700,8 +757,6 @@ public class Runtime {
                 return QObject.Val(result);
             }
             QObject value = performUnaryOperation(thisNode.op, operand);
-            if (value == null)
-                error("Unknown unary operation");
             if (doProfile) end(node);
             return value;
         } else if (node instanceof DictForGeneratorNode) {
@@ -790,7 +845,7 @@ public class Runtime {
             RangeNode thisNode = ((RangeNode) node);
             List<QObject> generated = new ArrayList<>();
             if (thisNode.rangeStart == null || thisNode.rangeEnd == null)
-                error("Attempt to make indefinite loop. Start or end of range is null");
+                error(new QInternalException("Attempt to make indefinite loop. Start or end of range is null"));
             QObject startObject = run(thisNode.rangeStart, scope);
             QObject endObject = run(thisNode.rangeEnd, scope);
             QObject stepObject = null;
@@ -955,7 +1010,7 @@ public class Runtime {
                     else if (next.isList()) {
                         List<QObject> list = next.listValue();
                         if (list.size() != iteratorSize)
-                            error("Unpacking failed. List size = " + list.size() + "; Iterators = " + iteratorSize);
+                            error(new QUnpackingException(iteratorSize, list.size()));
                         for (int i = 0; i < iteratorSize; i++)
                             enclosing.table.put(this, thisNode.iterators.get(i), list.get(i));
                     } else if (iteratorSize == 2) {
@@ -965,7 +1020,7 @@ public class Runtime {
                             enclosing.table.put(keyVar, Val(key));
                             enclosing.table.put(valVar, value);
                         });
-                    } else error("Iterator unpacking error. Unknown error");
+                    } else error(new QUnsuitableTypeException("List or Dict", next));
 
                     run(thisNode.code, enclosing);
                 } catch (RuntimeStriker striker) {
@@ -1028,7 +1083,7 @@ public class Runtime {
             ThroughNode thisNode = ((ThroughNode) node);
             String iterator = thisNode.iterator;
             if (thisNode.rangeStart == null || thisNode.rangeEnd == null)
-                error("Attempt to make indefinite loop. Start or end of range is null");
+                error(new QInternalException("Attempt to make indefinite loop. Start or end of range is null"));
             QObject startObject = run(thisNode.rangeStart, scope);
             QObject endObject = run(thisNode.rangeEnd, scope);
             QObject stepObject = null;
