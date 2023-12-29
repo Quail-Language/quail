@@ -29,6 +29,7 @@ import me.tapeline.quailj.runtime.std.event.EventLibrary;
 import me.tapeline.quailj.runtime.std.fs.FSLibrary;
 import me.tapeline.quailj.runtime.std.ji.JILibrary;
 import me.tapeline.quailj.runtime.std.qml.QMLLibrary;
+import me.tapeline.quailj.runtime.std.storage.StorageLibrary;
 import me.tapeline.quailj.typing.classes.*;
 import me.tapeline.quailj.typing.classes.errors.*;
 import me.tapeline.quailj.typing.modifiers.ModifierConstants;
@@ -250,6 +251,7 @@ public class Runtime {
         libraryLoader.addBuiltinLibrary(new EventLibrary());
         libraryLoader.addBuiltinLibrary(new JILibrary());
         libraryLoader.addBuiltinLibrary(new FSLibrary());
+        libraryLoader.addBuiltinLibrary(new StorageLibrary());
     }
 
     public void error(String message) throws RuntimeStriker {
