@@ -4,6 +4,7 @@ import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.lexing.TokenType;
 import me.tapeline.quailj.parsing.annotation.Annotation;
 import me.tapeline.quailj.parsing.annotation.Decoration;
+import me.tapeline.quailj.parsing.annotation.std.DecoratorAnnotation;
 import me.tapeline.quailj.parsing.annotation.std.DeprecatedAnnotation;
 import me.tapeline.quailj.parsing.nodes.Node;
 import me.tapeline.quailj.parsing.nodes.comments.*;
@@ -62,6 +63,7 @@ public class Parser {
 
     public static void registerDefaultAnnotations() {
         registerAnnotation(new DeprecatedAnnotation());
+        registerAnnotation(new DecoratorAnnotation());
     }
 
     public static void registerAnnotation(Annotation annotation) {
