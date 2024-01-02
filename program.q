@@ -1,3 +1,3 @@
-print("Hello1")
-print("Hello2")
-print("Hello3")
+use "lang/math" = math
+
+print(math.product(1:10))

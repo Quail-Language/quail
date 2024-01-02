@@ -25,9 +25,11 @@ import me.tapeline.quailj.runtime.std.basic.io.*;
 import me.tapeline.quailj.runtime.std.basic.math.*;
 import me.tapeline.quailj.runtime.std.basic.common.*;
 import me.tapeline.quailj.runtime.std.basic.numbers.*;
+import me.tapeline.quailj.runtime.std.basic.threading.QThread;
 import me.tapeline.quailj.runtime.std.event.EventLibrary;
 import me.tapeline.quailj.runtime.std.fs.FSLibrary;
 import me.tapeline.quailj.runtime.std.ji.JILibrary;
+import me.tapeline.quailj.runtime.std.math.MathLibrary;
 import me.tapeline.quailj.runtime.std.qml.QMLLibrary;
 import me.tapeline.quailj.runtime.std.storage.StorageLibrary;
 import me.tapeline.quailj.typing.classes.*;
@@ -49,22 +51,22 @@ import java.util.*;
 
 public class Runtime {
 
-    private final File scriptHome;
-    private final File scriptFile;
-    private final Node root;
-    private final boolean doProfile;
-    private final boolean doDebug;
-    private final String code;
-    private final IO io;
-    private Node current = new Node(Token.UNDEFINED) {
+    protected final File scriptHome;
+    protected final File scriptFile;
+    protected final Node root;
+    protected final boolean doProfile;
+    protected final boolean doDebug;
+    protected final String code;
+    protected final IO io;
+    protected Node current = new Node(Token.UNDEFINED) {
         @Override
         public String stringRepr() { return null; }
     };
-    private final Memory memory;
-    private final List<AsyncRuntimeWorker> asyncRuntimeWorkers = new ArrayList<>();
-    private final LibraryCache libraryCache;
-    private final LibraryLoader libraryLoader;
-    private final Set<String> librariesRoots;
+    protected final Memory memory;
+    protected final List<AsyncRuntimeWorker> asyncRuntimeWorkers = new ArrayList<>();
+    protected final LibraryCache libraryCache;
+    protected final LibraryLoader libraryLoader;
+    protected final Set<String> librariesRoots;
     public int nextLineToStop = -1;
 
     public Runtime() {
@@ -190,6 +192,7 @@ public class Runtime {
         memory.set("Func", QFunc.prototype);
         memory.set("Number", QNumber.prototype);
         memory.set("Null", QNull.prototype);
+        memory.set("Thread", QThread.prototype(this));
 
         memory.set("Exception", QException.prototype);
         memory.set("AssertionException", QAssertionException.prototype);
@@ -252,6 +255,7 @@ public class Runtime {
         libraryLoader.addBuiltinLibrary(new JILibrary());
         libraryLoader.addBuiltinLibrary(new FSLibrary());
         libraryLoader.addBuiltinLibrary(new StorageLibrary());
+        libraryLoader.addBuiltinLibrary(new MathLibrary());
     }
 
     public void error(String message) throws RuntimeStriker {
