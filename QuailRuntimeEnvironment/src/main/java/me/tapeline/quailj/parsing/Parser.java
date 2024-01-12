@@ -828,9 +828,12 @@ public class Parser {
                 else if (expr instanceof VariableNode)
                     contents.add(new VarAssignNode(expr.getToken(), ((VariableNode) expr),
                             getDefaultNodeFor(((VariableNode) expr).modifiers)));
-                else if (expr instanceof LiteralFunction)
-                    methods.put(((LiteralFunction) expr).name, ((LiteralFunction) expr));
-                else
+                else if (expr instanceof LiteralFunction) {
+                    if (methods.containsKey(((LiteralFunction) expr).name))
+                        initialize.add(expr); // In case there is an overloaded method
+                    else
+                        methods.put(((LiteralFunction) expr).name, ((LiteralFunction) expr));
+                } else
                     initialize.add(expr);
             }
             return new LiteralClass(classToken, className.getLexeme(), like, contents, methods, initialize);

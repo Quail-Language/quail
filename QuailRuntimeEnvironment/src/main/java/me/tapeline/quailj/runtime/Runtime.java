@@ -31,6 +31,7 @@ import me.tapeline.quailj.runtime.std.fs.FSLibrary;
 import me.tapeline.quailj.runtime.std.ji.JILibrary;
 import me.tapeline.quailj.runtime.std.math.MathLibrary;
 import me.tapeline.quailj.runtime.std.qml.QMLLibrary;
+import me.tapeline.quailj.runtime.std.reflect.ReflectLibrary;
 import me.tapeline.quailj.runtime.std.storage.StorageLibrary;
 import me.tapeline.quailj.typing.classes.*;
 import me.tapeline.quailj.typing.classes.errors.*;
@@ -256,6 +257,7 @@ public class Runtime {
         libraryLoader.addBuiltinLibrary(new FSLibrary());
         libraryLoader.addBuiltinLibrary(new StorageLibrary());
         libraryLoader.addBuiltinLibrary(new MathLibrary());
+        libraryLoader.addBuiltinLibrary(new ReflectLibrary());
     }
 
     public void error(String message) throws RuntimeStriker {

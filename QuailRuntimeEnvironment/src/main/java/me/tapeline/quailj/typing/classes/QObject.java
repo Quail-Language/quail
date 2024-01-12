@@ -149,6 +149,22 @@ public class QObject {
             return new QNull();
     }
 
+    public boolean containsKey(String name) {
+        if (name.startsWith("_")) {
+            if (name.equals("_className") ||
+                name.equals("_superClass") ||
+                name.equals("_objectPrototype") ||
+                name.equals("_isPrototype") ||
+                name.equals("_isInheritable")) return true;
+        }
+        if (table.containsKey(name))
+            return true;
+        else if (parent != null)
+            return parent.containsKey(name);
+        else
+            return false;
+    }
+
     public void set(Runtime runtime, String name, QObject value) throws RuntimeStriker {
         table.put(runtime, name, value);
     }
@@ -178,8 +194,10 @@ public class QObject {
 
     public QObject callFromThis(Runtime runtime, QObject func, List<QObject> args,
                                       HashMap<String, QObject> kwargs) throws RuntimeStriker {
-        if (!isPrototype())
+        if (!isPrototype()) {
+            args = new ArrayList<>(args);
             args.add(0, this);
+        }
         return func.call(runtime, args, kwargs);
     }
 
@@ -294,8 +312,9 @@ public class QObject {
         return Val();
     }
 
+
     public QObject sum(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_add"))
+        if (table.containsKey("_add")) // TODO add custom implementation check in every child class
             return callFromThis(
                     runtime,
                     "_add",

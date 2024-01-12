@@ -1,4 +1,4 @@
-package me.tapeline.quailj.runtime.std.math;
+package me.tapeline.quailj.runtime.std.reflect;
 
 import me.tapeline.quailj.runtime.Runtime;
 import me.tapeline.quailj.runtime.librarymanagement.BuiltinLibrary;
@@ -10,11 +10,11 @@ import me.tapeline.quailj.typing.classes.QObject;
 
 import java.util.HashMap;
 
-public class MathLibrary implements BuiltinLibrary {
+public class ReflectLibrary implements BuiltinLibrary {
 
     @Override
     public String id() {
-        return "lang/math";
+        return "lang/reflect";
     }
 
     @Override
@@ -25,9 +25,10 @@ public class MathLibrary implements BuiltinLibrary {
     @Override
     public QObject constructLibrary(Runtime runtime) {
         HashMap<String, QObject> contents = new HashMap<>();
-        contents.put("product", new MathFuncProduct(runtime));
-        contents.put("gcd", new MathFuncGcd(runtime));
-        contents.put("lcm", new MathFuncLcm(runtime));
+        contents.put("setBoolValue", new ReflectSetBoolValue(runtime));
+        contents.put("setFuncValue", new ReflectSetFuncValue(runtime));
+        contents.put("setNumberValue", new ReflectSetNumberValue(runtime));
+        contents.put("setStringValue", new ReflectSetStringValue(runtime));
 
         runtime.getMemory().table.putAll(contents);
 
