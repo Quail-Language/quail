@@ -107,7 +107,7 @@ public class JavaMethod extends QObject {
     }
 
     @Override
-    public QObject call(Runtime runtime, List<QObject> args, HashMap<String, QObject> kwargs) throws RuntimeStriker {
+    public QObject defaultCall(Runtime runtime, List<QObject> args, HashMap<String, QObject> kwargs) throws RuntimeStriker {
         Class<?>[] classes = Arg.getClassesFromArgs(args);
         Method foundMethod = null;
         if (methods.length > 0) {

@@ -308,7 +308,7 @@ public class QObject {
         return Val();
     }
 
-    public QObject defaultIntdiv(Runtime runtime, QObject other)
+    public QObject defaultIntDivide(Runtime runtime, QObject other)
             throws RuntimeStriker {
         runtime.error(new QUnsupportedOperationException(this, "//", other));
         return Val();
@@ -524,7 +524,7 @@ public class QObject {
                     Collections.singletonList(other),
                     new HashMap<>()
             );
-        return defaultIntdiv(runtime, other);
+        return defaultIntDivide(runtime, other);
     }
 
     public QObject modulo(Runtime runtime, QObject other) throws RuntimeStriker {
@@ -789,3 +789,9 @@ public class QObject {
     }
 
 }
+
+// public QObject (call|sum|subtract|multiply|divide|intDivide|
+// modulo|power|shiftLeft|shiftRight|greater|greaterEqual|less|
+// lessEqual|equalsObject|notEqualsObject|not|negate|convertToString|
+// convertToBool|convertToNumber|and|or|indexSet|index|subscriptStartEnd|
+// subscriptStartEndStep|iterateStart|iterateNext)

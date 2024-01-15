@@ -131,7 +131,7 @@ public class QFunc extends QObject {
         return QObject.Val();
     }
 
-    public QObject call(Runtime runtime, List<QObject> args, HashMap<String, QObject> kwargs)
+    public QObject defaultCall(Runtime runtime, List<QObject> args, HashMap<String, QObject> kwargs)
             throws RuntimeStriker {
         if (runtime == null)
             runtime = boundRuntime;
