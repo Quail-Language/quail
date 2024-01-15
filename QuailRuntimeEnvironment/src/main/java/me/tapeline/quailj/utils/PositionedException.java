@@ -1,7 +1,7 @@
 package me.tapeline.quailj.utils;
 
 /**
- * An exception that has positions in code.
+ * An exception that has position in code.
  * @author Tapeline
  * @see me.tapeline.quailj.lexing.LexerException
  * @see me.tapeline.quailj.parsing.ParserException

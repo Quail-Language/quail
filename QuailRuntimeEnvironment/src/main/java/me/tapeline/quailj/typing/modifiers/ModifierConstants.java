@@ -65,8 +65,5 @@ public class ModifierConstants {
         return (flags & FINAL_ASSIGNED) == FINAL_ASSIGNED;
     }
 
-    public static void main(String[] args) {
-        System.out.println(matchesOnAssign(NUM, QObject.Val("")));
-    }
 
 }

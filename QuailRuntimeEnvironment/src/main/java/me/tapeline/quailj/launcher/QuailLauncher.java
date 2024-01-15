@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class QuailLauncher {
-
+// TODO: refactor
     public static final int QUAIL_MAJOR_VERSION = 2;
     public static final int QUAIL_MINOR_VERSION = 0;
     public static final int QUAIL_PATCH_VERSION = 0;
