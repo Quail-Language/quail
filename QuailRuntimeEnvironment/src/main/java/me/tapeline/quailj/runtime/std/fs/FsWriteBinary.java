@@ -51,7 +51,7 @@ public class FsWriteBinary extends QBuiltinFunc {
             runtime.error(new QUnsuitableTypeException("String", args.get("path")));
             return Val();
         }
-        File file = new File(path);
+        File file = runtime.getIo().file(path);
         try {
             byte[] data = Base64.getDecoder().decode(args.get("base64Data").strValue());
             Files.write(file.toPath(), data);

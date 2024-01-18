@@ -2,8 +2,10 @@ package me.tapeline.quailj.runtime.std.basic.io;
 
 import me.tapeline.quailj.parsing.nodes.literals.LiteralFunction;
 import me.tapeline.quailj.runtime.Runtime;
+import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.typing.classes.QList;
 import me.tapeline.quailj.typing.classes.QObject;
+import me.tapeline.quailj.typing.classes.errors.QArgumentClarificationException;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 
@@ -30,8 +32,10 @@ public class FuncPrint extends QBuiltinFunc {
     }
 
     @Override
-    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) {
+    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList)
+            throws RuntimeStriker {
         QList values = (QList) args.get("values");
+        if (values == null) runtime.error(new QArgumentClarificationException("list", "values...", Val()));
         for (QObject o : values.getValues())
             System.out.print(o.toString() + " ");
         System.out.println();

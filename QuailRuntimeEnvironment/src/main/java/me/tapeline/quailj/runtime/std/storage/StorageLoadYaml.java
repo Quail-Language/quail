@@ -45,7 +45,7 @@ public class StorageLoadYaml extends QBuiltinFunc {
             yamlList.forEach(entry -> contents.add(parseYaml(entry)));
             return Val(contents);
         } else if (obj instanceof Number) {
-            return Val((Double) obj);
+            return Val(((Number) obj).doubleValue());
         } else if (obj instanceof Boolean) {
             return Val(((Boolean) obj));
         } else if (obj instanceof String) {
