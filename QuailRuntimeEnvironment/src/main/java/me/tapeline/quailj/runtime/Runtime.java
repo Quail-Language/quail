@@ -41,8 +41,6 @@ import me.tapeline.quailj.utils.IntFlags;
 import me.tapeline.quailj.utils.TextUtils;
 import org.jetbrains.annotations.Nullable;
 
-import javax.xml.soap.Text;
-
 import static me.tapeline.quailj.typing.classes.QObject.Val;
 
 import java.io.File;
@@ -144,6 +142,7 @@ public class Runtime {
         QList.prototype.set("pop", new ListFuncPop(this));
         QList.prototype.set("remove", new ListFuncRemove(this));
         QList.prototype.set("removeElementAt", new ListFuncRemoveElementAt(this));
+        QList.prototype.set("reverse", new ListFuncReverse(this));
         QList.prototype.set("reversed", new ListFuncReversed(this));
         QList.prototype.set("set", new ListFuncSet(this));
         QList.prototype.set("size", new ListFuncSize(this));
