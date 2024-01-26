@@ -1,3 +1,3 @@
-print("Hello1")
-print("Hello2")
-print("Hello3")
+Null.a = 10
+
+print(null.a)

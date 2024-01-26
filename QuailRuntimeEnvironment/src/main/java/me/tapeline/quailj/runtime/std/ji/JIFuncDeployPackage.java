@@ -70,7 +70,9 @@ public class JIFuncDeployPackage extends QBuiltinFunc {
         QueuedTaskExecutor.ProducerTask<JavaMemoryCompiler.Compilation.Result> compilationTask =
                 javaMemoryCompiler.compile(
                         JavaMemoryCompiler.Compilation.Config.forUnitSourceGenerator(unit)
-                        .storeCompiledClassesTo(args.get("classStorage").strValue())
+                        .storeCompiledClassesTo(
+                                runtime.getIo().file(args.get("classStorage").strValue()).getAbsolutePath()
+                        )
                 );
 
         JavaMemoryCompiler.Compilation.Result compilationResult = compilationTask.join();

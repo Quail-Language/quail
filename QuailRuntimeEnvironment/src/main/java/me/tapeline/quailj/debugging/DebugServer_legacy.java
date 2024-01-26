@@ -13,6 +13,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 
+@Deprecated
 public class DebugServer_legacy {
 
     private static Socket clientSocket;

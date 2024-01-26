@@ -60,91 +60,91 @@ public class QList extends QObject {
     }
 
     @Override
-    public QObject sum(Runtime runtime, QObject other) throws RuntimeStriker {
+    public QObject defaultSum(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isList())
             return Val(ListUtils.union(values, other.listValue()));
         return super.sum(runtime, other);
     }
 
     @Override
-    public QObject multiply(Runtime runtime, QObject other) throws RuntimeStriker {
+    public QObject defaultMultiply(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return Val(QListUtils.multiply(values, (int) other.numValue()));
         return super.multiply(runtime, other);
     }
 
     @Override
-    public QObject divide(Runtime runtime, QObject other) throws RuntimeStriker {
+    public QObject defaultDivide(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return Val(QListUtils.divide(values, (int) other.numValue()));
         return super.divide(runtime, other);
     }
 
     @Override
-    public QObject intDivide(Runtime runtime, QObject other) throws RuntimeStriker {
+    public QObject defaultIntDivide(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return Val(QListUtils.intDivide(values, (int) other.numValue()));
         return super.intDivide(runtime, other);
     }
 
     @Override
-    public QObject shiftLeft(Runtime runtime, QObject other) throws RuntimeStriker {
+    public QObject defaultShiftLeft(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return Val(QListUtils.shift(values, (int) -other.numValue()));
         return super.shiftLeft(runtime, other);
     }
 
     @Override
-    public QObject shiftRight(Runtime runtime, QObject other) throws RuntimeStriker {
+    public QObject defaultShiftRight(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return Val(QListUtils.shift(values, (int) other.numValue()));
         return super.shiftRight(runtime, other);
     }
 
     @Override
-    public QObject equalsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+    public QObject defaultEqualsObject(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isList())
             return Val(values.equals(other.listValue()));
         return super.equalsObject(runtime, other);
     }
 
     @Override
-    public QObject notEqualsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+    public QObject defaultNotEqualsObject(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isList())
             return Val(!values.equals(other.listValue()));
         return super.notEqualsObject(runtime, other);
     }
 
     @Override
-    public QObject greater(Runtime runtime, QObject other) throws RuntimeStriker {
+    public QObject defaultGreater(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isList())
             return Val(values.size() > other.listValue().size());
         return super.greater(runtime, other);
     }
 
     @Override
-    public QObject greaterEqual(Runtime runtime, QObject other) throws RuntimeStriker {
+    public QObject defaultGreaterEqual(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isList())
             return Val(values.size() >= other.listValue().size());
         return super.greaterEqual(runtime, other);
     }
 
     @Override
-    public QObject less(Runtime runtime, QObject other) throws RuntimeStriker {
+    public QObject defaultLess(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isList())
             return Val(values.size() < other.listValue().size());
         return super.less(runtime, other);
     }
 
     @Override
-    public QObject lessEqual(Runtime runtime, QObject other) throws RuntimeStriker {
+    public QObject defaultLessEqual(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isList())
             return Val(values.size() <= other.listValue().size());
         return super.lessEqual(runtime, other);
     }
 
     @Override
-    public QObject index(Runtime runtime, QObject index) throws RuntimeStriker {
+    public QObject defaultIndex(Runtime runtime, QObject index) throws RuntimeStriker {
         if (index.isNum()) {
             if (values.size() <= index.numValue())
                 runtime.error(new QIndexOutOfBoundsException(index, Val(values.size())));
@@ -157,7 +157,7 @@ public class QList extends QObject {
     }
 
     @Override
-    public QObject indexSet(Runtime runtime, QObject index, QObject value) throws RuntimeStriker {
+    public QObject defaultIndexSet(Runtime runtime, QObject index, QObject value) throws RuntimeStriker {
         if (index.isNum()) {
             if (values.size() <= index.numValue())
                 runtime.error(new QIndexOutOfBoundsException(index, Val(values.size())));
@@ -171,7 +171,7 @@ public class QList extends QObject {
     }
 
     @Override
-    public QObject subscriptStartEnd(Runtime runtime, QObject start, QObject end) throws RuntimeStriker {
+    public QObject defaultSubscriptStartEnd(Runtime runtime, QObject start, QObject end) throws RuntimeStriker {
         if (start.isNum() && end.isNum())
             return Val(values.subList((int) start.numValue(), (int) end.numValue()));
         else if (start.isNum() && end.isNull())
@@ -182,7 +182,7 @@ public class QList extends QObject {
     }
 
     @Override
-    public QObject subscriptStartEndStep(Runtime runtime, QObject start, QObject end, QObject step) {
+    public QObject defaultSubscriptStartEndStep(Runtime runtime, QObject start, QObject end, QObject step) {
         return Val(QListUtils.subscript(
                 values,
                 start.isNull()? null : (int) start.numValue(),
@@ -192,13 +192,13 @@ public class QList extends QObject {
     }
 
     @Override
-    public QObject iterateStart(Runtime runtime) {
+    public QObject defaultIterateStart(Runtime runtime) {
         iteratorIndex = 0;
         return this;
     }
 
     @Override
-    public QObject iterateNext(Runtime runtime) throws RuntimeStriker {
+    public QObject defaultIterateNext(Runtime runtime) throws RuntimeStriker {
         if (iteratorIndex == values.size())
             runtime.error(new QIterationStopException());
         return values.get(iteratorIndex++);
@@ -228,7 +228,7 @@ public class QList extends QObject {
     }
 
     @Override
-    public QObject convertToString(Runtime runtime) throws RuntimeStriker {
+    public QObject defaultConvertToString(Runtime runtime) throws RuntimeStriker {
         return Val(toString());
     }
 

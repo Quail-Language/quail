@@ -37,12 +37,12 @@ public class FsFilesIn extends QBuiltinFunc {
 
     @Override
     public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) throws RuntimeStriker {
-        String path = args.get("path").strValue();
+        String path = args.get("directory").strValue();
         if (path == null) {
-            runtime.error(new QUnsuitableTypeException("String", args.get("path")));
+            runtime.error(new QUnsuitableTypeException("String", args.get("directory")));
             return Val();
         }
-        File file = new File(path);
+        File file = runtime.getIo().file(path);
         return Val(
                 FileUtils.listFiles(file, null, false).stream()
                         .map(f -> Val(f.getName()))

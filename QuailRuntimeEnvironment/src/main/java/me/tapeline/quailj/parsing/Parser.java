@@ -4,6 +4,7 @@ import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.lexing.TokenType;
 import me.tapeline.quailj.parsing.annotation.Annotation;
 import me.tapeline.quailj.parsing.annotation.Decoration;
+import me.tapeline.quailj.parsing.annotation.std.DecoratorAnnotation;
 import me.tapeline.quailj.parsing.annotation.std.DeprecatedAnnotation;
 import me.tapeline.quailj.parsing.nodes.Node;
 import me.tapeline.quailj.parsing.nodes.comments.*;
@@ -62,6 +63,7 @@ public class Parser {
 
     public static void registerDefaultAnnotations() {
         registerAnnotation(new DeprecatedAnnotation());
+        registerAnnotation(new DecoratorAnnotation());
     }
 
     public static void registerAnnotation(Annotation annotation) {
@@ -289,6 +291,11 @@ public class Parser {
         return current;
     }
 
+    /**
+     * Gets index of next significant token, but does not
+     * modify the current state of parser
+     * @return next significant token index
+     * */
     private int nextSignificantIndex() {
         if (reachedEnd()) return -1;
         int increment = 0;
@@ -303,11 +310,17 @@ public class Parser {
         return increment;
     }
 
+    /***
+     * @return whether next significant token will be of provided type
+     */
     private boolean forseeToken(TokenType type) {
         int signIndex = nextSignificantIndex();
         return getNext(signIndex) != null && getNext(signIndex).getType() == type;
     }
 
+    /***
+     * @return whether next significant token sequence will resemble provided type pattern
+     */
     private boolean forseePattern(TokenType... pattern) {
         int signIndex = nextSignificantIndex();
         for (int i = 0; i < pattern.length; i++)
@@ -316,10 +329,20 @@ public class Parser {
         return true;
     }
 
+    /**
+     * Requires next token to be of provided type
+     * @return next token of provided type
+     * @throws ParserException if next token's type != provided type
+     */
     private Token require(TokenType type) throws ParserException {
         return require(type, null);
     }
 
+    /**
+     * Requires next token to be of provided type
+     * @return next token of provided type
+     * @throws ParserException if next token's type != provided type
+     */
     private Token require(TokenType type, String message) throws ParserException {
         if (reachedEnd())
             error(message == null? "Expected " + type.toString() + " but file ended" : message);
@@ -336,6 +359,9 @@ public class Parser {
         return tokens.get(pos - 1);
     }
 
+    /**
+     * Transforms short operation to its binary operator. E.g. += to +
+     */
     private Token transformShortOp(Token shortOp) {
         if (shortOp.getType() == SHORT_POWER)
             return new Token(shortOp.getMod(), POWER, shortOp.getLexeme(),
@@ -361,6 +387,9 @@ public class Parser {
         return shortOp;
     }
 
+    /**
+     * Parses a block of code until meets one of provided tokens
+     */
     private BlockNode parseBlockUntil(Token beginning, TokenType... until) throws ParserException {
         BlockNode block = new BlockNode(beginning, new ArrayList<>());
         match(LCPAR);
@@ -370,6 +399,10 @@ public class Parser {
         }
     }
 
+    /**
+     * Rolls the caret through all tabulations (to next non-tab token) and counts them
+     * @return tab count
+     */
     private int consumeTabs() {
         int tabCount = 0;
         //for (; matchExactly(TAB) != null; tabCount++);
@@ -392,6 +425,9 @@ public class Parser {
         return tabCount;
     }
 
+    /**
+     * Parses a block of code written in Python-style
+     */
     private BlockNode parsePythonBlock() throws ParserException {
         Token blockToken = getPrevious();
         matchExactly(EOL);
@@ -408,6 +444,7 @@ public class Parser {
         }
     }
 
+    @Deprecated // TODO Remove??
     private Node newNode(Class<? extends Node> node, Object... args) {
         Constructor<?> foundConstructor = null;
         for (Constructor<?> constructor : node.getConstructors()) {
@@ -441,6 +478,12 @@ public class Parser {
         }
     }
 
+    /**
+     * Transforms given node with provided decorations in reverse order
+     * E.g.: @Decorator(...) function f() ... will be transformed into
+     * f = Decorator(function f() ..., ...)
+     * @return node with all decorations applied
+     */
     private Node applyDecorations(List<Decoration> decorations, Node target) {
         if (decorations.isEmpty()) return target;
         decorations = new ArrayList<>(decorations);
@@ -476,6 +519,11 @@ public class Parser {
         return target;
     }
 
+    /**
+     * Wraps node with decorations (puts it as an argument into the decorator function).
+     * E.g.: @Decorator(...) function f() ... will be transformed into
+     * Decorator(function f() ..., ...)
+     */
     private Node wrapWithDecoration(Node target, Decoration decoration) {
         String name = null;
         if (target instanceof LiteralClass)
@@ -510,6 +558,9 @@ public class Parser {
         }
     }
 
+    /**
+     * @return copy of current list of pending decorations
+     */
     private List<Decoration> freezeDecorations() {
         return pendingDecorations.subList(0, pendingDecorations.size());
     }
@@ -665,6 +716,9 @@ public class Parser {
         return null;
     }
 
+    /**
+     * Matches all decorations and stores them as pending decorations to be applied later
+     */
     private void parseDecorations() throws ParserException {
         while (match(ANNOTATION) != null) {
             Token annotationToken = getPrevious();
@@ -745,6 +799,9 @@ public class Parser {
         return null;
     }
 
+    /**
+     * Parses all function constructions including overrides, constructors and gets/sets
+     */
     private Node parseFunction() throws ParserException {
         List<Decoration> decorations = null;
         if (forseePattern(MOD_STATIC, TYPE_METHOD) ||
@@ -954,6 +1011,11 @@ public class Parser {
         return parseCall(policy);
     }
 
+    /**
+     * Parses call expressions, dot accessors (object.field),
+     * indexes and subscripts. All these syntax objects are
+     * equal by priority
+     */
     private Node parseCall(ParsingPolicy policy) throws ParserException {
         Node left = parsePrimary(policy);
         while (true) {
@@ -1198,6 +1260,10 @@ public class Parser {
         return null;
     }
 
+    /**
+     * Converts raw node sequence that is assumed to be arguments to
+     * proper argument sequence
+     */
     private List<LiteralFunction.Argument> convertDefinedArguments(List<Node> argumentNodes)
             throws ParserException {
         List<LiteralFunction.Argument> arguments = new ArrayList<>();
@@ -1292,6 +1358,9 @@ public class Parser {
         return currentModifier;
     }
 
+    /**
+     * @return default value for type (0 for number, false for boolean, etc)
+     */
     public static Node getDefaultNodeFor(int[] modifiers) {
         if (modifiers.length != 1) return new LiteralNull(Token.UNDEFINED);
         if (IntFlags.check(modifiers[0], ModifierConstants.BOOL))

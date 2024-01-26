@@ -200,6 +200,9 @@ public class DocumentationGenerator {
         return "";
     }
 
+    /**
+     * Converts internal representation of arguments back to human-readable format
+     */
     private String argsToString(List<LiteralFunction.Argument> arguments) {
         StringBuilder sb = new StringBuilder("(");
         for (int i = 0; i < arguments.size(); i++) {

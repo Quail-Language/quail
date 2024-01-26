@@ -42,7 +42,7 @@ public class FsDeleteFile extends QBuiltinFunc {
             runtime.error(new QUnsuitableTypeException("String", args.get("path")));
             return Val();
         }
-        File file = new File(path);
+        File file = runtime.getIo().file(path);
         if (file.isFile()) {
             try {
                 FileUtils.delete(file);
