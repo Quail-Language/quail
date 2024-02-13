@@ -944,8 +944,17 @@ public class Parser {
 
     private Node parseEquality(ParsingPolicy policy) throws ParserException {
         Node left = parseComparison(policy);
-        while (matchMultiple(EQUALS, NOT_EQUALS, INSTANCEOF, IN) != null)
-            left = new BinaryOperatorNode(getPrevious(), left, parseComparison(policy));
+        while (true) {
+            Token op = matchMultiple(EQUALS, NOT_EQUALS, INSTANCEOF, IN);
+            if (op == null && forseePattern(NOT, IN)) {
+                Token notToken = require(NOT);
+                Token inToken = require(IN);
+                op = new Token(NOT_IN, "not in", notToken.getLine(), notToken.getCharacter(),
+                        inToken.getCharacter() + inToken.getLength() - notToken.getCharacter());
+            }
+            if (op == null) break;
+            left = new BinaryOperatorNode(op, left, parseComparison(policy));
+        }
         return left;
     }
 

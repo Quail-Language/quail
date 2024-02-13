@@ -1,3 +1,2 @@
-Null.a = 10
-
-print(null.a)
+a = ["a", "b", "c"]
+print("bb" not in a)

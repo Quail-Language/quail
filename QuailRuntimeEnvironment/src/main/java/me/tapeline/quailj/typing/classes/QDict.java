@@ -93,6 +93,18 @@ public class QDict extends QObject {
     }
 
     @Override
+    public QObject defaultContainsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+        if (other.isStr()) return Val(values.containsKey(other.strValue()));
+        return super.defaultContainsObject(runtime, other);
+    }
+
+    @Override
+    public QObject defaultNotContainsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+        if (other.isStr()) return Val(!values.containsKey(other.strValue()));
+        return super.defaultNotContainsObject(runtime, other);
+    }
+
+    @Override
     public QObject defaultIterateStart(Runtime runtime) {
         iterator = 0;
         iterableKeys = new ArrayList<>(values.keySet());

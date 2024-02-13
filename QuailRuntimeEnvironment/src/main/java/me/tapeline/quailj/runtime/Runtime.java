@@ -442,6 +442,8 @@ public class Runtime {
             case LESS_EQUAL: return operandA.lessEqual(this, operandB);
             case EQUALS: return operandA.equalsObject(this, operandB);
             case NOT_EQUALS: return operandA.notEqualsObject(this, operandB);
+            case IN: return operandB.containsObject(this, operandA);
+            case NOT_IN: return operandB.notContainsObject(this, operandA);
             case INSTANCEOF: return Val(operandA.instanceOf(operandB));
             default: error(new QInternalException("Unknown binary operation " + op));
         }
