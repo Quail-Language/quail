@@ -61,7 +61,7 @@ public class QDict extends QObject {
     }
 
     @Override
-    public QObject equalsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+    public QObject defaultEqualsObject(Runtime runtime, QObject other) throws RuntimeStriker {
         if (!other.isDict())
             return super.equalsObject(runtime, other);
         if (other.dictValue().size() != values.size())
@@ -75,32 +75,44 @@ public class QDict extends QObject {
     }
 
     @Override
-    public QObject notEqualsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+    public QObject defaultNotEqualsObject(Runtime runtime, QObject other) throws RuntimeStriker {
         QBool result = ((QBool) equalsObject(runtime, other));
         result.setValue(!result.getValue());
         return result;
     }
 
     @Override
-    public QObject index(Runtime runtime, QObject index) {
+    public QObject defaultIndex(Runtime runtime, QObject index) {
         return nullSafe(values.get(index.toString()));
     }
 
     @Override
-    public QObject indexSet(Runtime runtime, QObject index, QObject value) {
+    public QObject defaultIndexSet(Runtime runtime, QObject index, QObject value) {
         values.put(index.toString(), value);
         return value;
     }
 
     @Override
-    public QObject iterateStart(Runtime runtime) {
+    public QObject defaultContainsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+        if (other.isStr()) return Val(values.containsKey(other.strValue()));
+        return super.defaultContainsObject(runtime, other);
+    }
+
+    @Override
+    public QObject defaultNotContainsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+        if (other.isStr()) return Val(!values.containsKey(other.strValue()));
+        return super.defaultNotContainsObject(runtime, other);
+    }
+
+    @Override
+    public QObject defaultIterateStart(Runtime runtime) {
         iterator = 0;
         iterableKeys = new ArrayList<>(values.keySet());
         return this;
     }
 
     @Override
-    public QObject iterateNext(Runtime runtime) throws RuntimeStriker {
+    public QObject defaultIterateNext(Runtime runtime) throws RuntimeStriker {
         if (iterableKeys == null)
             runtime.error(new QIterationNotStartedException());
         if (iterator == iterableKeys.size()) {

@@ -24,7 +24,6 @@ public class FieldCache extends UseOrderingCache<Field, String> {
         }
         if (cached != null)
             usedValue(cached);
-        System.out.println(Arrays.toString(cache));
         return cached;
     }
 

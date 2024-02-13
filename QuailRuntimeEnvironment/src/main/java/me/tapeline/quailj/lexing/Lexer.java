@@ -167,6 +167,21 @@ public class Lexer {
     }
 
     /**
+     * Gets next non-whitespace character index
+     * @return -1 if next char is out of code bounds. If not - target char index
+     */
+    private int findNextSignificantIndex() {
+        int offset = 0;
+        while (current + offset < sourceCode.length()) {
+            if (isSignificant(sourceCode.charAt(current + offset)))
+                return offset;
+            else
+                offset++;
+        }
+        return -1;
+    }
+
+    /**
      * @param c target character
      * @return whether the character is a digit
      */
@@ -190,6 +205,14 @@ public class Lexer {
      */
     private boolean isAlphaNumeric(char c) {
         return isAlpha(c) || isDigit(c);
+    }
+
+    /**
+     * @param c target character
+     * @return whether the character is significant
+     */
+    private boolean isSignificant(char c) {
+        return c != '\n' && c != '\t' && c != '\r' && c != ' ';
     }
 
     /**

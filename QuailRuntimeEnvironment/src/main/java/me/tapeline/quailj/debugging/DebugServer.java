@@ -26,8 +26,12 @@ public class DebugServer {
     private static Thread serverThread;
     private static volatile Runtime currentRuntime;
     private static volatile Memory currentScope;
-    private static volatile Queue<String> codeToBeExecuted = new ArrayDeque<>();
+
+    /** Whether there was a socket exception and whether debugger can continue its work */
     public static boolean malfunction = false;
+
+    /** Queue of code send via debugger for evaluation */
+    private static volatile Queue<String> codeToBeExecuted = new ArrayDeque<>();
 
     public static HashMap<File, Set<Integer>> breakpoints = new HashMap<>();
 
@@ -42,6 +46,10 @@ public class DebugServer {
         out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()), 1000000);
     }
 
+    /**
+     * Accepts initial messages from debug client as described in documentation.
+     * These include, but may not be limited to breakpoint information
+     */
     public static void acceptInitial() throws IOException {
         String message = "";
         do {
@@ -61,6 +69,10 @@ public class DebugServer {
         serverThread.start();
     }
 
+    /**
+     * States that program execution ended.
+     * Writes corresponding message to client
+     */
     public static void markProgramEnd() {
         if (malfunction) return;
         try {
@@ -158,6 +170,9 @@ public class DebugServer {
         out.flush();
     }
 
+    /**
+     * Called when program steps onto a breakpoint
+     */
     public static void enterBreakpoint(Runtime runtime, Memory scope, int line) throws IOException {
         out.write("bp\n");
         out.write(runtime.getScriptFile() + ";" + line +"\n");

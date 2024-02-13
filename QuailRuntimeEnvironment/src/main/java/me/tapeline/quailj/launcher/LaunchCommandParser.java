@@ -25,6 +25,7 @@ public class LaunchCommandParser {
         this.userFlags = new HashMap<>();
     }
 
+
     public static boolean toBoolean(String strValue) {
         return strValue.equalsIgnoreCase("true") ||
                 strValue.equalsIgnoreCase("1") ||

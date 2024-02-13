@@ -24,13 +24,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class QuailLauncher {
-
+// TODO: refactor
     public static final int QUAIL_MAJOR_VERSION = 2;
     public static final int QUAIL_MINOR_VERSION = 0;
     public static final int QUAIL_PATCH_VERSION = 0;
     public static final String QUAIL_VERSION_STATUS = "alpha";
-    public static final int QUAIL_SUBVERSION = 6;
-    public static final String QUAIL_VERSION_SUFFIX = "RC-1";
+    public static final int QUAIL_SUBVERSION = 7;
+    public static final String QUAIL_VERSION_SUFFIX = "RC-2";
 
     private HashMap<String, Object> localFlags;
 

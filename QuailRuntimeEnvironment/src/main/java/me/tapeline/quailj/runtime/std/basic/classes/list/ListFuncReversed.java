@@ -7,6 +7,7 @@ import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 import me.tapeline.quailj.typing.modifiers.ModifierConstants;
 import me.tapeline.quailj.typing.utils.FuncArgument;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +33,9 @@ public class ListFuncReversed extends QBuiltinFunc {
 
     @Override
     public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) {
-        Collections.reverse(args.get("this").listValue());
-        return Val();
+        List<QObject> reversed = new ArrayList<>(args.get("this").listValue());
+        Collections.reverse(reversed);
+        return Val(reversed);
     }
 
 }

@@ -157,10 +157,10 @@ public class JavaClass extends QObject {
     }
 
     @Override
-    public QObject call(Runtime runtime, List<QObject> args, HashMap<String, QObject> kwargs) throws RuntimeStriker {
+    public QObject defaultCall(Runtime runtime, List<QObject> args, HashMap<String, QObject> kwargs) throws RuntimeStriker {
         if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers()))
             runtime.error(new QDerivationException(
-                    "Cannot instantinate abstract class or interface", this));
+                    "Cannot instantiate abstract class or interface", this));
         Constructor<?>[] constructors = clazz.getConstructors();
         Constructor<?> foundConstructor = null;
         Class<?>[] classes = Arg.getClassesFromArgs(args);
