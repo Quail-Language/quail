@@ -13,3 +13,7 @@ void setBoolValue(bool obj, bool value) {
 void setFuncValue(func obj, func value) {
     #? Sets object's function value
 }
+
+void callFunction(func f, list args) {
+    #? Call function with provided arguments
+}

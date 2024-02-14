@@ -29,6 +29,7 @@ public class ReflectLibrary implements BuiltinLibrary {
         contents.put("setFuncValue", new ReflectSetFuncValue(runtime));
         contents.put("setNumberValue", new ReflectSetNumberValue(runtime));
         contents.put("setStringValue", new ReflectSetStringValue(runtime));
+        contents.put("callFunction", new ReflectCallFunction(runtime));
 
         runtime.getMemory().table.putAll(contents);
 

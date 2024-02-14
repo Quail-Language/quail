@@ -444,40 +444,6 @@ public class Parser {
         }
     }
 
-    @Deprecated // TODO Remove??
-    private Node newNode(Class<? extends Node> node, Object... args) {
-        Constructor<?> foundConstructor = null;
-        for (Constructor<?> constructor : node.getConstructors()) {
-            if (constructor.getParameterCount() != args.length)
-                continue;
-            boolean matches = true;
-            for (int i = 0; i < args.length; i++) {
-                if (args[i] == null) continue;
-                Class<?> parameterClass = constructor.getParameterTypes()[i];
-                if (constructor.getParameterTypes()[i].isPrimitive())
-                    parameterClass = ClassUtils.primitiveToWrapper(
-                            constructor.getParameterTypes()[i]);
-                if (!parameterClass.isAssignableFrom(args[i].getClass())) {
-                    matches = false;
-                    break;
-                }
-            }
-            if (matches) {
-                foundConstructor = constructor;
-                break;
-            }
-        }
-        if (foundConstructor == null)
-            throw new RuntimeException("Cannot find suitable constructor");
-        try {
-            return applyDecorations(pendingDecorations,
-                    (Node) foundConstructor.newInstance(args));
-        } catch (InstantiationException | IllegalAccessException |
-                InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     /**
      * Transforms given node with provided decorations in reverse order
      * E.g.: @Decorator(...) function f() ... will be transformed into
@@ -859,9 +825,11 @@ public class Parser {
             Node statement = parseStatement();
             function = new LiteralFunction(funcToken, "_constructor", args, statement);
         }
-        if (decorations != null)
-            return applyDecorations(decorations, function);
-        else
+        if (decorations != null) {
+            Node node = applyDecorations(decorations, function);
+            pendingDecorations.clear();
+            return node;
+        } else
             return function;
     }
 

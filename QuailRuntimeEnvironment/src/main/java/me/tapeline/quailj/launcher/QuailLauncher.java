@@ -125,6 +125,7 @@ public class QuailLauncher {
                     new File(launchCommandParser.getTargetScript()),
                     scriptHome, new DefaultIO(), doProfile, doDebug);
             QObject returnValue = QObject.Val(0);
+            runtime.setScriptArgs(launchCommandParser.getScriptArgString());
             try {
                 runtime.run(parsedCode, runtime.getMemory());
             } catch (RuntimeStriker striker) {
@@ -172,6 +173,8 @@ public class QuailLauncher {
 
         Runtime runtime = new Runtime(parsedCode, preprocessedCode, new File(""),
                 scriptHome, io, doProfile, doDebug);
+        runtime.setScriptArgs(launchCommandParser.getScriptArgString());
+
         QObject returnValue = QObject.Val(0);
         try {
             runtime.run(parsedCode, runtime.getMemory());
