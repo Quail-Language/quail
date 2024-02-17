@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" style="overflow-x:hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <title>Docs</title>
+  <style>
+    @media screen and (min-width: 810px) {
+      aside {
+        height: 100vh;
+        overflow-y: scroll;
+      }
+    }
+
+    :target {
+        -webkit-animation: target-fade 5s 1;
+        -moz-animation: target-fade 5s 1;
+    }
+
+    @-webkit-keyframes target-fade {
+        0% { background-color: rgba(255, 198, 109, 0.8); }
+        100% { background-color: rgba(0,0,0,0); }
+    }
+    @-moz-keyframes target-fade {
+        0% { background-color: rgba(255, 198, 109, 0.8); }
+        100% { background-color: rgba(0,0,0,0); }
+    }  </style>
+</head>
+<body class="row p-5"><aside class="bd-aside sticky-xl-top text-muted align-self-start mb-3 mb-xl-5 px-2 col-auto">
+    <h2 class="h6 pt-4 pb-3 mb-4 border-bottom">event.q</h2>
+    <nav class="small" id="toc">
+      <ul class="list-unstyled">
+        <li class="my-2">
+          <ul class="list-unstyled ps-3">
+<li><a class="d-inline-flex align-items-center rounded" href="#Event">
+   Event
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#EventManager">
+   EventManager
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#fireEvent">
+   fireEvent
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#handleEvents">
+   handleEvents
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#addHandler">
+   addHandler
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#removeHandler">
+   removeHandler
+</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+</aside><div class="col"><h2><code>lang/event</code></h2>
+<hr>
+<h3 id="Event"><code>Event</code></h3>
+<div class="p-3"><div class="m-3"></div><h6>Fields</h6><ul class="ps-3"><li><code>string  name</code></li></ul><h6>Methods</h6><div class="ps-3"><p>None</p></div></div><h3 id="EventManager"><code>EventManager</code></h3>
+<div class="p-3"><p>Does all event management<br></p><div class="m-3"></div><h6>Fields</h6><div class="ps-3"><p>None</p></div><h6>Methods</h6><div class="ps-3"><h6 id="EventManager::_constructor"><code> _constructor(this, num queueCapacity=32.0)</code></h6><div class="ps-3"><p>Create an EventManager with certain event queue capacity<br></p></div><h6 id="EventManager::addHandler"><code>void  addHandler(this, string name, func handler)</code></h6><div class="ps-3"><p>Register handler for specific event<br></p></div><h6 id="EventManager::fireEvent"><code>void  fireEvent(this, event)</code></h6><div class="ps-3"><p>Call a event<br></p></div><h6 id="EventManager::handleEvents"><code>void  handleEvents(this)</code></h6><div class="ps-3"><p>Call all event handlers that should be called according to event queue<br>Event queue will be flushed after this operation<br></p></div><h6 id="EventManager::removeHandler"><code>void  removeHandler(this, string name, func handler)</code></h6><div class="ps-3"><p>Unregister handler<br></p></div></div></div><h6 id="fireEvent"><code>void  fireEvent(event)</code></h6><div class="ps-3"><p>This function reports to the default EventManager<br>See <a href="#EventManager::fireEvent">EventManager::fireEvent</a><br></p></div><h6 id="handleEvents"><code>void  handleEvents()</code></h6><div class="ps-3"><p>This function reports to the default EventManager<br>See <a href="#EventManager::handleEvents">EventManager::handleEvents</a><br></p></div><h6 id="addHandler"><code>void  addHandler(string name, func handler)</code></h6><div class="ps-3"><p>This function reports to the default EventManager<br>See <a href="#EventManager::addHandler">EventManager::addHandler</a><br></p></div><h6 id="removeHandler"><code>void  removeHandler(string name, func handler)</code></h6><div class="ps-3"><p>This function reports to the default EventManager<br>See <a href="#EventManager::removeHandler">EventManager::removeHandler</a><br></p></div></div></body>
+</html>

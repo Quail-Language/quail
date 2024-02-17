@@ -1,40 +1,108 @@
+#?toc-entry JavaClass
+#?toc-entry JavaMethod
+#?toc-entry JavaObject
+#?toc-entry SketchedJavaClass
+#?toc-entry SketchedJavaConstructor
+#?toc-entry SketchedJavaField
+#?toc-entry SketchedJavaInheritance
+#?toc-entry SketchedJavaMethod
+#?toc-entry SketchedJavaPackage
+#?toc-entry getClass
+#?toc-entry deployPackage
+
+#?html <h2><code>lang/ji</code></h2>
+#?html <hr>
+
 class JavaClass {
-    string getName(this) {}
-    string getQualifiedName(this) {}
-    bool isInstance(this, object obj) {}
-    bool isInterface(this) {}
-    object<JavaClass> getSuperclass(this) {}
-    list<object<JavaClass>> getImplementedInterfaces(this) {}
+    #? Proxy for Java classes
+    static CLASS = 0
+    static ABSTRACT = 1
+    static INTERFACE = 2
+
+    constructor (this, args...) {
+        #? Instantiate JavaObject of that class
+    }
+}
+
+class JavaMethod {
+    #? Proxy for Java methods
 }
 
 class JavaObject {
-    static object<JavaObject> pack(obj) {}
-    object<JavaClass> getClass(this) {}
-}
+    #? Proxy for Java objects
 
-class JavaMethod {}
+    static object pack(object obj) {
+        #? Wraps Quail native value as a JavaObject
+    }
 
-class SketchedJavaMethod {
-    constructor (this, string signature, list<list<string>> args, func body) {}
-}
-
-class SketchedJavaField {
-    constructor (this, string signature, object<JavaObject> value) {}
-}
-
-class SketchedJavaConstructor {
-    constructor (this, list<list<string>> args, func body) {}
+    object getClass(this) {
+        #? Get class (instance of JavaClass)
+    }
 }
 
 class SketchedJavaClass {
-    constructor (this, string signature, list fields, list methods) {}
+    #? Used for runtime creation of Java classes
+    constructor (this, string signature, contents...) {
+        #? Prepares a Java class.
+        #? Signature is a sequence of Java keyword modifiers and name of the class:
+        #? E.g. <code>public final ClassName</code>
+        #? Contents is a sequence of SketchedJavaConstructors, SketchedJavaFields,
+        #? SketchedJavaInheritances and SketchedJavaMethods
+    }
+}
+
+class SketchedJavaConstructor {
+    #? Used for runtime creation of Java class constructors
+    constructor (this, string signature, list args, func body) {
+        #? Prepares a Java class constructor.
+        #? Signature is a sequence of Java keyword modifiers: public, private, protected, static, final
+        #? E.g. <code>public</code>
+        #? Args is a list of strings that contain argument signatures.
+        #? E.g. <code>["double a", "String b"]</code>
+        #? Body is the Quail function that will be executed when this constructor is invoked
+    }
+}
+
+class SketchedJavaField {
+    #? Used for runtime creation of Java class fields
+    constructor (this, string signature, object default) {
+        #? Prepares a Java class sequence.
+        #? Signature is a sequence of Java keyword modifiers (public, private, protected, static, final),
+        #? a type (double, String, boolean...) and a name. E.g. public double a
+        #? Default is an instance of JavaObject. Resembles the default value of this field
+    }
+}
+
+class SketchedJavaInheritance {
+    #? Used for inheritance of runtime created Java classes
+    constructor (this, object extends) {
+        #? Receives a JavaClass instance of extension or implementation
+    }
+}
+
+class SketchedJavaMethod {
+    #? Used for runtime creation of Java class methods
+    constructor (this, string signature, list args, func body) {
+        #? Prepares a Java class constructor.
+        #? Signature is a sequence of Java keyword modifiers (public, private, protected, static, final),
+        #? a type (double, String, boolean...) and a name. E.g. public double a
+        #? Args is a list of strings that contain argument signatures.
+        #? E.g. <code>["double a", "String b"]</code>
+        #? Body is the Quail function that will be executed when this method is invoked
+    }
 }
 
 class SketchedJavaPackage {
-    constructor (this, string name, classes...) {}
+    #? Used for runtime creation of Java packages
+    constructor (this, string name, classes...) {
+        #? Classes is a sequence of SketchedJavaClasses
+    }
 }
 
-#? Get defined Java class
-function getClass(string className)
+function getClass(string className) {
+    #? Get defined Java class by qualified ID
+}
 
-function deployPackage(object<SketchedJavaPackage> package) {}
+function deployPackage(object package) {
+    #? Creates all Java classes specified in passed SketchedJavaPackage
+}

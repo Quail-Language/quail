@@ -1,3 +1,12 @@
+#?toc-entry setNumberValue
+#?toc-entry setStringValue
+#?toc-entry setBoolValue
+#?toc-entry setFuncValue
+#?toc-entry callFunction
+
+#?html <h2><code>lang/reflect</code></h2>
+#?html <hr>
+
 void setNumberValue(num obj, num value) {
     #? Sets object's numeric value
 }

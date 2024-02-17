@@ -1,3 +1,10 @@
+#?toc-entry product
+#?toc-entry gcd
+#?toc-entry lcm
+
+#?html <h2><code>lang/math</code></h2>
+#?html <hr>
+
 num product(list values) {
     #? Multiplies all values
 }

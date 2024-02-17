@@ -1,3 +1,17 @@
+#?toc-entry getConsoleArgString
+#?toc-entry parseConsoleArgs
+#?toc-entry setPrefix
+#?toc-entry setUnknownCommandMessage
+#?toc-entry runApp
+#?toc-entry stopApp
+#?toc-html <h4><br>Decorators</h4>
+#?toc-entry command
+#?toc-entry tick
+
+#?html <h2><code>lang/cli</code></h2>
+#?html <hr>
+#? This library allows to create simple console applications
+
 string getConsoleArgString() {
     #? Returns string of all arguments that were passed to Quail script
     #? E.g. java -jar qre.jar main.q abc def --t="2" -Dfd
@@ -12,14 +26,6 @@ dict parseConsoleArgs(string argString) {
     #? Any other sequence will be treated as a regular argument (string)
     #? Resulting dict will contain: "kwargs"=dict of keyword arguments,
     #? "flags"=dict of bool flags, "args"=list of regular arguments
-}
-
-function command(f, string commandName) {
-    #? Registers provided function as a command listener to specific console command
-}
-
-function tick(f) {
-    #? Registers provided function as a ticking functions
 }
 
 void setPrefix(string prefix) {
@@ -37,4 +43,14 @@ void runApp() {
 
 void stopApp() {
     #? Stop the main app loop
+}
+
+function command(f, string commandName) {
+    #?badge-yellow Decorator
+    #? Registers provided function as a command listener to specific console command
+}
+
+function tick(f) {
+    #?badge-yellow Decorator
+    #? Registers provided function as a ticking functions
 }

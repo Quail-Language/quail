@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" style="overflow-x:hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <title>Docs</title>
+  <style>
+    @media screen and (min-width: 810px) {
+      aside {
+        height: 100vh;
+        overflow-y: scroll;
+      }
+    }
+
+    :target {
+        -webkit-animation: target-fade 5s 1;
+        -moz-animation: target-fade 5s 1;
+    }
+
+    @-webkit-keyframes target-fade {
+        0% { background-color: rgba(255, 198, 109, 0.8); }
+        100% { background-color: rgba(0,0,0,0); }
+    }
+    @-moz-keyframes target-fade {
+        0% { background-color: rgba(255, 198, 109, 0.8); }
+        100% { background-color: rgba(0,0,0,0); }
+    }  </style>
+</head>
+<body class="row p-5"><aside class="bd-aside sticky-xl-top text-muted align-self-start mb-3 mb-xl-5 px-2 col-auto">
+    <h2 class="h6 pt-4 pb-3 mb-4 border-bottom">ji.q</h2>
+    <nav class="small" id="toc">
+      <ul class="list-unstyled">
+        <li class="my-2">
+          <ul class="list-unstyled ps-3">
+<li><a class="d-inline-flex align-items-center rounded" href="#JavaClass">
+   JavaClass
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#JavaMethod">
+   JavaMethod
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#JavaObject">
+   JavaObject
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#SketchedJavaClass">
+   SketchedJavaClass
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#SketchedJavaConstructor">
+   SketchedJavaConstructor
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#SketchedJavaField">
+   SketchedJavaField
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#SketchedJavaInheritance">
+   SketchedJavaInheritance
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#SketchedJavaMethod">
+   SketchedJavaMethod
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#SketchedJavaPackage">
+   SketchedJavaPackage
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#getClass">
+   getClass
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#deployPackage">
+   deployPackage
+</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+</aside><div class="col"><h2><code>lang/ji</code></h2>
+<hr>
+<h3 id="JavaClass"><code>JavaClass</code></h3>
+<div class="p-3"><p>Proxy for Java classes<br></p><div class="m-3"></div><h6>Fields</h6><ul class="ps-3"><li><code>static  CLASS</code></li><li><code>static  ABSTRACT</code></li><li><code>static  INTERFACE</code></li></ul><h6>Methods</h6><div class="ps-3"><h6 id="JavaClass::_constructor"><code> _constructor(this, args...)</code></h6><div class="ps-3"><p>Instantiate JavaObject of that class<br></p></div></div></div><h3 id="JavaMethod"><code>JavaMethod</code></h3>
+<div class="p-3"><p>Proxy for Java methods<br></p><div class="m-3"></div><h6>Fields</h6><div class="ps-3"><p>None</p></div><h6>Methods</h6><div class="ps-3"><p>None</p></div></div><h3 id="JavaObject"><code>JavaObject</code></h3>
+<div class="p-3"><p>Proxy for Java objects<br></p><div class="m-3"></div><h6>Fields</h6><div class="ps-3"><p>None</p></div><h6>Methods</h6><div class="ps-3"><h6 id="JavaObject::getClass"><code>object  getClass(this)</code></h6><div class="ps-3"><p>Get class (instance of JavaClass)<br></p></div><h6 id="JavaObject::pack"><code>object static  pack(object obj)</code></h6><div class="ps-3"><span class="badge bg-secondary">Static</span><br><p>Wraps Quail native value as a JavaObject<br></p></div></div></div><h3 id="SketchedJavaClass"><code>SketchedJavaClass</code></h3>
+<div class="p-3"><p>Used for runtime creation of Java classes<br></p><div class="m-3"></div><h6>Fields</h6><div class="ps-3"><p>None</p></div><h6>Methods</h6><div class="ps-3"><h6 id="SketchedJavaClass::_constructor"><code> _constructor(this, string signature, contents...)</code></h6><div class="ps-3"><p>Prepares a Java class.<br>Signature is a sequence of Java keyword modifiers and name of the class:<br>E.g. <code>public final ClassName</code><br>Contents is a sequence of SketchedJavaConstructors, SketchedJavaFields,<br>SketchedJavaInheritances and SketchedJavaMethods<br></p></div></div></div><h3 id="SketchedJavaConstructor"><code>SketchedJavaConstructor</code></h3>
+<div class="p-3"><p>Used for runtime creation of Java class constructors<br></p><div class="m-3"></div><h6>Fields</h6><div class="ps-3"><p>None</p></div><h6>Methods</h6><div class="ps-3"><h6 id="SketchedJavaConstructor::_constructor"><code> _constructor(this, string signature, list args, func body)</code></h6><div class="ps-3"><p>Prepares a Java class constructor.<br>Signature is a sequence of Java keyword modifiers: public, private, protected, static, final<br>E.g. <code>public</code><br>Args is a list of strings that contain argument signatures.<br>E.g. <code>["double a", "String b"]</code><br>Body is the Quail function that will be executed when this constructor is invoked<br></p></div></div></div><h3 id="SketchedJavaField"><code>SketchedJavaField</code></h3>
+<div class="p-3"><p>Used for runtime creation of Java class fields<br></p><div class="m-3"></div><h6>Fields</h6><div class="ps-3"><p>None</p></div><h6>Methods</h6><div class="ps-3"><h6 id="SketchedJavaField::_constructor"><code> _constructor(this, string signature, object default)</code></h6><div class="ps-3"><p>Prepares a Java class sequence.<br>Signature is a sequence of Java keyword modifiers (public, private, protected, static, final),<br>a type (double, String, boolean...) and a name. E.g. public double a<br>Default is an instance of JavaObject. Resembles the default value of this field<br></p></div></div></div><h3 id="SketchedJavaInheritance"><code>SketchedJavaInheritance</code></h3>
+<div class="p-3"><p>Used for inheritance of runtime created Java classes<br></p><div class="m-3"></div><h6>Fields</h6><div class="ps-3"><p>None</p></div><h6>Methods</h6><div class="ps-3"><h6 id="SketchedJavaInheritance::_constructor"><code> _constructor(this, object extends)</code></h6><div class="ps-3"><p>Receives a JavaClass instance of extension or implementation<br></p></div></div></div><h3 id="SketchedJavaMethod"><code>SketchedJavaMethod</code></h3>
+<div class="p-3"><p>Used for runtime creation of Java class methods<br></p><div class="m-3"></div><h6>Fields</h6><div class="ps-3"><p>None</p></div><h6>Methods</h6><div class="ps-3"><h6 id="SketchedJavaMethod::_constructor"><code> _constructor(this, string signature, list args, func body)</code></h6><div class="ps-3"><p>Prepares a Java class constructor.<br>Signature is a sequence of Java keyword modifiers (public, private, protected, static, final),<br>a type (double, String, boolean...) and a name. E.g. public double a<br>Args is a list of strings that contain argument signatures.<br>E.g. <code>["double a", "String b"]</code><br>Body is the Quail function that will be executed when this method is invoked<br></p></div></div></div><h3 id="SketchedJavaPackage"><code>SketchedJavaPackage</code></h3>
+<div class="p-3"><p>Used for runtime creation of Java packages<br></p><div class="m-3"></div><h6>Fields</h6><div class="ps-3"><p>None</p></div><h6>Methods</h6><div class="ps-3"><h6 id="SketchedJavaPackage::_constructor"><code> _constructor(this, string name, classes...)</code></h6><div class="ps-3"><p>Classes is a sequence of SketchedJavaClasses<br></p></div></div></div><h6 id="getClass"><code> getClass(string className)</code></h6><div class="ps-3"><p>Get defined Java class by qualified ID<br></p></div><h6 id="deployPackage"><code> deployPackage(object package)</code></h6><div class="ps-3"><p>Creates all Java classes specified in passed SketchedJavaPackage<br></p></div></div></body>
+</html>

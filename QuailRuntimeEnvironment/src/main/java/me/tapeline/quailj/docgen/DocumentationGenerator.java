@@ -25,7 +25,7 @@ public class DocumentationGenerator {
     );
 
     private final String documentationHeader = "<!doctype html>\n" +
-            "<html lang=\"en\">\n" +
+            "<html lang=\"en\" style=\"overflow-x:hidden\">\n" +
             "<head>\n" +
             "  <meta charset=\"UTF-8\">\n" +
             "  <meta name=\"viewport\"\n" +
@@ -41,6 +41,28 @@ public class DocumentationGenerator {
             "  <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5" +
             "/font/bootstrap-icons.css\">\n" +
             "  <title>Docs</title>\n" +
+            "  <style>\n" +
+            "    @media screen and (min-width: 810px) {\n" +
+            "      aside {\n" +
+            "        height: 100vh;\n" +
+            "        overflow-y: scroll;\n" +
+            "      }\n" +
+            "    }\n" +
+            "\n" +
+            "    :target {\n" +
+            "        -webkit-animation: target-fade 5s 1;\n" +
+            "        -moz-animation: target-fade 5s 1;\n" +
+            "    }\n" +
+            "\n" +
+            "    @-webkit-keyframes target-fade {\n" +
+            "        0% { background-color: rgba(255, 198, 109, 0.8); }\n" +
+            "        100% { background-color: rgba(0,0,0,0); }\n" +
+            "    }\n" +
+            "    @-moz-keyframes target-fade {\n" +
+            "        0% { background-color: rgba(255, 198, 109, 0.8); }\n" +
+            "        100% { background-color: rgba(0,0,0,0); }\n" +
+            "    }" +
+            "  </style>\n" +
             "</head>\n" +
             "<body class=\"row p-5\">";
     private final String documentationFooter = "</body>\n" +
