@@ -4,16 +4,16 @@
 
 ---
 
-[`lang/cli`](/cli)
+[`lang/cli`](cli)
 
-[`lang/event`](/event)
+[`lang/event`](event)
 
-[`lang/fs`](/fs)
+[`lang/fs`](fs)
 
-[`lang/ji`](/ji)
+[`lang/ji`](ji)
 
-[`lang/math`](/math)
+[`lang/math`](math)
 
-[`lang/reflect`](/reflect)
+[`lang/reflect`](reflect)
 
-[`lang/storage`](/storage)
+[`lang/storage`](storage)

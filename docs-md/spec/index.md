@@ -16,7 +16,7 @@
 
 [Chapter 7: Memory and scopes](chapter7.md)
 
-[Chapter 8: Statement executions](chapter8.md) `Not Started`
+[Chapter 8: Statement executions](chapter8.md)
 
 [Chapter 9: External libraries](chapter9.md)
 
