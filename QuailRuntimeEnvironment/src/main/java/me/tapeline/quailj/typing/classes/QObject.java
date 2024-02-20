@@ -149,6 +149,22 @@ public class QObject {
             return new QNull();
     }
 
+    public boolean containsKey(String name) {
+        if (name.startsWith("_")) {
+            if (name.equals("_className") ||
+                name.equals("_superClass") ||
+                name.equals("_objectPrototype") ||
+                name.equals("_isPrototype") ||
+                name.equals("_isInheritable")) return true;
+        }
+        if (table.containsKey(name))
+            return true;
+        else if (parent != null)
+            return parent.containsKey(name);
+        else
+            return false;
+    }
+
     public void set(Runtime runtime, String name, QObject value) throws RuntimeStriker {
         table.put(runtime, name, value);
     }
@@ -177,8 +193,10 @@ public class QObject {
 
     public QObject callFromThis(Runtime runtime, QObject func, List<QObject> args,
                                       HashMap<String, QObject> kwargs) throws RuntimeStriker {
-        if (!isPrototype())
+        if (!isPrototype()) {
+            args = new ArrayList<>(args);
             args.add(0, this);
+        }
         return func.call(runtime, args, kwargs);
     }
 
@@ -352,6 +370,18 @@ public class QObject {
         return Val(this != other);
     }
 
+    public QObject defaultContainsObject(Runtime runtime, QObject other)
+            throws RuntimeStriker {
+        runtime.error(new QUnsupportedOperationException(this, "in", other));
+        return Val();
+    }
+
+    public QObject defaultNotContainsObject(Runtime runtime, QObject other)
+            throws RuntimeStriker {
+        runtime.error(new QUnsupportedOperationException(this, "not in", other));
+        return Val();
+    }
+
     public QObject defaultGreater(Runtime runtime, QObject other)
             throws RuntimeStriker {
         runtime.error(new QUnsupportedOperationException(this, ">", other));
@@ -471,8 +501,9 @@ public class QObject {
         return defaultCall(runtime, args, kwargs);
     }
 
+
     public QObject sum(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_add"))
+        if (table.containsKey("_add")) // TODO add custom implementation check in every child class
             return callFromThis(
                     runtime,
                     "_add",
@@ -593,6 +624,28 @@ public class QObject {
             );
         return defaultNotEqualsObject(runtime, other);
         // wtf was that: return Val(!table.getValues().equals(other.table.getValues()));
+    }
+
+    public QObject containsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+        if (table.containsKey("_contains"))
+            return callFromThis(
+                    runtime,
+                    "_contains",
+                    Collections.singletonList(other),
+                    new HashMap<>()
+            );
+        return defaultContainsObject(runtime, other);
+    }
+
+    public QObject notContainsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+        if (table.containsKey("_notcontains"))
+            return callFromThis(
+                    runtime,
+                    "_notcontains",
+                    Collections.singletonList(other),
+                    new HashMap<>()
+            );
+        return defaultNotContainsObject(runtime, other);
     }
 
     public QObject greater(Runtime runtime, QObject other) throws RuntimeStriker {

@@ -113,6 +113,7 @@ public enum TokenType {
     DOT,
     VAR,
     IN,
+    NOT_IN,
     INSTANCEOF,
     LIKE,
     DOCS,

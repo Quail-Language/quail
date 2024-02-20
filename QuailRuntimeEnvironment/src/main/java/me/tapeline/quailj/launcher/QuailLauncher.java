@@ -28,9 +28,9 @@ public class QuailLauncher {
     public static final int QUAIL_MAJOR_VERSION = 2;
     public static final int QUAIL_MINOR_VERSION = 0;
     public static final int QUAIL_PATCH_VERSION = 0;
-    public static final String QUAIL_VERSION_STATUS = "alpha";
-    public static final int QUAIL_SUBVERSION = 7;
-    public static final String QUAIL_VERSION_SUFFIX = "RC-2";
+    public static final String QUAIL_VERSION_STATUS = "beta";
+    public static final int QUAIL_SUBVERSION = 8;
+    public static final String QUAIL_VERSION_SUFFIX = "RC-3";
 
     private HashMap<String, Object> localFlags;
 
@@ -125,6 +125,7 @@ public class QuailLauncher {
                     new File(launchCommandParser.getTargetScript()),
                     scriptHome, new DefaultIO(), doProfile, doDebug);
             QObject returnValue = QObject.Val(0);
+            runtime.setScriptArgs(launchCommandParser.getScriptArgString());
             try {
                 runtime.run(parsedCode, runtime.getMemory());
             } catch (RuntimeStriker striker) {
@@ -172,6 +173,8 @@ public class QuailLauncher {
 
         Runtime runtime = new Runtime(parsedCode, preprocessedCode, new File(""),
                 scriptHome, io, doProfile, doDebug);
+        runtime.setScriptArgs(launchCommandParser.getScriptArgString());
+
         QObject returnValue = QObject.Val(0);
         try {
             runtime.run(parsedCode, runtime.getMemory());

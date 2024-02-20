@@ -6,6 +6,7 @@
 #?toc-entry Dict
 #?toc-entry Func
 #?toc-entry Null
+#?toc-entry Thread
 #?toc-html <h4><br>Standard exceptions</h4>
 #?toc-entry Exception
 #?toc-entry AssertionException
@@ -22,6 +23,13 @@
 #?toc-entry UnsupportedStepSubscriptException
 #?toc-entry UnsupportedSubscriptException
 #?toc-entry UnsupportedUnaryOperationException
+#?toc-entry IndexOutOfBoundsException
+#?toc-entry ClarificationException
+#?toc-entry ArgumentClarificationException
+#?toc-entry FinalAssignedException
+#?toc-entry InternalException
+#?toc-entry UnpackingException
+#?toc-entry UnknownLibraryException
 #?toc-html <h4><br>Standard functions</h4>
 #?toc-entry all
 #?toc-entry any
@@ -31,6 +39,7 @@
 #?toc-entry map
 #?toc-entry hash
 #?toc-entry millis
+#?toc-entry zip
 #?toc-entry input
 #?toc-entry print
 #?toc-entry put
@@ -41,6 +50,7 @@
 #?toc-entry atan2
 #?toc-entry cos
 #?toc-entry cosh
+#?toc-entry sum
 #?toc-entry max
 #?toc-entry min
 #?toc-entry sin
@@ -51,6 +61,8 @@
 #?toc-entry dec
 #?toc-entry hex
 #?toc-entry oct
+#?toc-entry writeFile
+#?toc-entry readFile
 
 #?html <h1 id="overview">Overview</h1>
 #?html <hr>
@@ -312,6 +324,10 @@ class List like Object {
 class Dict like Object {
     #? A string key -> object value data structure
 
+    void clear(this) {
+        #? Clears this dict
+    }
+
     list keys(this) {
         #? List all keys in this dict
     }
@@ -346,12 +362,44 @@ class Dict like Object {
 
 }
 
-class Func {
+class Func like Object {
     #? Resembles functions and methods
 }
 
-class Null {
+class Null like Object {
     #? Resembles the <code>null</code> value
+}
+
+class Thread like Object {
+    #? An asynchronous thread
+
+    constructor (this, func f, list args) {
+        #? Create a thread with specific function and save arguments
+    }
+
+    void start(this) {
+        #? Starts execution of the function with defined arguments
+        #? Thread ends when function ends
+    }
+
+    void stop(this) {
+        #? Stops the thread
+    }
+
+    void|object getResult(this) {
+        #? Returns the value that function returned
+        #? If function is not over yet, returns null
+    }
+
+    object waitForResult(this) {
+        #? Hangs while thread is alive and returns
+        #? the value that function will return
+    }
+
+    bool isAlive(this) {
+        #? Check whether the thread is alive or not
+    }
+
 }
 
 
@@ -441,6 +489,53 @@ class UnsupportedUnaryOperationException like Exception {
     object operand
 }
 
+class IndexOutOfBoundsException like Exception {
+    #? Thrown when indexing is out of bounds
+
+    num index
+    num size
+}
+
+class ClarificationException like Exception {
+    #? Thrown when clarified variable is assigned to unsupported value
+
+    string clarifiers
+    object value
+}
+
+class ArgumentClarificationException like Exception {
+    #? Thrown when clarified argument is assigned to unsupported value
+
+    string clarifiers
+    object value
+    string name
+}
+
+class FinalAssignedException like Exception {
+    #? Thrown when finalized variable is reassigned
+
+    object value
+}
+
+class InternalException like Exception {
+    #? Thrown when something in Quail goes wrong
+    #? Usually indicates bugs in QRE
+    #? Report occasions to the developer
+}
+
+class UnpackingException like Exception {
+    #? Thrown when for loop tries to unpack a value to wrong
+    #? number of variables. E.g. for a, b, c in some_dict
+    #? (dict can unpack only to key, value - 2 variables)
+
+    num present
+    num expected
+}
+
+class UnknownLibraryException like Exception {
+    #? Thrown when unknown library is being imported
+}
+
 #?html <hr>
 #?html <h1 id="standard-functions">Standard functions</h1>
 
@@ -480,6 +575,11 @@ num hash(obj) {
 
 num millis() {
     #? Get current time in milliseconds
+}
+
+list zip(list a, list b) {
+    #? Zips two lists into one list of pairs. E.g.:
+    #? <code>zip([1, 2], ["a", "b"]) -> [[1, "a"], [2, "b"]]</code>
 }
 
 string input(string prompt = "") {
@@ -564,4 +664,12 @@ string hex(num n) {
 
 string oct() {
     #? Convert given number to base-8 (integer only)
+}
+
+void writeFile(string path, string contents) {
+    #? Writes file as plain text
+}
+
+string readFile(string path) {
+    #? Reads file as plain text
 }

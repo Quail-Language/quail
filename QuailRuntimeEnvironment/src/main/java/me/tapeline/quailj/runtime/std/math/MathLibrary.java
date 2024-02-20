@@ -26,6 +26,8 @@ public class MathLibrary implements BuiltinLibrary {
     public QObject constructLibrary(Runtime runtime) {
         HashMap<String, QObject> contents = new HashMap<>();
         contents.put("product", new MathFuncProduct(runtime));
+        contents.put("gcd", new MathFuncGcd(runtime));
+        contents.put("lcm", new MathFuncLcm(runtime));
 
         runtime.getMemory().table.putAll(contents);
 

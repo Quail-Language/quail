@@ -14,6 +14,7 @@ public class LaunchCommandParser {
     private final HashMap<String, Object> userFlags;
     private String selectedRunStrategy;
     private String targetScript;
+    private String scriptArgString;
 
     private String outputFile;
 
@@ -35,6 +36,8 @@ public class LaunchCommandParser {
     public void parseReceivedArgs() {
         boolean strategySet = false;
         boolean waitingOutputFile = false;
+        boolean waitingScriptArgString = false;
+        StringBuilder scriptArgString = new StringBuilder();
         for (String arg : receivedConsoleArgs) {
             if (arg.startsWith("-")) parseFlag(arg);
             else if (!strategySet) {
@@ -47,14 +50,17 @@ public class LaunchCommandParser {
             } else if (waitingOutputFile) {
                 outputFile = arg;
                 break;
+            } else if (waitingScriptArgString) {
+                scriptArgString.append(arg).append(" ");
             } else {
                 targetScript = arg;
                 if (selectedRunStrategy.equalsIgnoreCase("run") ||
                     selectedRunStrategy.equalsIgnoreCase("profile") ||
                     selectedRunStrategy.equalsIgnoreCase("debug"))
-                    break;
+                    waitingScriptArgString = true;
             }
         }
+        this.scriptArgString = scriptArgString.toString();
     }
 
     private void parseFlag(String flag) {
@@ -114,4 +120,9 @@ public class LaunchCommandParser {
     public String getOutputFile() {
         return outputFile;
     }
+
+    public String getScriptArgString() {
+        return scriptArgString;
+    }
+
 }

@@ -144,6 +144,20 @@ public class QList extends QObject {
     }
 
     @Override
+    public QObject defaultContainsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+        for (QObject value : values)
+            if (value.equalsObject(runtime, other).boolValue()) return Val(true);
+        return Val(false);
+    }
+
+    @Override
+    public QObject defaultNotContainsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+        for (QObject value : values)
+            if (value.equalsObject(runtime, other).boolValue()) return Val(false);
+        return Val(true);
+    }
+
+    @Override
     public QObject defaultIndex(Runtime runtime, QObject index) throws RuntimeStriker {
         if (index.isNum()) {
             if (values.size() <= index.numValue())

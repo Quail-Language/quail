@@ -8,6 +8,7 @@ import me.tapeline.quailj.typing.classes.errors.QIterationStopException;
 import me.tapeline.quailj.utils.QStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class QString extends QObject {
@@ -124,6 +125,18 @@ public class QString extends QObject {
         if (other.isStr())
             return Val(!value.equals(other.toString()));
         return super.equalsObject(runtime, other);
+    }
+
+    @Override
+    public QObject defaultContainsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+        if (other.isStr()) return Val(value.contains(Objects.requireNonNull(other.strValue())));
+        return super.defaultContainsObject(runtime, other);
+    }
+
+    @Override
+    public QObject defaultNotContainsObject(Runtime runtime, QObject other) throws RuntimeStriker {
+        if (other.isStr()) return Val(!value.contains(Objects.requireNonNull(other.strValue())));
+        return super.defaultNotContainsObject(runtime, other);
     }
 
     @Override

@@ -26,11 +26,13 @@ import me.tapeline.quailj.runtime.std.basic.math.*;
 import me.tapeline.quailj.runtime.std.basic.common.*;
 import me.tapeline.quailj.runtime.std.basic.numbers.*;
 import me.tapeline.quailj.runtime.std.basic.threading.QThread;
+import me.tapeline.quailj.runtime.std.cli.CliLibrary;
 import me.tapeline.quailj.runtime.std.event.EventLibrary;
 import me.tapeline.quailj.runtime.std.fs.FSLibrary;
 import me.tapeline.quailj.runtime.std.ji.JILibrary;
 import me.tapeline.quailj.runtime.std.math.MathLibrary;
 import me.tapeline.quailj.runtime.std.qml.QMLLibrary;
+import me.tapeline.quailj.runtime.std.reflect.ReflectLibrary;
 import me.tapeline.quailj.runtime.std.storage.StorageLibrary;
 import me.tapeline.quailj.typing.classes.*;
 import me.tapeline.quailj.typing.classes.errors.*;
@@ -55,6 +57,7 @@ public class Runtime {
     protected final boolean doProfile;
     protected final boolean doDebug;
     protected final String code;
+    protected String scriptArgs;
     protected final IO io;
     protected Node current = new Node(Token.UNDEFINED) {
         @Override
@@ -91,6 +94,14 @@ public class Runtime {
         if (io instanceof DefaultIO)
             ((DefaultIO) io).setDefaultCwd(scriptHome.getAbsolutePath());
         io.resetCwd();
+    }
+
+    public String getScriptArgs() {
+        return scriptArgs;
+    }
+
+    public void setScriptArgs(String scriptArgs) {
+        this.scriptArgs = scriptArgs;
     }
 
     public File getScriptFile() {
@@ -255,6 +266,8 @@ public class Runtime {
         libraryLoader.addBuiltinLibrary(new FSLibrary());
         libraryLoader.addBuiltinLibrary(new StorageLibrary());
         libraryLoader.addBuiltinLibrary(new MathLibrary());
+        libraryLoader.addBuiltinLibrary(new ReflectLibrary());
+        libraryLoader.addBuiltinLibrary(new CliLibrary());
     }
 
     public void error(String message) throws RuntimeStriker {
@@ -442,6 +455,8 @@ public class Runtime {
             case LESS_EQUAL: return operandA.lessEqual(this, operandB);
             case EQUALS: return operandA.equalsObject(this, operandB);
             case NOT_EQUALS: return operandA.notEqualsObject(this, operandB);
+            case IN: return operandB.containsObject(this, operandA);
+            case NOT_IN: return operandB.notContainsObject(this, operandA);
             case INSTANCEOF: return Val(operandA.instanceOf(operandB));
             default: error(new QInternalException("Unknown binary operation " + op));
         }

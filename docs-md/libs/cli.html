@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" style="overflow-x:hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <title>Docs</title>
+  <style>
+    @media screen and (min-width: 810px) {
+      aside {
+        height: 100vh;
+        overflow-y: scroll;
+      }
+    }
+
+    :target {
+        -webkit-animation: target-fade 5s 1;
+        -moz-animation: target-fade 5s 1;
+    }
+
+    @-webkit-keyframes target-fade {
+        0% { background-color: rgba(255, 198, 109, 0.8); }
+        100% { background-color: rgba(0,0,0,0); }
+    }
+    @-moz-keyframes target-fade {
+        0% { background-color: rgba(255, 198, 109, 0.8); }
+        100% { background-color: rgba(0,0,0,0); }
+    }  </style>
+</head>
+<body class="row p-5"><aside class="bd-aside sticky-xl-top text-muted align-self-start mb-3 mb-xl-5 px-2 col-auto">
+    <h2 class="h6 pt-4 pb-3 mb-4 border-bottom">cli.q</h2>
+    <nav class="small" id="toc">
+      <ul class="list-unstyled">
+        <li class="my-2">
+          <ul class="list-unstyled ps-3">
+<li><a class="d-inline-flex align-items-center rounded" href="#getConsoleArgString">
+   getConsoleArgString
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#parseConsoleArgs">
+   parseConsoleArgs
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#setPrefix">
+   setPrefix
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#setUnknownCommandMessage">
+   setUnknownCommandMessage
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#runApp">
+   runApp
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#stopApp">
+   stopApp
+</a></li>
+<h4><br>Decorators</h4>
+<li><a class="d-inline-flex align-items-center rounded" href="#command">
+   command
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#tick">
+   tick
+</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+</aside><div class="col"><p>This library allows to create simple console applications<br></p><h2><code>lang/cli</code></h2>
+<hr>
+<h6 id="getConsoleArgString"><code>string  getConsoleArgString()</code></h6><div class="ps-3"><p>Returns string of all arguments that were passed to Quail script<br>E.g. java -jar qre.jar main.q abc def --t="2" -Dfd<br><code>abc def --t="2" -D</code> will be returned<br></p></div><h6 id="parseConsoleArgs"><code>dict  parseConsoleArgs(string argString)</code></h6><div class="ps-3"><p>Parses console arguments (supports bool, num and string types of args):<br>Sequences starting with -- will be treated like keyword arguments.<br>Sequences starting with - will be treated like false bool flag sequences<br>Sequences starting with + will be treated like true bool flag sequences<br>Any other sequence will be treated as a regular argument (string)<br>Resulting dict will contain: "kwargs"=dict of keyword arguments,<br>"flags"=dict of bool flags, "args"=list of regular arguments<br></p></div><h6 id="setPrefix"><code>void  setPrefix(string prefix)</code></h6><div class="ps-3"><p>Sets prefix in console<br>E.g. > [Here user can write] or command> [Here user can write]<br></p></div><h6 id="setUnknownCommandMessage"><code>void  setUnknownCommandMessage(string prefix)</code></h6><div class="ps-3"><p>Sets message to display when unknown command executed<br></p></div><h6 id="runApp"><code>void  runApp()</code></h6><div class="ps-3"><p>Start the main app loop<br></p></div><h6 id="stopApp"><code>void  stopApp()</code></h6><div class="ps-3"><p>Stop the main app loop<br></p></div><h6 id="command"><code> command(f, string commandName)</code></h6><div class="ps-3"><p><span class="badge bg-warning">Decorator</span></p><p>Registers provided function as a command listener to specific console command<br></p></div><h6 id="tick"><code> tick(f)</code></h6><div class="ps-3"><p><span class="badge bg-warning">Decorator</span></p><p>Registers provided function as a ticking functions<br></p></div></div></body>
+</html>
