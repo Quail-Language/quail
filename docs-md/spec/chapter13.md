@@ -84,6 +84,18 @@ Adds a textual description
 
 Example: `#? Checks if given key is present`
 
+#### 13.2.7 See
+
+Syntax: `#?see <link>`
+
+Add a link. If link starts with `>` and special flag `-sF.seeLinkPrefix` is set, it will be prepended.
+
+Also, if link starts with `>`, `.q` sequences will be dropped.
+
+Examples: 
+- `#?see https://google.com`
+- `#?see >event.q#EventManager::addHandler`
+
 ### 13.3 Classes and functions representation
 
 Classes and functions are automatically documented.

@@ -730,6 +730,8 @@ public class Parser {
                 return new DocBadgeNode(docToken);
             else if (docToken.getLexeme().startsWith("#?author"))
                 return new DocAuthorNode(docToken);
+            else if (docToken.getLexeme().startsWith("#?see"))
+                return new DocSeeNode(docToken);
             else if (docToken.getLexeme().startsWith("#?since"))
                 return new DocSinceNode(docToken);
             else if (docToken.getLexeme().startsWith("#?toc-entry"))

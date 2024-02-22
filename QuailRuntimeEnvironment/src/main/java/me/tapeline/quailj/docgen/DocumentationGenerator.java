@@ -17,6 +17,14 @@ import java.util.*;
 
 public class DocumentationGenerator {
 
+    private HashMap<String, Object> flags = new HashMap<>();
+
+    public DocumentationGenerator() {}
+
+    public DocumentationGenerator(HashMap<String, Object> flags) {
+        this.flags = flags;
+    }
+
     private static final HashMap<String, String> colorAssociations = Dict.make(
             new Pair<>("default", "primary"),
             new Pair<>("red", "danger"),
@@ -117,10 +125,20 @@ public class DocumentationGenerator {
         return Collections.singletonList(node);
     }
 
+    private String convertSeeLink(String link) {
+        if (link.startsWith(">")) {
+            link = link.substring(link.indexOf('>') + 1).replaceAll("\\.q", "");
+            if (flags.containsKey("seeLinkPrefix"))
+                link = flags.get("seeLinkPrefix") + link;
+        }
+        return link;
+    }
+
     public String compileAllDocNodes(List<Node> nodes) {
         List<String> docStrings = new ArrayList<>();
         List<DocBadgeNode> docBadges = new ArrayList<>();
         List<String> authors = new ArrayList<>();
+        List<String> seeLinks = new ArrayList<>();
         String since = null;
         for (Node node : nodes) {
             if (node instanceof DocSinceNode)
@@ -133,6 +151,8 @@ public class DocumentationGenerator {
                 docBadges.add(((DocBadgeNode) node));
             else if (node instanceof DocTOCNode)
                 tocEntries.add(((DocTOCNode) node));
+            else if (node instanceof DocSeeNode)
+                seeLinks.add(((DocSeeNode) node).see);
         }
         StringBuilder sb = new StringBuilder();
         if (!docBadges.isEmpty()) {
@@ -146,6 +166,16 @@ public class DocumentationGenerator {
             sb.append("<p>");
             for (String docString : docStrings)
                 sb.append(docString).append("<br>");
+            sb.append("</p>");
+        }
+        if (!seeLinks.isEmpty()) {
+            sb.append("<p>See:<br>");
+            for (String see : seeLinks)
+                sb.append("<a class=\"px-3\" href=\"")
+                        .append(convertSeeLink(see))
+                        .append("\">")
+                        .append(convertSeeLink(see))
+                        .append("</a>");
             sb.append("</p>");
         }
         if (authors.size() == 1) {

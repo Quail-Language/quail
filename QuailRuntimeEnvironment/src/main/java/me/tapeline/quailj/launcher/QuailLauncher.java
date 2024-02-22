@@ -98,7 +98,7 @@ public class QuailLauncher {
         if (mode.equalsIgnoreCase("gendoc")) {
             if (launchCommandParser.getOutputFile() == null)
                 throw new LauncherException("Output file for documentation is not specified");
-            DocumentationGenerator generator = new DocumentationGenerator();
+            DocumentationGenerator generator = new DocumentationGenerator(localFlags);
             String name = new File(launchCommandParser.getTargetScript()).getName();
             if (localFlags.containsKey("documentationHeadline"))
                 name = localFlags.get("documentationHeadline").toString();

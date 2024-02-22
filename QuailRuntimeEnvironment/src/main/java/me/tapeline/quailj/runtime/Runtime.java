@@ -27,6 +27,7 @@ import me.tapeline.quailj.runtime.std.basic.common.*;
 import me.tapeline.quailj.runtime.std.basic.numbers.*;
 import me.tapeline.quailj.runtime.std.basic.threading.QThread;
 import me.tapeline.quailj.runtime.std.cli.CliLibrary;
+import me.tapeline.quailj.runtime.std.data.DataLibrary;
 import me.tapeline.quailj.runtime.std.event.EventLibrary;
 import me.tapeline.quailj.runtime.std.fs.FSLibrary;
 import me.tapeline.quailj.runtime.std.ji.JILibrary;
@@ -268,6 +269,7 @@ public class Runtime {
         libraryLoader.addBuiltinLibrary(new MathLibrary());
         libraryLoader.addBuiltinLibrary(new ReflectLibrary());
         libraryLoader.addBuiltinLibrary(new CliLibrary());
+        libraryLoader.addBuiltinLibrary(new DataLibrary());
     }
 
     public void error(String message) throws RuntimeStriker {

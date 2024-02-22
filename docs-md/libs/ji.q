@@ -21,6 +21,7 @@ class JavaClass {
 
     constructor (this, args...) {
         #? Instantiate JavaObject of that class
+        #?see #JavaObject
     }
 }
 
@@ -37,6 +38,7 @@ class JavaObject {
 
     object getClass(this) {
         #? Get class (instance of JavaClass)
+        #?see #JavaClass
     }
 }
 
@@ -48,6 +50,10 @@ class SketchedJavaClass {
         #? E.g. <code>public final ClassName</code>
         #? Contents is a sequence of SketchedJavaConstructors, SketchedJavaFields,
         #? SketchedJavaInheritances and SketchedJavaMethods
+        #?see #SketchedJavaField
+        #?see #SketchedJavaInheritance
+        #?see #SketchedJavaMethod
+        #?see #SketchedJavaConstructor
     }
 }
 
@@ -77,6 +83,7 @@ class SketchedJavaInheritance {
     #? Used for inheritance of runtime created Java classes
     constructor (this, object extends) {
         #? Receives a JavaClass instance of extension or implementation
+        #?see #JavaClass
     }
 }
 
@@ -96,13 +103,16 @@ class SketchedJavaPackage {
     #? Used for runtime creation of Java packages
     constructor (this, string name, classes...) {
         #? Classes is a sequence of SketchedJavaClasses
+        #?see #SketchedJavaClass
     }
 }
 
 function getClass(string className) {
     #? Get defined Java class by qualified ID
+    #?see #JavaClass
 }
 
 function deployPackage(object package) {
     #? Creates all Java classes specified in passed SketchedJavaPackage
+    #?see #SketchedJavaPackage
 }

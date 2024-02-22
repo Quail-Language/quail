@@ -1,25 +1,28 @@
-package me.tapeline.quailj.runtime.std.basic.classes.string;
+package me.tapeline.quailj.runtime.std.data.bytes;
 
 import me.tapeline.quailj.parsing.nodes.literals.LiteralFunction;
 import me.tapeline.quailj.runtime.Runtime;
+import me.tapeline.quailj.runtime.RuntimeStriker;
 import me.tapeline.quailj.typing.classes.QObject;
 import me.tapeline.quailj.typing.classes.utils.QBuiltinFunc;
 import me.tapeline.quailj.typing.modifiers.ModifierConstants;
 import me.tapeline.quailj.typing.utils.FuncArgument;
+import org.apache.commons.codec.binary.BinaryCodec;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 
-public class StringFuncChars extends QBuiltinFunc {
+public class BytesFromBits extends QBuiltinFunc {
 
-    public StringFuncChars(Runtime runtime) {
+    public BytesFromBits(Runtime runtime) {
         super(
-                "chars",
-                Collections.singletonList(
+                "fromBits",
+                Arrays.asList(
                         new FuncArgument(
-                                "this",
+                               "bits",
                                 QObject.Val(),
                                 new int[] {ModifierConstants.STR},
                                 LiteralFunction.Argument.POSITIONAL
@@ -32,12 +35,11 @@ public class StringFuncChars extends QBuiltinFunc {
     }
 
     @Override
-    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) {
-        String thisString = args.get("this").strValue();
-        List<QObject> result = new ArrayList<>();
-        for (int i = 0; i < thisString.length(); i++)
-            result.add(Val(Character.toString(thisString.charAt(i))));
-        return Val(result);
+    public QObject action(Runtime runtime, HashMap<String, QObject> args, List<QObject> argList) throws RuntimeStriker {
+        String bits = args.get("bits").strValue();
+        bits = StringUtils.repeat('0', bits.length() % 8) + bits;
+        byte[] data = BinaryCodec.fromAscii(bits.toCharArray());
+        return new DataLibBytes(data);
     }
 
 }
