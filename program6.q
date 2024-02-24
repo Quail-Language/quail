@@ -1,10 +1,8 @@
-use "lang/data" = data; Bytes = data.Bytes; Set = data.Set; Queue = data.Queue; Deque = data.Deque;
+#:testdirective
 
-q = Deque()
-q.addBack("a")
-q.addBack("b")
-q.addFront("d")
+@MyTestAnnotation
+function f() {}
 
-for e in q:
-    print(e)
+use "qta/mytestlib" = mytestlib
 
+print(mytestlib.test())

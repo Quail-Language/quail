@@ -1,5 +1,7 @@
 package me.tapeline.quailj.runtime;
 
+import me.tapeline.quailj.addons.QuailAddon;
+import me.tapeline.quailj.addons.QuailAddonRegistry;
 import me.tapeline.quailj.debugging.DebugServer;
 import me.tapeline.quailj.io.DefaultIO;
 import me.tapeline.quailj.io.IO;
@@ -15,6 +17,7 @@ import me.tapeline.quailj.parsing.nodes.sections.*;
 import me.tapeline.quailj.parsing.nodes.variable.VariableNode;
 import me.tapeline.quailj.preprocessing.Preprocessor;
 import me.tapeline.quailj.preprocessing.PreprocessorException;
+import me.tapeline.quailj.runtime.librarymanagement.BuiltinLibrary;
 import me.tapeline.quailj.runtime.librarymanagement.LibraryCache;
 import me.tapeline.quailj.runtime.librarymanagement.LibraryLoader;
 import me.tapeline.quailj.runtime.std.basic.classes.dict.*;
@@ -270,6 +273,13 @@ public class Runtime {
         libraryLoader.addBuiltinLibrary(new ReflectLibrary());
         libraryLoader.addBuiltinLibrary(new CliLibrary());
         libraryLoader.addBuiltinLibrary(new DataLibrary());
+
+        for (QuailAddon addon : QuailAddonRegistry.getAddons())
+            for (BuiltinLibrary library : addon.providedLibraries())
+                libraryLoader.addBuiltinLibrary(library);
+
+        for (QuailAddon addon : QuailAddonRegistry.getAddons())
+            addon.customizeRuntime(this);
     }
 
     public void error(String message) throws RuntimeStriker {

@@ -5,6 +5,8 @@ import me.tapeline.quailj.typing.classes.QObject;
 
 // TODO fix error display
 // TODO fix in operator and add contains method to list
+// TODO revise flag documentation
+
 public class Main {
 
     public static void main(String[] args) {

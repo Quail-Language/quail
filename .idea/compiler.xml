@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="qdk" />
         <module name="qre" />
+        <module name="QuailTestAddon" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

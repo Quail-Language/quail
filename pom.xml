@@ -11,6 +11,7 @@
     <modules>
         <module>QuailRuntimeEnvironment</module>
         <module>QuailDevelopmentKit</module>
+        <module>quailAddons/QuailTestAddon</module>
     </modules>
 
     <properties>

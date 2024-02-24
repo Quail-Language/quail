@@ -70,9 +70,15 @@ public class LaunchCommandParser {
             else {
                 String flagName = flag.substring(3, flag.indexOf('='));
                 if (flagName.equals("encoding"))
-                    globalFlags.put("encoding", flag.substring(flag.indexOf('=' + 1)));
+                    globalFlags.put("encoding", flag.substring(flag.indexOf('=') + 1));
                 if (flagName.equals("ignoreDocs"))
-                    globalFlags.put("ignoreDocs", toBoolean(flag.substring(flag.indexOf('=' + 1))));
+                    globalFlags.put("ignoreDocs", toBoolean(flag.substring(flag.indexOf('=') + 1)));
+                if (flagName.equals("debugPort"))
+                    globalFlags.put("debugPort", Short.parseShort(flag.substring(flag.indexOf('=') + 1)));
+                if (flagName.equals("displayReturnValue"))
+                    globalFlags.put("displayReturnValue", toBoolean(flag.substring(flag.indexOf('=') + 1)));
+                if (flagName.equals("addons"))
+                    globalFlags.put("addons", flag.substring(flag.indexOf('=') + 1));
             }
         } else {
             int assignPosition = 0;
