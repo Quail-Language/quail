@@ -3,10 +3,18 @@ class Queue {
     #? Supports <code>in</code> operator and iteration
 
     num size(this) {}
-    void add(this, object obj) {}
-    object pop(this) {}
+    void add(this, object obj) {
+        #? Add object to back of queue
+    }
+    object pop(this) {
+        #? Pop object from front.
+        #? If queue is empty, null is returned
+    }
     void clear(this) {}
-    object peek(this) {}
+    object peek(this) {
+        #? Get object from front without popping it.
+        #? If queue is empty, null is returned
+    }
 }
 
 class Deque {
@@ -14,13 +22,29 @@ class Deque {
     #? Supports <code>in</code> operator and iteration
 
     num size(this) {}
-    void addFront(this, object obj) {}
-    void addBack(this, object obj) {}
-    object popFront(this) {}
-    object popBack(this) {}
+    void addFront(this, object obj) {
+        #? Add object to front of queue
+    }
+    void addBack(this, object obj) {
+        #? Add object to back of queue
+    }
+    object popFront(this) {
+        #? Pop object from front.
+        #? If queue is empty, null is returned
+    }
+    object popBack(this) {
+        #? Pop object from back.
+        #? If queue is empty, null is returned
+    }
     void clear(this) {}
-    object peekFront(this) {}
-    object peekBack(this) {}
+    object peekFront(this) {
+        #? Get object from front without popping it.
+        #? If queue is empty, null is returned
+    }
+    object peekBack(this) {
+        #? Get object from front without popping it.
+        #? If queue is empty, null is returned
+    }
 }
 
 class Set {
@@ -28,15 +52,25 @@ class Set {
     #? Can contain only booleans, strings and numbers
     #? Supports <code>in</code> operator, equality check and iteration
 
-    constructor (this, list | void values=null) {}
+    constructor (this, list | void values=null) {
+        #? Constructs an empty set and adds all values (if specified)
+    }
 
     num size(this) {}
-    void add(this, bool | string | num obj) {}
-    void remove(this, bool | string | num obj) {}
+    void add(this, bool | string | num obj) {
+        #? Add object to set. If object is already in set - nothing happens
+    }
+    void remove(this, bool | string | num obj) {
+        #? Remove object from set. If object is not in set - nothing happens
+    }
     void clear(this) {}
 
-    static object union(a, b) {}
-    static object intersection(a, b) {}
+    static object union(a, b) {
+        #? Union of 2 sets
+    }
+    static object intersection(a, b) {
+        #? Intersection of 2 sets
+    }
 }
 
 class Bytes {
