@@ -503,7 +503,7 @@ public class QObject {
 
 
     public QObject sum(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_add")) // TODO add custom implementation check in every child class
+        if (table.containsKey("_add"))
             return callFromThis(
                     runtime,
                     "_add",

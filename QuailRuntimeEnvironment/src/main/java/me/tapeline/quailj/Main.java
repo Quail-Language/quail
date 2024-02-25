@@ -4,10 +4,6 @@ import me.tapeline.quailj.launcher.QuailLauncher;
 import me.tapeline.quailj.typing.classes.QObject;
 
 // TODO fix error display
-// TODO fix in operator and add contains method to list
-// TODO revise flag documentation
-// TODO fix suppressing of uncaught exceptions in try-catch
-// TODO add pi and e to math
 
 public class Main {
 

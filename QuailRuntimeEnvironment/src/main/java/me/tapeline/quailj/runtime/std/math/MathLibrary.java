@@ -10,6 +10,8 @@ import me.tapeline.quailj.typing.classes.QObject;
 
 import java.util.HashMap;
 
+import static me.tapeline.quailj.typing.classes.QObject.Val;
+
 public class MathLibrary implements BuiltinLibrary {
 
     @Override
@@ -29,9 +31,12 @@ public class MathLibrary implements BuiltinLibrary {
         contents.put("gcd", new MathFuncGcd(runtime));
         contents.put("lcm", new MathFuncLcm(runtime));
 
+        contents.put("pi", Val(Math.PI));
+        contents.put("e", Val(Math.E));
+
         runtime.getMemory().table.putAll(contents);
 
-        return QObject.Val(contents);
+        return Val(contents);
     }
 
 }

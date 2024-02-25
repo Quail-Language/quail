@@ -1174,6 +1174,11 @@ public class Runtime {
             try {
                 run(thisNode.code, localScope);
             } catch (RuntimeStriker striker) {
+                if (thisNode.catchClauses.isEmpty()) {
+                    if (doProfile) end(node);
+                    return Val();
+                }
+
                 if (striker.getType() != RuntimeStriker.Type.EXCEPTION) {
                     if (doProfile) end(node);
                     if (striker.getType() == RuntimeStriker.Type.RETURN)
@@ -1189,6 +1194,7 @@ public class Runtime {
                         return Val();
                     }
                 }
+                throw striker;
             }
             if (doProfile) end(node);
             return Val();

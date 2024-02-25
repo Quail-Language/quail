@@ -37,6 +37,9 @@ Global flags can modify behaviour of Quail
 #### 12.2.1 Global flags list
 * `encoding` (default: `UTF-8`) - default encoding for files
 * `ignoreDocs` (default: `false`) - whether to parse Quail docs or ignore them
+* `displayReturnValue` (default: `false`) - whether to display return value of file
+* `debugPort` (default: `4004`) - remote debugger port
+* `addons` (default: ` `) - list of addons (Chapter 16)
 
 #### 12.2.2 Global flags syntax
 Global flags are passed via following syntax:
