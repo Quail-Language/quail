@@ -1,8 +1,8 @@
-#:testdirective
+class MyException like Exception {}
+class MyException2 like Exception {}
 
-@MyTestAnnotation
-function f() {}
-
-use "qta/mytestlib" = mytestlib
-
-print(mytestlib.test())
+try {
+    throw MyException()
+} catch MyException2 as e {
+    print(e)
+}

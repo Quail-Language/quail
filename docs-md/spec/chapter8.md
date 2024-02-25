@@ -249,6 +249,8 @@ Quail will try to convert every key to string (8.2.2.9)
    alternative call to existing function
 3. Else - function is constructed and placed into scope
 
+If function name is 
+
 ###### 8.2.4.5 LiteralLambda
 Function is created and returned
 

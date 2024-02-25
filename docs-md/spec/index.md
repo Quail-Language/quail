@@ -31,3 +31,5 @@
 [Chapter 14: Debugger](chapter14.md)
 
 [Chapter 15: QRE and QDK](chapter15.md)
+
+[Chapter 16: Addons](chapter16.md)

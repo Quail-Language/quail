@@ -6,12 +6,20 @@
 <!-- TOC -->
 * [Quail Specification](#quail-specification)
   * [Chapter 1: A Brief Introduction](#chapter-1-a-brief-introduction)
+    * [1.0 Acronyms, shortens, replacements](#10-acronyms-shortens-replacements)
     * [1.1 Specification organisation](#11-specification-organisation-)
     * [1.2 Example programs](#12-example-programs)
     * [1.3 Contact info](#13-contact-info)
 <!-- TOC -->
 
 The Quail is a general-purpose, multiparadigmal, object-oriented, interpretable programming language driven by Java 8, developed by single developer and oriented to be simple and friendly for new developers as well as for experienced programmers moving from other language.
+
+### 1.0 Acronyms, shortens, replacements
+1. Throughout this documentation you are likely to see different 
+   console commands for launching Quail. E.g. `quail run prog.q` and
+   `java -jar quail.jar run prog.q`. From here and after `quail` 
+   and `java -jar path_to_your_quail.jar` are interchangeable.
+
 
 ### 1.1 Specification organisation 
 
