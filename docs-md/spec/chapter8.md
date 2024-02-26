@@ -9,22 +9,22 @@
     * [8.1 Common definitions](#81-common-definitions)
     * [8.2 Runtime execution](#82-runtime-execution)
       * [8.2.1 Effects](#821-effects)
-          * [8.2.1.1 AsyncNode](#8211-asyncnode)
-          * [8.2.1.2 EffectNode](#8212-effectnode)
-          * [8.2.1.3 InstructionNode](#8213-instructionnode)
-          * [8.2.1.4 ReturnNode](#8214-returnnode)
-          * [8.2.1.5 UseNode](#8215-usenode)
+          * [8.2.1.1 AsyncNode (`async` effect)](#8211-asyncnode-async-effect)
+          * [8.2.1.2 EffectNode (any of the effects, except `return` and `use`)](#8212-effectnode-any-of-the-effects-except-return-and-use)
+          * [8.2.1.3 InstructionNode (any instruction)](#8213-instructionnode-any-instruction)
+          * [8.2.1.4 ReturnNode (`return` effect)](#8214-returnnode-return-effect)
+          * [8.2.1.5 UseNode (`use` effect)](#8215-usenode-use-effect)
       * [8.2.2 Expression](#822-expression)
-          * [8.2.2.1 AssignNode](#8221-assignnode)
-          * [8.2.2.2 BinaryOperatorNode](#8222-binaryoperatornode)
-          * [8.2.2.3 CallNode](#8223-callnode)
-          * [8.2.2.4 FieldReferenceNode](#8224-fieldreferencenode)
-          * [8.2.2.5 FieldSetNode](#8225-fieldsetnode)
-          * [8.2.2.6 IndexingNode](#8226-indexingnode)
-          * [8.2.2.7 IndexSetNode](#8227-indexsetnode)
-          * [8.2.2.8 SubscriptNode](#8228-subscriptnode)
-          * [8.2.2.9 TypecastNode](#8229-typecastnode)
-          * [8.2.2.10 UnaryOperatorNode](#82210-unaryoperatornode)
+          * [8.2.2.1 AssignNode (assignment operator)](#8221-assignnode-assignment-operator)
+          * [8.2.2.2 BinaryOperatorNode (any of `a <operator> b` operators)](#8222-binaryoperatornode-any-of-a-operator-b-operators)
+          * [8.2.2.3 CallNode (any call)](#8223-callnode-any-call)
+          * [8.2.2.4 FieldReferenceNode (`object.field`)](#8224-fieldreferencenode-objectfield)
+          * [8.2.2.5 FieldSetNode (`object.field = value`)](#8225-fieldsetnode-objectfield--value)
+          * [8.2.2.6 IndexingNode (`object[index]`)](#8226-indexingnode-objectindex)
+          * [8.2.2.7 IndexSetNode (`object[index] = value`)](#8227-indexsetnode-objectindex--value)
+          * [8.2.2.8 SubscriptNode (any subscript)](#8228-subscriptnode-any-subscript)
+          * [8.2.2.9 TypecastNode (any typecast)](#8229-typecastnode-any-typecast)
+          * [8.2.2.10 UnaryOperatorNode (any `<operator> a` operator)](#82210-unaryoperatornode-any-operator-a-operator)
       * [8.2.3 Generators](#823-generators)
           * [8.2.3.1 Pattern](#8231-pattern)
           * [8.2.3.2 DictForGeneratorNode](#8232-dictforgeneratornode)
@@ -32,7 +32,7 @@
           * [8.2.3.4 ListForGeneratorNode](#8234-listforgeneratornode)
           * [8.2.3.5 ListThroughGeneratorNode](#8235-listthroughgeneratornode)
           * [8.2.3.6 RangeNode](#8236-rangenode)
-      * [8.2.4 Literals](#824-literals)
+      * [8.2.4 Literals (values)](#824-literals-values)
           * [8.2.4.1 LiteralBool](#8241-literalbool)
           * [8.2.4.2 LiteralClass](#8242-literalclass)
           * [8.2.4.3 LiteralDict](#8243-literaldict)
@@ -43,15 +43,15 @@
           * [8.2.4.8 LiteralNum](#8248-literalnum)
           * [8.2.4.9 LiteralStr](#8249-literalstr)
       * [8.2.5 Sections](#825-sections)
-          * [8.2.5.1 BlockNode](#8251-blocknode)
-          * [8.2.5.2 ForNode](#8252-fornode)
+          * [8.2.5.1 BlockNode (sections / code blocks)](#8251-blocknode-sections--code-blocks)
+          * [8.2.5.2 ForNode (`for` or `every` loops)](#8252-fornode-for-or-every-loops)
           * [8.2.5.3 IfNode](#8253-ifnode)
-          * [8.2.5.4 LoopStopNode](#8254-loopstopnode)
-          * [8.2.5.5 ThroughNode](#8255-throughnode)
+          * [8.2.5.4 LoopStopNode (`loop-stop when` loop)](#8254-loopstopnode-loop-stop-when-loop)
+          * [8.2.5.5 ThroughNode (`through` loop)](#8255-throughnode-through-loop)
           * [8.2.5.6 TryNode](#8256-trynode)
           * [8.2.5.7 WhileNode](#8257-whilenode)
       * [8.2.6 Variable](#826-variable)
-          * [8.2.6.1 VariableNode](#8261-variablenode)
+          * [8.2.6.1 VariableNode (any variable reference)](#8261-variablenode-any-variable-reference)
 <!-- TOC -->
 
 ### 8.1 Common definitions
@@ -67,41 +67,45 @@ interrupter. Used for `break`, `continue`, `return`,
 that allows user to override get/set behaviour with
 `_get`/`_set`/`_get_?`/`_set_?` methods.
 
+Every heading here is specified in form of 
+`NodeName (which syntax is applicable)`. Learn more about syntax in Chapter 2.
+
 ### 8.2 Runtime execution
 
 #### 8.2.1 Effects
 
-###### 8.2.1.1 AsyncNode
+###### 8.2.1.1 AsyncNode (`async` effect)
 1. Async runtime worker created and started
 
-###### 8.2.1.2 EffectNode
-- If assert: Raise QAssertionException if value is false
-- If throw: Raise provided exception
-- If strike: Throw runtime striker with provided 
+###### 8.2.1.2 EffectNode (any of the effects, except `return` and `use`)
+- If `assert`: Raise QAssertionException if value is false
+- If `throw`: Raise provided exception
+- If `strike`: Throw runtime striker with provided 
   strike power, or raise UnsuitableTypeException if 
   value is not a number or < -1
-- If import:
+- If `import`:
   1. Read file at provided path, if IOException thrown,
      raise IOException
   2. Run code from collected string, catching exception.
      
      If exception is caught, an Exception is raised
 
-###### 8.2.1.3 InstructionNode
-- If break: Throw runtime striker (break)
-- If continue: Throw runtime striker (continue)
+###### 8.2.1.3 InstructionNode (any instruction)
+- If `break`: Throw runtime striker (break)
+- If `continue`: Throw runtime striker (continue)
 
-###### 8.2.1.4 ReturnNode
+###### 8.2.1.4 ReturnNode (`return` effect)
 Return provided value
 
-###### 8.2.1.5 UseNode
-Load library with provided id (see $9)
+###### 8.2.1.5 UseNode (`use` effect)
+Load library with provided identifier (see Chapter 9)
+and place it into specified variable
 
 #### 8.2.2 Expression
 Most of these operations are defined by and in type
 classes. They can raise various exceptions.
 
-###### 8.2.2.1 AssignNode
+###### 8.2.2.1 AssignNode (assignment operator)
 - If variable already defined in scope
   
   Try to reassign it. Exception raise possible
@@ -110,7 +114,7 @@ classes. They can raise various exceptions.
   Assign variable and write its modifiers. Exception
   cannot happen.
 
-###### 8.2.2.2 BinaryOperatorNode
+###### 8.2.2.2 BinaryOperatorNode (any of `a <operator> b` operators)
 1. Evaluate left and right parts
 2. - If singular operator: perform bin op
    - If array operator: unwrap lists, apply op to
@@ -121,7 +125,7 @@ classes. They can raise various exceptions.
    - If matrix operator: same as array, but does double
      unwrap. Returns resulting matrix
 
-###### 8.2.2.3 CallNode
+###### 8.2.2.3 CallNode (any call)
 1. Determine callee and parent:
    - If is field call: parent and callee obtained
    - Else: only callee obtained
@@ -139,29 +143,29 @@ classes. They can raise various exceptions.
    - Else:
      Perform usual call
 
-###### 8.2.2.4 FieldReferenceNode
+###### 8.2.2.4 FieldReferenceNode (`object.field`)
 1. Obtain parent
 2. Get (overridable) provided field from parent
 
-###### 8.2.2.5 FieldSetNode
+###### 8.2.2.5 FieldSetNode (`object.field = value`)
 1. Obtain parent
 2. Set (overridable) provided field in parent
 
-###### 8.2.2.6 IndexingNode
+###### 8.2.2.6 IndexingNode (`object[index]`)
 1. Obtain parent
 2. Get at index from parent
 
-###### 8.2.2.7 IndexSetNode
+###### 8.2.2.7 IndexSetNode (`object[index] = value`)
 1. Obtain parent
 2. Set at index in parent
 
-###### 8.2.2.8 SubscriptNode
+###### 8.2.2.8 SubscriptNode (any subscript)
 1. Obtain parent and all not-null subscript parts
    (start, end, step)
 2. Perform subscript or stepped subscript on parent
    (based on whether step was provided or not)
 
-###### 8.2.2.9 TypecastNode
+###### 8.2.2.9 TypecastNode (any typecast)
 1. Obtain conversion subject
 2. If conversion to:
    - num
@@ -173,7 +177,7 @@ classes. They can raise various exceptions.
    
    Else: Raise UnsupportedConversionException
 
-###### 8.2.2.10 UnaryOperatorNode
+###### 8.2.2.10 UnaryOperatorNode (any `<operator> a` operator)
 Same as 8.2.2.2 (BinaryOperatorNode), but with only
 one operand (which removes size equality check)
 
@@ -224,7 +228,7 @@ See 8.2.3.1
 6. Return generated range
 
 
-#### 8.2.4 Literals
+#### 8.2.4 Literals (values)
 ###### 8.2.4.1 LiteralBool
 Bool is evaluated
 
@@ -268,20 +272,57 @@ String is returned
 
 
 #### 8.2.5 Sections
-###### 8.2.5.1 BlockNode
-Every node in block is evaluated one-by-one
+###### 8.2.5.1 BlockNode (sections / code blocks)
+Every node in block is evaluated one-by-one sequentially
 
-###### 8.2.5.2 ForNode
+###### 8.2.5.2 ForNode (`for` or `every` loops)
+1. Iterable is evaluated
+2. Start iteration called on iterable
+3. While there is more to iterate: call next iteration on iterable
+
 ###### 8.2.5.3 IfNode
-###### 8.2.5.4 LoopStopNode
-###### 8.2.5.5 ThroughNode
+1. Condition is evaluated
+2. If condition is true, appropriate statement executed; then IfNode ends
+3. If else if-s are present:
+   
+   For each else-if:
+   1. Condition is evaluated
+   2. If condition is true, appropriate statement executed; then IfNode ends
+4. If else is present - execute else
+
+###### 8.2.5.4 LoopStopNode (`loop-stop when` loop)
+1. Statement inside loop is executed
+2. Condition is evaluated
+3. If condition is true - quit cycle
+4. Go to 1
+
+###### 8.2.5.5 ThroughNode (`through` loop)
+1. Start, end, and step of loop are evaluated
+2. While iterator < end:
+   1. Statement inside loop is executed
+   2. Iterator is incremented by step
+
 ###### 8.2.5.6 TryNode
+1. Statement inside `try` is being run
+2. If no exceptions were thrown, TryNode ends
+3. If there were exceptions, but there are no catch blocks - 
+   exceptions are suppressed, TryNode ends
+4. If catch blocks are present - do following for each block from top to bottom:
+   1. If no class specified for catch block - execute it
+   2. If class is specified - execute if exception is an instance of specified class
+5. If there were no suitable catch blocks, but they are present,
+   exception is re-thrown
+
 ###### 8.2.5.7 WhileNode
+1. Condition is evaluated
+2. If condition is false - quit cycle
+3. Statement inside loop is executed
+4. Go to 1
 
 
 #### 8.2.6 Variable
 
-###### 8.2.6.1 VariableNode
+###### 8.2.6.1 VariableNode (any variable reference)
 If variable exists, its value is returned.
 
 If not and variable node has modifiers, variable

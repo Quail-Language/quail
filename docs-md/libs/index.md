@@ -19,3 +19,5 @@
 [`lang/storage`](storage)
 
 [`lang/data`](data)
+
+[`lang/time`](time)

@@ -12,54 +12,56 @@
     * [2.3 Syntax](#23-syntax)
       * [2.3.1 Comments](#231-comments)
       * [2.3.2 Operators](#232-operators)
-      * [2.3.2.1 Table of operators](#2321-table-of-operators)
-      * [2.3.2.2 Operator shortens](#2322-operator-shortens)
-    * [2.3.3 Control flow constructions](#233-control-flow-constructions)
-      * [2.3.3.1 `if-else if-else`](#2331-if-else-if-else)
-      * [2.3.3.2 `through ... as ...`](#2332-through--as-)
-      * [2.3.3.3 `while`](#2333-while)
-      * [2.3.3.4 `loop-stop when`](#2334-loop-stop-when)
-      * [2.3.3.5 `for ... in ...`](#2335-for--in-)
-      * [2.3.3.6 `try-catch`](#2336-try-catch)
-    * [2.3.4 Instructions](#234-instructions)
-      * [2.3.4.1 `break`](#2341-break)
-    * [2.3.5 Effects](#235-effects)
-      * [2.3.5.1 `assert`](#2351-assert)
-      * [2.3.5.2 `strike`](#2352-strike)
-      * [2.3.5.3 `import`](#2353-import)
-      * [2.3.5.4 `use`](#2354-use)
-      * [2.3.5.6 `return`](#2356-return)
-      * [2.3.5.7 `throw`](#2357-throw)
-    * [2.3.6 Variable modifiers](#236-variable-modifiers)
-      * [2.3.6.1 List of modifiers](#2361-list-of-modifiers)
-      * [2.3.6.2 Type conversion / Typecast](#2362-type-conversion--typecast)
-      * [2.3.6.2 Variable modifying](#2362-variable-modifying)
-      * [2.3.6.3 Argument modifying](#2363-argument-modifying)
-      * [2.3.6.4 Defining functions](#2364-defining-functions)
-    * [2.3.7 Data constructions](#237-data-constructions)
-      * [2.3.7.1 Functions](#2371-functions)
-      * [2.3.7.2 Special functions](#2372-special-functions)
-      * [2.3.7.3 Classes](#2373-classes)
-    * [2.3.8 Values](#238-values)
-      * [2.3.8.1 Number](#2381-number)
-      * [2.3.8.2 Boolean](#2382-boolean)
-      * [2.3.8.3 String](#2383-string)
-      * [2.3.8.4 Null](#2384-null)
-      * [2.3.8.5 List](#2385-list)
-      * [2.3.8.6 Dict](#2386-dict)
-      * [2.3.8.6 Lambda (anonymous functions)](#2386-lambda-anonymous-functions)
-    * [2.3.9 Generators](#239-generators)
-      * [2.3.9.1 List generators](#2391-list-generators)
-      * [2.3.9.2 Dict generators](#2392-dict-generators)
-    * [2.3.10 Expressions](#2310-expressions)
-      * [2.3.10.1 Call](#23101-call)
-      * [2.3.10.2 Field call](#23102-field-call)
-      * [2.3.10.3 Field reference](#23103-field-reference)
-      * [2.3.10.4 Field assign](#23104-field-assign)
-      * [2.3.10.5 Indexing](#23105-indexing)
-      * [2.3.10.6 Indexing assign](#23106-indexing-assign)
-      * [2.3.10.7 Range](#23107-range)
-      * [2.3.10.8 Subscript](#23108-subscript)
+        * [2.3.2.1 Table of operators](#2321-table-of-operators)
+        * [2.3.2.2 Operator shortens](#2322-operator-shortens)
+      * [2.3.3 Control flow constructions](#233-control-flow-constructions)
+        * [2.3.3.1 `if-else if-else`](#2331-if-else-if-else)
+        * [2.3.3.2 `through ... as ...`](#2332-through--as-)
+        * [2.3.3.3 `while`](#2333-while)
+        * [2.3.3.4 `loop-stop when`](#2334-loop-stop-when)
+        * [2.3.3.5 `for ... in ...`](#2335-for--in-)
+        * [2.3.3.6 `try-catch`](#2336-try-catch)
+      * [2.3.4 Instructions](#234-instructions)
+        * [2.3.4.1 `break`](#2341-break)
+      * [2.3.5 Effects](#235-effects)
+        * [2.3.5.1 `assert`](#2351-assert)
+        * [2.3.5.2 `strike`](#2352-strike)
+        * [2.3.5.3 `import`](#2353-import)
+        * [2.3.5.4 `use`](#2354-use)
+        * [2.3.5.6 `return`](#2356-return)
+        * [2.3.5.7 `throw`](#2357-throw)
+        * [2.3.5.8 `async`](#2358-async)
+      * [2.3.6 Variable modifiers](#236-variable-modifiers)
+        * [2.3.6.1 List of modifiers](#2361-list-of-modifiers)
+        * [2.3.6.2 Type conversion / Typecast](#2362-type-conversion--typecast)
+        * [2.3.6.2 Variable modifying](#2362-variable-modifying)
+        * [2.3.6.3 Argument modifying](#2363-argument-modifying)
+        * [2.3.6.4 Defining functions](#2364-defining-functions)
+      * [2.3.7 Data constructions](#237-data-constructions)
+        * [2.3.7.1 Functions](#2371-functions)
+        * [2.3.7.2 Special functions](#2372-special-functions)
+        * [2.3.7.3 Classes](#2373-classes)
+      * [2.3.8 Values](#238-values)
+        * [2.3.8.1 Number](#2381-number)
+        * [2.3.8.2 Boolean](#2382-boolean)
+        * [2.3.8.3 String](#2383-string)
+        * [2.3.8.4 Null](#2384-null)
+        * [2.3.8.5 List](#2385-list)
+        * [2.3.8.6 Dict](#2386-dict)
+        * [2.3.8.6 Lambda (anonymous functions)](#2386-lambda-anonymous-functions)
+      * [2.3.9 Generators](#239-generators)
+        * [2.3.9.1 List generators](#2391-list-generators)
+        * [2.3.9.2 Dict generators](#2392-dict-generators)
+      * [2.3.10 Expressions](#2310-expressions)
+        * [2.3.10.1 Call](#23101-call)
+        * [2.3.10.2 Field call](#23102-field-call)
+        * [2.3.10.3 Field reference](#23103-field-reference)
+        * [2.3.10.4 Field assign](#23104-field-assign)
+        * [2.3.10.5 Indexing](#23105-indexing)
+        * [2.3.10.6 Indexing assign](#23106-indexing-assign)
+        * [2.3.10.7 Range](#23107-range)
+        * [2.3.10.8 Subscript](#23108-subscript)
+      * [2.3.11 Sections (blocks)](#2311-sections-blocks)
 <!-- TOC -->
 
 ### 2.1 Definitions
@@ -123,7 +125,7 @@ Examples: (see [Chapter 13](chapter13.md))
 
 #### 2.3.2 Operators
 
-#### 2.3.2.1 Table of operators
+##### 2.3.2.1 Table of operators
 
 | Operator     | Meaning                                                 | Example                |
 | ------------ | ------------------------------------------------------- | ---------------------- |
@@ -152,7 +154,7 @@ Examples: (see [Chapter 13](chapter13.md))
 | `not in`     | is element absent                                       | `1 not in [1, 2, 3]`   |
 | `instanceof` | Check if object is instace of class                     | `a instanceof MyClass` |
 
-#### 2.3.2.2 Operator shortens
+##### 2.3.2.2 Operator shortens
 
 Operators `+`, `-`, `*`, `/`, `//`, `%` and `^` support shortens like this:
 
@@ -172,9 +174,9 @@ which is basically a syntax sugar for
 <expr1> = <expr1> operator <expr2>
 ```
 
-### 2.3.3 Control flow constructions
+#### 2.3.3 Control flow constructions
 
-#### 2.3.3.1 `if-else if-else`
+##### 2.3.3.1 `if-else if-else`
 
 Runs code basing on conditions
 
@@ -241,7 +243,7 @@ if a == b {
 }
 ```
 
-#### 2.3.3.2 `through ... as ...`
+##### 2.3.3.2 `through ... as ...`
 
 Iterates over a number range
 
@@ -269,7 +271,7 @@ through 1:10:2 as i print(i)
 through 10:1 as i print(i)
 ```
 
-#### 2.3.3.3 `while`
+##### 2.3.3.3 `while`
 
 Iterates while condition is true
 
@@ -285,7 +287,7 @@ while i > 2 {
 }
 ```
 
-#### 2.3.3.4 `loop-stop when`
+##### 2.3.3.4 `loop-stop when`
 
 Iterates while condition is false.
 
@@ -303,7 +305,7 @@ loop {
 } stop when cmd == "exit"
 ```
 
-#### 2.3.3.5 `for ... in ...`
+##### 2.3.3.5 `for ... in ...`
 
 Iterates over a collection (list, string, dict...)
 
@@ -323,7 +325,7 @@ for student in students {
 }
 ```
 
-#### 2.3.3.6 `try-catch`
+##### 2.3.3.6 `try-catch`
 
 Tries to execute code. If an exception is thrown, suppresses it and proceeds
 to corresponding catch block. If there is no applicable catch block, rethrows
@@ -372,11 +374,11 @@ try {
 }  
 ```
 
-### 2.3.4 Instructions
+#### 2.3.4 Instructions
 
 Instructions are one-word control words.
 
-#### 2.3.4.1 `break`
+##### 2.3.4.1 `break`
 
 Quits current loop
 
@@ -396,11 +398,11 @@ while true {
 
 
 
-### 2.3.5 Effects
+#### 2.3.5 Effects
 
 Effects are one-line constructions with general form: `<effect> <value>`
 
-#### 2.3.5.1 `assert`
+##### 2.3.5.1 `assert`
 
 Throws assertion exception when value is not true
 
@@ -414,7 +416,7 @@ Example
 assert value != null
 ```
 
-#### 2.3.5.2 `strike`
+##### 2.3.5.2 `strike`
 
 Quits multiple nested loops (like break)
 
@@ -434,7 +436,7 @@ through 0:+10 as x {
 }
 ```
 
-#### 2.3.5.3 `import`
+##### 2.3.5.3 `import`
 
 Get code from specified file and execute it in this runtime
 
@@ -448,7 +450,7 @@ Example
 import "common.q"
 ```
 
-#### 2.3.5.4 `use`
+##### 2.3.5.4 `use`
 
 Import a library and place it in some variable
 
@@ -462,7 +464,7 @@ Example
 use "lang/reflect" = reflect
 ```
 
-#### 2.3.5.6 `return`
+##### 2.3.5.6 `return`
 
 Return value from function or a file
 
@@ -483,7 +485,7 @@ function f(x) {
 }
 ```
 
-#### 2.3.5.7 `throw`
+##### 2.3.5.7 `throw`
 
 Throw an exception
 
@@ -501,9 +503,25 @@ throw "Error!"
 throw Exception() % {"message"="Error!"}
 ```
 
-### 2.3.6 Variable modifiers
+##### 2.3.5.8 `async`
 
-#### 2.3.6.1 List of modifiers
+Run node in parallel
+
+``` 
+async <anything>
+```
+
+Examples:
+
+```
+async while true {
+  print("Hi!")
+}
+```
+
+#### 2.3.6 Variable modifiers
+
+##### 2.3.6.1 List of modifiers
 
 Available modifiers are:
 
@@ -525,7 +543,7 @@ static
 
 First group is called type modifiers, the second - behaviour modifiers
 
-#### 2.3.6.2 Type conversion / Typecast
+##### 2.3.6.2 Type conversion / Typecast
 
 Types `string`, `num`, `bool` support conversion.
 
@@ -541,7 +559,7 @@ b = string([1, 2, 3])
 c = bool(1)
 ```
 
-#### 2.3.6.2 Variable modifying
+##### 2.3.6.2 Variable modifying
 
 You can modify variable on assignment using following syntax instead of just `<variable>`:
 
@@ -565,11 +583,11 @@ num | void result = null
 local final num MY_CONSTANT = 3.1415
 ```
 
-#### 2.3.6.3 Argument modifying
+##### 2.3.6.3 Argument modifying
 
 Same rules as in 2.3.6.2 apply
 
-#### 2.3.6.4 Defining functions
+##### 2.3.6.4 Defining functions
 
 Functions can be defined the same way as written in 2.3.7.1, but instead of `function` and `method` keywords you can write a type moidifier:
 
@@ -581,9 +599,9 @@ num sqrt(num x) {
 
 This syntax will not affect anything, but it is helpful for developing.
 
-### 2.3.7 Data constructions
+#### 2.3.7 Data constructions
 
-#### 2.3.7.1 Functions
+##### 2.3.7.1 Functions
 
 ```
 function <variable: name>([<variable: argument>, ...])  <stmt>
@@ -599,7 +617,7 @@ Examples:
 function f() {}
 ```
 
-#### 2.3.7.2 Special functions
+##### 2.3.7.2 Special functions
 
 ```
 constructor ([<variable: argument>, ...])  <stmt>
@@ -680,7 +698,7 @@ gets myProperty(this) {
 }
 ```
 
-#### 2.3.7.3 Classes
+##### 2.3.7.3 Classes
 
 ```
 class <variable: name> [like <expr>]  <stmt>
@@ -706,11 +724,11 @@ class MyException like Exception {
 }
 ```
 
-### 2.3.8 Values
+#### 2.3.8 Values
 
 Values are considered expressions
 
-#### 2.3.8.1 Number
+##### 2.3.8.1 Number
 
 ```
 <digits>[.<digits>]
@@ -726,7 +744,7 @@ Examples:
 123.3231
 ```
 
-#### 2.3.8.2 Boolean
+##### 2.3.8.2 Boolean
 
 ```
 true
@@ -736,7 +754,7 @@ true
 false
 ```
 
-#### 2.3.8.3 String
+##### 2.3.8.3 String
 
 ```
 "<content>"
@@ -744,13 +762,13 @@ false
 
 Escape sequences supported: `\\`, `\n`, `\r`, `\t`
 
-#### 2.3.8.4 Null
+##### 2.3.8.4 Null
 
 ```
 null
 ```
 
-#### 2.3.8.5 List
+##### 2.3.8.5 List
 
 ```
 [<expr>, <expr>...]
@@ -770,7 +788,7 @@ Examples:
 [231, 3123, 4343]
 ```
 
-#### 2.3.8.6 Dict
+##### 2.3.8.6 Dict
 
 ```
 {<expr>=<expr>, ...}
@@ -790,7 +808,7 @@ Examples:
 {"a" = 1, "b" = 2}
 ```
 
-#### 2.3.8.6 Lambda (anonymous functions)
+##### 2.3.8.6 Lambda (anonymous functions)
 
 ```
 function (<variable: argument>, ...)  <stmt>
@@ -810,11 +828,11 @@ f = function (a, b) return a + b
 f = (a, b) -> return a + b
 ```
 
-### 2.3.9 Generators
+#### 2.3.9 Generators
 
 Generators are also considered expressions
 
-#### 2.3.9.1 List generators
+##### 2.3.9.1 List generators
 
 ```
 [<expr> for <variable> in <expr>]
@@ -854,7 +872,7 @@ Examples:
 [x^2 through 1:+10 as x if x % 2 == 0]
 ```
 
-#### 2.3.9.2 Dict generators
+##### 2.3.9.2 Dict generators
 
 ```
 {<key: expr> = <value: expr> for <variable> in <expr>}
@@ -894,9 +912,9 @@ Examples:
 {x = x^2 through 1:+10 as x if x % 2 == 0}
 ```
 
-### 2.3.10 Expressions
+#### 2.3.10 Expressions
 
-#### 2.3.10.1 Call
+##### 2.3.10.1 Call
 
 ```
 <expr>()
@@ -924,7 +942,7 @@ print("Hello!")
 input(prompt="input a message> ")
 ```
 
-#### 2.3.10.2 Field call
+##### 2.3.10.2 Field call
 
 ```
 <expr>.<name: variable>()
@@ -944,7 +962,7 @@ Examples:
 thread.result()
 ```
 
-#### 2.3.10.3 Field reference
+##### 2.3.10.3 Field reference
 
 ```
 <expr>.<name: variable>
@@ -956,7 +974,7 @@ Example:
 math.pi
 ```
 
-#### 2.3.10.4 Field assign
+##### 2.3.10.4 Field assign
 
 ```
 <expr>.<name: variable>
@@ -968,7 +986,7 @@ Example:
 myObj.field = value
 ```
 
-#### 2.3.10.5 Indexing
+##### 2.3.10.5 Indexing
 
 ```
 <expr>[<index: expr>]
@@ -980,7 +998,7 @@ Example:
 a[0]
 ```
 
-#### 2.3.10.6 Indexing assign
+##### 2.3.10.6 Indexing assign
 
 ```
 <expr>[<index: expr>] = <expr>
@@ -992,7 +1010,7 @@ Example:
 a[0] = 4
 ```
 
-#### 2.3.10.7 Range
+##### 2.3.10.7 Range
 
 ``` 
 <start:expr> : <end:expr>
@@ -1024,7 +1042,7 @@ Examples:
 1:+10:2
 ```
 
-#### 2.3.10.8 Subscript
+##### 2.3.10.8 Subscript
 
 ```
 <expr>[<range*>]
@@ -1041,4 +1059,61 @@ a[1:10]
 
 ```
 a[::-1]
+```
+
+#### 2.3.11 Sections (blocks)
+
+Section (or code block) is a statement that contains multiple statements that
+are executed one-by-one.
+
+Section can be defined in 3 different ways:
+
+1. Using `{` - `}`:
+   ```
+   if a == b {
+      foo()
+      bar()
+   }
+   ```
+2. Using `do|does|has|with|then` - `end`:
+   ```
+   if a == b then
+      foo()
+      bar()
+   end
+   
+   function foo() do
+      ...
+   end
+   
+   function bar() does
+      ...
+   end
+   
+   class MyClass has
+      string field
+      
+      override string(this) with
+          return this.field
+      end
+   end
+   ```
+   `do|does|has|with|then` are interchangeable
+3. Using `:`:
+   ```
+   if a == b:
+      foo()
+      bar()
+   ```
+   In this case indentation matters!
+
+All 3 different styles can be combined (but this is not recommended due to bad
+readability):
+```
+while true {
+    for i in 1:10 do
+        if i % 2 == 0:
+            print(i)
+    end
+}
 ```
