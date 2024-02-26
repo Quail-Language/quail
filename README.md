@@ -122,3 +122,7 @@ This work is licensed under GNU General Public License v3.0
 You can contact the developer in the 
 [Issues](https://github.com/Quail-Language/quail/issues) tab or in
 [Discord server](https://discord.gg/8smQAa8whM).
+
+### Developer
+Project was being built from scratch and is being developed now 
+only by [@Tapeline](https://www.github.com/Tapeline)
