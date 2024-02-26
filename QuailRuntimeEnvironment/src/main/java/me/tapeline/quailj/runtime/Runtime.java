@@ -1,5 +1,7 @@
 package me.tapeline.quailj.runtime;
 
+import me.tapeline.quailj.addons.QuailAddon;
+import me.tapeline.quailj.addons.QuailAddonRegistry;
 import me.tapeline.quailj.debugging.DebugServer;
 import me.tapeline.quailj.io.DefaultIO;
 import me.tapeline.quailj.io.IO;
@@ -15,6 +17,7 @@ import me.tapeline.quailj.parsing.nodes.sections.*;
 import me.tapeline.quailj.parsing.nodes.variable.VariableNode;
 import me.tapeline.quailj.preprocessing.Preprocessor;
 import me.tapeline.quailj.preprocessing.PreprocessorException;
+import me.tapeline.quailj.runtime.librarymanagement.BuiltinLibrary;
 import me.tapeline.quailj.runtime.librarymanagement.LibraryCache;
 import me.tapeline.quailj.runtime.librarymanagement.LibraryLoader;
 import me.tapeline.quailj.runtime.std.basic.classes.dict.*;
@@ -27,6 +30,7 @@ import me.tapeline.quailj.runtime.std.basic.common.*;
 import me.tapeline.quailj.runtime.std.basic.numbers.*;
 import me.tapeline.quailj.runtime.std.basic.threading.QThread;
 import me.tapeline.quailj.runtime.std.cli.CliLibrary;
+import me.tapeline.quailj.runtime.std.data.DataLibrary;
 import me.tapeline.quailj.runtime.std.event.EventLibrary;
 import me.tapeline.quailj.runtime.std.fs.FSLibrary;
 import me.tapeline.quailj.runtime.std.ji.JILibrary;
@@ -34,6 +38,7 @@ import me.tapeline.quailj.runtime.std.math.MathLibrary;
 import me.tapeline.quailj.runtime.std.qml.QMLLibrary;
 import me.tapeline.quailj.runtime.std.reflect.ReflectLibrary;
 import me.tapeline.quailj.runtime.std.storage.StorageLibrary;
+import me.tapeline.quailj.runtime.std.time.TimeLibrary;
 import me.tapeline.quailj.typing.classes.*;
 import me.tapeline.quailj.typing.classes.errors.*;
 import me.tapeline.quailj.typing.modifiers.ModifierConstants;
@@ -268,6 +273,15 @@ public class Runtime {
         libraryLoader.addBuiltinLibrary(new MathLibrary());
         libraryLoader.addBuiltinLibrary(new ReflectLibrary());
         libraryLoader.addBuiltinLibrary(new CliLibrary());
+        libraryLoader.addBuiltinLibrary(new DataLibrary());
+        libraryLoader.addBuiltinLibrary(new TimeLibrary());
+
+        for (QuailAddon addon : QuailAddonRegistry.getAddons())
+            for (BuiltinLibrary library : addon.providedLibraries())
+                libraryLoader.addBuiltinLibrary(library);
+
+        for (QuailAddon addon : QuailAddonRegistry.getAddons())
+            addon.customizeRuntime(this);
     }
 
     public void error(String message) throws RuntimeStriker {
@@ -1162,6 +1176,11 @@ public class Runtime {
             try {
                 run(thisNode.code, localScope);
             } catch (RuntimeStriker striker) {
+                if (thisNode.catchClauses.isEmpty()) {
+                    if (doProfile) end(node);
+                    return Val();
+                }
+
                 if (striker.getType() != RuntimeStriker.Type.EXCEPTION) {
                     if (doProfile) end(node);
                     if (striker.getType() == RuntimeStriker.Type.RETURN)
@@ -1177,6 +1196,7 @@ public class Runtime {
                         return Val();
                     }
                 }
+                throw striker;
             }
             if (doProfile) end(node);
             return Val();

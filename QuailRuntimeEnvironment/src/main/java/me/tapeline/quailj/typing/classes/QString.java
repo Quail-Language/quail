@@ -200,4 +200,20 @@ public class QString extends QObject {
         return value;
     }
 
+    /**
+     * Only for things like HashSets.
+     * This thing shouldn't be used for
+     * actual comparison of objects.
+     * Use {@link QObject#equalsObject} instead!
+     */
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof QString && ((QString) obj).value.equals(value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
 }

@@ -1,6 +1,7 @@
 package me.tapeline.quailj.launcher;
 
 import me.tapeline.quailj.GlobalFlags;
+import me.tapeline.quailj.addons.*;
 import me.tapeline.quailj.debugging.DebugServer;
 import me.tapeline.quailj.docgen.DocumentationGenerator;
 import me.tapeline.quailj.io.DefaultIO;
@@ -20,8 +21,11 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class QuailLauncher {
 // TODO: refactor
@@ -49,6 +53,8 @@ public class QuailLauncher {
             GlobalFlags.displayReturnValue = parseBoolFlag(flags.get("displayReturnValue").toString());
         if (flags.containsKey("debugPort"))
             GlobalFlags.debugPort = (short) flags.get("debugPort");
+        if (flags.containsKey("addons"))
+            GlobalFlags.addons = ((String) flags.get("addons"));
     }
 
     private void setupDebugger() throws IOException {
@@ -59,7 +65,8 @@ public class QuailLauncher {
     }
 
     public QObject launch(String[] args) throws IOException, PreprocessorException,
-            LexerException, ParserException, LauncherException {
+            LexerException, ParserException, LauncherException, AddonAlreadyRegisteredException,
+            UnresolvedAddonMainClassException, AddonLoadException {
         LaunchCommandParser launchCommandParser = new LaunchCommandParser(args);
         launchCommandParser.parseReceivedArgs();
         localFlags = launchCommandParser.getUserFlags();
@@ -85,6 +92,11 @@ public class QuailLauncher {
                 GlobalFlags.encoding);
         File scriptHome = new File(launchCommandParser.getTargetScript()).getAbsoluteFile().getParentFile();
 
+        List<File> addonsToLoad = Arrays.stream(GlobalFlags.addons.split(";")).
+                filter(s -> !s.isEmpty())
+                .map(File::new).collect(Collectors.toList());
+        for (File file : addonsToLoad) QuailAddonLoader.loadAndRegisterFromJar(file);
+
         Preprocessor.resetDirectives();
         Preprocessor preprocessor = new Preprocessor(code, scriptHome);
         String preprocessedCode = preprocessor.preprocess();
@@ -98,7 +110,7 @@ public class QuailLauncher {
         if (mode.equalsIgnoreCase("gendoc")) {
             if (launchCommandParser.getOutputFile() == null)
                 throw new LauncherException("Output file for documentation is not specified");
-            DocumentationGenerator generator = new DocumentationGenerator();
+            DocumentationGenerator generator = new DocumentationGenerator(localFlags);
             String name = new File(launchCommandParser.getTargetScript()).getName();
             if (localFlags.containsKey("documentationHeadline"))
                 name = localFlags.get("documentationHeadline").toString();
@@ -209,6 +221,10 @@ public class QuailLauncher {
         } catch (LexerException e) {
             System.err.println("Lexer error:");
             System.err.println(e.formatError());
+        } catch (AddonAlreadyRegisteredException | UnresolvedAddonMainClassException | AddonLoadException e) {
+            System.err.println("Addon exception: ");
+            System.err.println(e.getMessage());
+            e.printStackTrace(System.err);
         }
         return null;
     }

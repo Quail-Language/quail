@@ -101,4 +101,20 @@ public class QBool extends QObject {
         return super.or(runtime, other);
     }
 
+    /**
+     * Only for things like HashSets.
+     * This thing shouldn't be used for
+     * actual comparison of objects.
+     * Use {@link QObject#equalsObject} instead!
+     */
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof QBool && ((QBool) obj).value == value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Boolean.hashCode(value);
+    }
+
 }

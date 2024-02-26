@@ -62,7 +62,7 @@ public class QNumber extends QObject {
     @Override
     public String toString() {
         if ((value % 1) == 0)
-            return Integer.toString((int) value);
+            return Long.toString((long) value);
         return Double.toString(value);
     }
 
@@ -191,5 +191,20 @@ public class QNumber extends QObject {
         return this;
     }
 
+    /**
+     * Only for things like HashSets.
+     * This thing shouldn't be used for
+     * actual comparison of objects.
+     * Use {@link QObject#equalsObject} instead!
+     */
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof QNumber && ((QNumber) obj).value == value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Double.hashCode(value);
+    }
 
 }

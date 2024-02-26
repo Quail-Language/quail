@@ -36,7 +36,7 @@ public class StringFuncChars extends QBuiltinFunc {
         String thisString = args.get("this").strValue();
         List<QObject> result = new ArrayList<>();
         for (int i = 0; i < thisString.length(); i++)
-            result.add(Val(thisString.charAt(i)));
+            result.add(Val(Character.toString(thisString.charAt(i))));
         return Val(result);
     }
 

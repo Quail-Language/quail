@@ -1,5 +1,7 @@
 package me.tapeline.quailj.preprocessing;
 
+import me.tapeline.quailj.addons.QuailAddon;
+import me.tapeline.quailj.addons.QuailAddonRegistry;
 import me.tapeline.quailj.preprocessing.directives.*;
 
 import java.io.File;
@@ -13,6 +15,8 @@ public class Preprocessor {
         registeredDirectives.clear();
         registeredDirectives.add(new IncludeDirective());
         registeredDirectives.add(new AliasDirective());
+        for (QuailAddon addon : QuailAddonRegistry.getAddons())
+            registeredDirectives.addAll(addon.providedDirectives());
     }
 
     private int pos;

@@ -1,5 +1,7 @@
 package me.tapeline.quailj.parsing;
 
+import me.tapeline.quailj.addons.QuailAddon;
+import me.tapeline.quailj.addons.QuailAddonRegistry;
 import me.tapeline.quailj.lexing.Token;
 import me.tapeline.quailj.lexing.TokenType;
 import me.tapeline.quailj.parsing.annotation.Annotation;
@@ -64,6 +66,9 @@ public class Parser {
     public static void registerDefaultAnnotations() {
         registerAnnotation(new DeprecatedAnnotation());
         registerAnnotation(new DecoratorAnnotation());
+        for (QuailAddon addon : QuailAddonRegistry.getAddons())
+            for (Annotation annotation : addon.providedAnnotations())
+                registerAnnotation(annotation);
     }
 
     public static void registerAnnotation(Annotation annotation) {
@@ -730,6 +735,8 @@ public class Parser {
                 return new DocBadgeNode(docToken);
             else if (docToken.getLexeme().startsWith("#?author"))
                 return new DocAuthorNode(docToken);
+            else if (docToken.getLexeme().startsWith("#?see"))
+                return new DocSeeNode(docToken);
             else if (docToken.getLexeme().startsWith("#?since"))
                 return new DocSinceNode(docToken);
             else if (docToken.getLexeme().startsWith("#?toc-entry"))

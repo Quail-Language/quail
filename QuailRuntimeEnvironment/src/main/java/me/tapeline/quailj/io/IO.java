@@ -11,8 +11,6 @@ import java.util.List;
  */
 public interface IO {
 
-    // TODO: rebase all new File() onto IO::file()
-
     /**
      * Sets the current encoding
      * @param encoding new encoding

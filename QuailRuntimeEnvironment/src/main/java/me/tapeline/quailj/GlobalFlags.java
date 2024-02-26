@@ -25,4 +25,9 @@ public class GlobalFlags {
 
     public static short debugPort = 4004;
 
+    /**
+     * Specifies list of addons that should be loaded
+     */
+    public static String addons = "";
+
 }
