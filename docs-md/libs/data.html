@@ -42,11 +42,25 @@
       <ul class="list-unstyled">
         <li class="my-2">
           <ul class="list-unstyled ps-3">
+<li><a class="d-inline-flex align-items-center rounded" href="#Queue">
+   Queue
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#Deque">
+   Deque
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#Set">
+   Set
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#Bytes">
+   Bytes
+</a></li>
           </ul>
         </li>
       </ul>
     </nav>
-</aside><div class="col"><h3 id="Queue"><code>Queue</code></h3>
+</aside><div class="col"><p>This library some useful data structures<br></p><h2><code>lang/data</code></h2>
+<hr>
+<h3 id="Queue"><code>Queue</code></h3>
 <div class="p-3"><p>Implementation of a single-ended queue.<br>Supports <code>in</code> operator and iteration<br></p><div class="m-3"></div><h6>Fields</h6><div class="ps-3"><p>None</p></div><h6>Methods</h6><div class="ps-3"><h6 id="Queue::add"><code>void  add(this, object obj)</code></h6><div class="ps-3"><p>Add object to back of queue<br></p></div><h6 id="Queue::clear"><code>void  clear(this)</code></h6><div class="ps-3"></div><h6 id="Queue::peek"><code>object  peek(this)</code></h6><div class="ps-3"><p>Get object from front without popping it.<br>If queue is empty, null is returned<br></p></div><h6 id="Queue::pop"><code>object  pop(this)</code></h6><div class="ps-3"><p>Pop object from front.<br>If queue is empty, null is returned<br></p></div><h6 id="Queue::size"><code>num  size(this)</code></h6><div class="ps-3"></div></div></div><h3 id="Deque"><code>Deque</code></h3>
 <div class="p-3"><p>Implementation of a double-ended queue.<br>Supports <code>in</code> operator and iteration<br></p><div class="m-3"></div><h6>Fields</h6><div class="ps-3"><p>None</p></div><h6>Methods</h6><div class="ps-3"><h6 id="Deque::addBack"><code>void  addBack(this, object obj)</code></h6><div class="ps-3"><p>Add object to back of queue<br></p></div><h6 id="Deque::addFront"><code>void  addFront(this, object obj)</code></h6><div class="ps-3"><p>Add object to front of queue<br></p></div><h6 id="Deque::clear"><code>void  clear(this)</code></h6><div class="ps-3"></div><h6 id="Deque::peekBack"><code>object  peekBack(this)</code></h6><div class="ps-3"><p>Get object from front without popping it.<br>If queue is empty, null is returned<br></p></div><h6 id="Deque::peekFront"><code>object  peekFront(this)</code></h6><div class="ps-3"><p>Get object from front without popping it.<br>If queue is empty, null is returned<br></p></div><h6 id="Deque::popBack"><code>object  popBack(this)</code></h6><div class="ps-3"><p>Pop object from back.<br>If queue is empty, null is returned<br></p></div><h6 id="Deque::popFront"><code>object  popFront(this)</code></h6><div class="ps-3"><p>Pop object from front.<br>If queue is empty, null is returned<br></p></div><h6 id="Deque::size"><code>num  size(this)</code></h6><div class="ps-3"></div></div></div><h3 id="Set"><code>Set</code></h3>
 <div class="p-3"><p>Implementation of a set.<br>Can contain only booleans, strings and numbers<br>Supports <code>in</code> operator, equality check and iteration<br></p><div class="m-3"></div><h6>Fields</h6><div class="ps-3"><p>None</p></div><h6>Methods</h6><div class="ps-3"><h6 id="Set::_constructor"><code> _constructor(this, list | void values)</code></h6><div class="ps-3"><p>Constructs an empty set and adds all values (if specified)<br></p></div><h6 id="Set::add"><code>void  add(this, bool | string | num obj)</code></h6><div class="ps-3"><p>Add object to set. If object is already in set - nothing happens<br></p></div><h6 id="Set::clear"><code>void  clear(this)</code></h6><div class="ps-3"></div><h6 id="Set::intersection"><code>object static  intersection(a, b)</code></h6><div class="ps-3"><span class="badge bg-secondary">Static</span><br><p>Intersection of 2 sets<br></p></div><h6 id="Set::remove"><code>void  remove(this, bool | string | num obj)</code></h6><div class="ps-3"><p>Remove object from set. If object is not in set - nothing happens<br></p></div><h6 id="Set::size"><code>num  size(this)</code></h6><div class="ps-3"></div><h6 id="Set::union"><code>object static  union(a, b)</code></h6><div class="ps-3"><span class="badge bg-secondary">Static</span><br><p>Union of 2 sets<br></p></div></div></div><h3 id="Bytes"><code>Bytes</code></h3>

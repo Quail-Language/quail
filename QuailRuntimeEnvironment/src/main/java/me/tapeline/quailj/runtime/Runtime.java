@@ -38,6 +38,7 @@ import me.tapeline.quailj.runtime.std.math.MathLibrary;
 import me.tapeline.quailj.runtime.std.qml.QMLLibrary;
 import me.tapeline.quailj.runtime.std.reflect.ReflectLibrary;
 import me.tapeline.quailj.runtime.std.storage.StorageLibrary;
+import me.tapeline.quailj.runtime.std.time.TimeLibrary;
 import me.tapeline.quailj.typing.classes.*;
 import me.tapeline.quailj.typing.classes.errors.*;
 import me.tapeline.quailj.typing.modifiers.ModifierConstants;
@@ -273,6 +274,7 @@ public class Runtime {
         libraryLoader.addBuiltinLibrary(new ReflectLibrary());
         libraryLoader.addBuiltinLibrary(new CliLibrary());
         libraryLoader.addBuiltinLibrary(new DataLibrary());
+        libraryLoader.addBuiltinLibrary(new TimeLibrary());
 
         for (QuailAddon addon : QuailAddonRegistry.getAddons())
             for (BuiltinLibrary library : addon.providedLibraries())

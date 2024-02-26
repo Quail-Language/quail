@@ -1,8 +1,14 @@
-class MyException like Exception {}
-class MyException2 like Exception {}
+use "lang/time" = time
 
-try {
-    throw MyException()
-} catch MyException2 as e {
-    print(e)
-}
+t = time.DateTime(millis())
+
+t.timezone = "GMT+5:00"
+print(t.getDay())
+print(t.getMonth())
+print(t.getYear())
+print(t.getHour())
+print(t.getMinute())
+print(t.getSecond())
+print(t.getMillisecond())
+print(t.format("dd-MM-yyyy HH:mm:ss.SSS"))
+print(millis())

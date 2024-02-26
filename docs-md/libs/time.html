@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" style="overflow-x:hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <title>Docs</title>
+  <style>
+    @media screen and (min-width: 810px) {
+      aside {
+        height: 100vh;
+        overflow-y: scroll;
+      }
+    }
+
+    :target {
+        -webkit-animation: target-fade 5s 1;
+        -moz-animation: target-fade 5s 1;
+    }
+
+    @-webkit-keyframes target-fade {
+        0% { background-color: rgba(255, 198, 109, 0.8); }
+        100% { background-color: rgba(0,0,0,0); }
+    }
+    @-moz-keyframes target-fade {
+        0% { background-color: rgba(255, 198, 109, 0.8); }
+        100% { background-color: rgba(0,0,0,0); }
+    }  </style>
+</head>
+<body class="row p-5"><aside class="bd-aside sticky-xl-top text-muted align-self-start mb-3 mb-xl-5 px-2 col-auto">
+    <h2 class="h6 pt-4 pb-3 mb-4 border-bottom">time.q</h2>
+    <nav class="small" id="toc">
+      <ul class="list-unstyled">
+        <li class="my-2">
+          <ul class="list-unstyled ps-3">
+<li><a class="d-inline-flex align-items-center rounded" href="#DateTime">
+   DateTime
+</a></li>
+<li><a class="d-inline-flex align-items-center rounded" href="#parseDateTime">
+   parseDateTime
+</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+</aside><div class="col"><p>This library is the bare bones for date and time manipulation<br></p><h2><code>lang/time</code></h2>
+<hr>
+<h3 id="DateTime"><code>DateTime</code></h3>
+<div class="p-3"><p>Represents date and/or time<br><code>timestamp</code> contains UNIX timestamp in milliseconds<br><code>timezone</code> contains timezone offset like this "GMT+03:00"<br>Supports +, -, <, >, <=, =>, == and != operators and also num() conversion<br>Notice! There is no <code>now</code> method or function, so use DateTime(millis())<br></p><div class="m-3"></div><h6>Fields</h6><ul class="ps-3"><li><code>num  timestamp</code></li><li><code>string  timezone</code></li></ul><h6>Methods</h6><div class="ps-3"><h6 id="DateTime::_constructor"><code> _constructor(this, timestamp)</code></h6><div class="ps-3"></div><h6 id="DateTime::format"><code>string  format(this, string template)</code></h6><div class="ps-3"><p>Formats date according to given template<br>Letters for using in template: (is the same as Java's SimpleDateFormat)<br>G - Era designator<br>yy - Year (like 18)<br>yyyy - Year (like 2018)<br>MMMM - Month (like December)<br>MMM - Month (like Dec)<br>MM - Month (like 12)<br>w - Results in week in year<br>W - Results in week in month<br>D - Gives the day count in the year<br>d - Day of the month	(like 9)<br>dd - Day of the month (like 09)<br>F - Day of the week in month<br>E - Day name in the week<br>u - Day number of week<br>a - AM or PM marker<br>H - Hour in the day (0-23)<br>k - Hour in the day (1-24)<br>K - Hour in am/pm for 12 hour format (0-11)<br>h - Hour in am/pm for 12 hour format (1-12)<br>m - Minute in the hour<br>s - Second in the minute<br>S - Millisecond in the minute<br>z - Timezone<br>Z - Timezone offset in hours (RFC pattern)<br>X - Timezone offset in ISO format<br></p></div><h6 id="DateTime::getDay"><code>num  getDay(this)</code></h6><div class="ps-3"><p>Gets day of month (1-31) part<br></p></div><h6 id="DateTime::getDayOfWeek"><code>num  getDayOfWeek(this)</code></h6><div class="ps-3"><p>Gets day of week (0-6, starting from Monday) part<br></p></div><h6 id="DateTime::getHour"><code>num  getHour(this)</code></h6><div class="ps-3"><p>Get hour in 24-hour format (0-23) part<br></p></div><h6 id="DateTime::getMillisecond"><code>num  getMillisecond(this)</code></h6><div class="ps-3"><p>Get millisecond (0-999) part<br></p></div><h6 id="DateTime::getMinute"><code>num  getMinute(this)</code></h6><div class="ps-3"><p>Get minute (0-59) part<br></p></div><h6 id="DateTime::getMonth"><code>num  getMonth(this)</code></h6><div class="ps-3"><p>Get month of year (1-12) part<br></p></div><h6 id="DateTime::getSecond"><code>num  getSecond(this)</code></h6><div class="ps-3"><p>Get second (0-59) part<br></p></div><h6 id="DateTime::getYear"><code>num  getYear(this)</code></h6><div class="ps-3"><p>Get year number part<br></p></div></div></div><h6 id="parseDateTime"><code>object  parseDateTime(string template, string value)</code></h6><div class="ps-3"><p>Parse date AND time from a string value. Template is same as in DateTime::format<br></p><p>See:<br><a class="px-3" href="#DateTime::format">#DateTime::format</a></p></div></div></body>
+</html>

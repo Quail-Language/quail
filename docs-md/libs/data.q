@@ -1,3 +1,12 @@
+#?toc-entry Queue
+#?toc-entry Deque
+#?toc-entry Set
+#?toc-entry Bytes
+
+#?html <h2><code>lang/data</code></h2>
+#?html <hr>
+#? This library some useful data structures
+
 class Queue {
     #? Implementation of a single-ended queue.
     #? Supports <code>in</code> operator and iteration
