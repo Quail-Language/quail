@@ -91,14 +91,14 @@ public class QBool extends QObject {
     public QObject defaultAnd(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isBool())
             return Val(value && ((QBool) other).value);
-        return super.and(runtime, other);
+        return super.defaultAnd(runtime, other);
     }
 
     @Override
     public QObject defaultOr(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isBool())
             return Val(value || other.boolValue());
-        return super.or(runtime, other);
+        return super.defaultOr(runtime, other);
     }
 
     /**
