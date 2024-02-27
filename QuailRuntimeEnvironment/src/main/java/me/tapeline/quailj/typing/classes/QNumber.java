@@ -70,105 +70,105 @@ public class QNumber extends QObject {
     public QObject defaultSum(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return QObject.Val(value + ((QNumber) other).value);
-        return super.sum(runtime, other);
+        return super.defaultSum(runtime, other);
     }
 
     @Override
     public QObject defaultSubtract(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return QObject.Val(value - ((QNumber) other).value);
-        return super.subtract(runtime, other);
+        return super.defaultSubtract(runtime, other);
     }
 
     @Override
     public QObject defaultMultiply(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return QObject.Val(value * ((QNumber) other).value);
-        return super.multiply(runtime, other);
+        return super.defaultMultiply(runtime, other);
     }
 
     @Override
     public QObject defaultDivide(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return QObject.Val(value / ((QNumber) other).value);
-        return super.divide(runtime, other);
+        return super.defaultDivide(runtime, other);
     }
 
     @Override
     public QObject defaultIntDivide(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return QObject.Val((long) (value / ((QNumber) other).value));
-        return super.intDivide(runtime, other);
+        return super.defaultIntDivide(runtime, other);
     }
 
     @Override
     public QObject defaultModulo(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return QObject.Val(value % ((QNumber) other).value);
-        return super.modulo(runtime, other);
+        return super.defaultModulo(runtime, other);
     }
 
     @Override
     public QObject defaultPower(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return QObject.Val(Math.pow(value, ((QNumber) other).value));
-        return super.power(runtime, other);
+        return super.defaultPower(runtime, other);
     }
 
     @Override
     public QObject defaultShiftLeft(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return QObject.Val(value - ((QNumber) other).value);
-        return super.shiftLeft(runtime, other);
+        return super.defaultShiftLeft(runtime, other);
     }
 
     @Override
     public QObject defaultShiftRight(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return QObject.Val(value + ((QNumber) other).value);
-        return super.shiftRight(runtime, other);
+        return super.defaultShiftRight(runtime, other);
     }
 
     @Override
     public QObject defaultEqualsObject(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return QObject.Val(value == ((QNumber) other).value);
-        return super.equalsObject(runtime, other);
+        return super.defaultEqualsObject(runtime, other);
     }
 
     @Override
     public QObject defaultNotEqualsObject(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return QObject.Val(value != ((QNumber) other).value);
-        return super.notEqualsObject(runtime, other);
+        return super.defaultNotEqualsObject(runtime, other);
     }
 
     @Override
     public QObject defaultGreater(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return QObject.Val(value > ((QNumber) other).value);
-        return super.greater(runtime, other);
+        return super.defaultGreater(runtime, other);
     }
 
     @Override
     public QObject defaultGreaterEqual(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return QObject.Val(value >= ((QNumber) other).value);
-        return super.greaterEqual(runtime, other);
+        return super.defaultGreaterEqual(runtime, other);
     }
 
     @Override
     public QObject defaultLess(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return QObject.Val(value < ((QNumber) other).value);
-        return super.less(runtime, other);
+        return super.defaultLess(runtime, other);
     }
 
     @Override
     public QObject defaultLessEqual(Runtime runtime, QObject other) throws RuntimeStriker {
         if (other.isNum())
             return QObject.Val(value <= ((QNumber) other).value);
-        return super.lessEqual(runtime, other);
+        return super.defaultLessEqual(runtime, other);
     }
 
     @Override

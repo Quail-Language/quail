@@ -28,6 +28,9 @@ Quail is an easy-to-use scripting language with simple yet powerful syntax, embe
 
 Find out more on the [website](https://quail-language.github.io/)
 
+**Quail's main purposes** are developing utilities, using it as a 
+script language for bigger project and for education. 
+
 ### Installation (automatic)
 
 ##### On Windows and Linux
@@ -55,9 +58,10 @@ Kit with `quail-qdk` command. Find out more about commands in
     )
     if not exist "%QUAIL_HOME%\jre\jdk1.8.0_402\bin\java.exe" (
     java -jar "%QUAIL_HOME%\qre.jar" %*
-    )</pre>
-    - Place the following contents into file at `C:\Windows\quail-qdk.bat`
-    <pre>
+    )
+    ```
+6. Place the following contents into file at `C:\Windows\quail-qdk.bat`
+    ```
     @echo off
     if exist "%QUAIL_HOME%\jre\jdk1.8.0_402\bin\java.exe" (
     "%QUAIL_HOME%\jre\jdk1.8.0_402\bin\java.exe" -jar "%QUAIL_HOME%\qdk.jar" %*
@@ -66,7 +70,7 @@ Kit with `quail-qdk` command. Find out more about commands in
     java -jar "%QUAIL_HOME%\qdk.jar" %*
     )
     ```
-6. Now you can access Quail with `quail` and `quail-qdk` commands
+7. Now you can access Quail with `quail` and `quail-qdk` commands
 
 ##### On Linux
 1. Make sure you have at least Java 8 installed
