@@ -178,15 +178,15 @@ public class QObject {
     }
 
     public QObject getOverridable(Runtime runtime, String name) throws RuntimeStriker {
-        if (table.containsKey("_get"))
+        if (containsKey("_get"))
             return callFromThis(runtime, "_get", Collections.singletonList(Val(name)), new HashMap<>());
         return get(name);
     }
 
     public final void setOverridable(Runtime runtime, String name, QObject value) throws RuntimeStriker {
-        if (table.containsKey("_set"))
+        if (containsKey("_set"))
             callFromThis(runtime, "_set", Arrays.asList(QObject.Val(name), value), new HashMap<>());
-        else if (table.containsKey("_set_" + name))
+        else if (containsKey("_set_" + name))
             callFromThis(runtime, "_set_" + name, Collections.singletonList(value), new HashMap<>());
         else set(runtime, name, value);
     }
@@ -491,7 +491,7 @@ public class QObject {
         if (isPrototype()) {
             return newObject(runtime, args, kwargs);
         }
-        if (table.containsKey("_call"))
+        if (containsKey("_call"))
             return callFromThis(
                     runtime,
                     "_call",
@@ -503,7 +503,7 @@ public class QObject {
 
 
     public QObject sum(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_add"))
+        if (containsKey("_add"))
             return callFromThis(
                     runtime,
                     "_add",
@@ -514,7 +514,7 @@ public class QObject {
     }
 
     public QObject subtract(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_sub"))
+        if (containsKey("_sub"))
             return callFromThis(
                     runtime,
                     "_sub",
@@ -525,7 +525,7 @@ public class QObject {
     }
 
     public QObject multiply(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_mul"))
+        if (containsKey("_mul"))
             return callFromThis(
                     runtime,
                     "_mul",
@@ -536,7 +536,7 @@ public class QObject {
     }
 
     public QObject divide(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_div"))
+        if (containsKey("_div"))
             return callFromThis(
                     runtime,
                     "_div",
@@ -548,7 +548,7 @@ public class QObject {
     }
 
     public QObject intDivide(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_intdiv"))
+        if (containsKey("_intdiv"))
             return callFromThis(
                     runtime,
                     "_intdiv",
@@ -559,7 +559,7 @@ public class QObject {
     }
 
     public QObject modulo(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_mod"))
+        if (containsKey("_mod"))
             return callFromThis(
                     runtime,
                     "_mod",
@@ -570,7 +570,7 @@ public class QObject {
     }
 
     public QObject power(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_pow"))
+        if (containsKey("_pow"))
             return callFromThis(
                     runtime,
                     "_pow",
@@ -581,7 +581,7 @@ public class QObject {
     }
 
     public QObject shiftLeft(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_shl"))
+        if (containsKey("_shl"))
             return callFromThis(
                     runtime,
                     "_shl",
@@ -592,7 +592,7 @@ public class QObject {
     }
 
     public QObject shiftRight(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_shr"))
+        if (containsKey("_shr"))
             return callFromThis(
                     runtime,
                     "_shr",
@@ -603,7 +603,7 @@ public class QObject {
     }
 
     public QObject equalsObject(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_eq"))
+        if (containsKey("_eq"))
             return callFromThis(
                     runtime,
                     "_eq",
@@ -615,7 +615,7 @@ public class QObject {
     }
 
     public QObject notEqualsObject(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_neq"))
+        if (containsKey("_neq"))
             return callFromThis(
                     runtime,
                     "_neq",
@@ -627,7 +627,7 @@ public class QObject {
     }
 
     public QObject containsObject(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_contains"))
+        if (containsKey("_contains"))
             return callFromThis(
                     runtime,
                     "_contains",
@@ -638,7 +638,7 @@ public class QObject {
     }
 
     public QObject notContainsObject(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_notcontains"))
+        if (containsKey("_notcontains"))
             return callFromThis(
                     runtime,
                     "_notcontains",
@@ -649,7 +649,7 @@ public class QObject {
     }
 
     public QObject greater(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_cmpg"))
+        if (containsKey("_cmpg"))
             return callFromThis(
                     runtime,
                     "_cmpg",
@@ -660,7 +660,7 @@ public class QObject {
     }
 
     public QObject greaterEqual(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_cmpge"))
+        if (containsKey("_cmpge"))
             return callFromThis(
                     runtime,
                     "_cmpge",
@@ -671,7 +671,7 @@ public class QObject {
     }
 
     public QObject less(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_cmpl"))
+        if (containsKey("_cmpl"))
             return callFromThis(
                     runtime,
                     "_cmpl",
@@ -682,7 +682,7 @@ public class QObject {
     }
 
     public QObject lessEqual(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_cmple"))
+        if (containsKey("_cmple"))
             return callFromThis(
                     runtime,
                     "_cmple",
@@ -693,7 +693,7 @@ public class QObject {
     }
 
     public QObject not(Runtime runtime) throws RuntimeStriker {
-        if (table.containsKey("_not"))
+        if (containsKey("_not"))
             return callFromThis(
                     runtime,
                     "_not",
@@ -704,7 +704,7 @@ public class QObject {
     }
 
     public QObject negate(Runtime runtime) throws RuntimeStriker {
-        if (table.containsKey("_neg"))
+        if (containsKey("_neg"))
             return callFromThis(
                     runtime,
                     "_neg",
@@ -715,7 +715,7 @@ public class QObject {
     }
 
     public QObject convertToString(Runtime runtime) throws RuntimeStriker {
-        if (table.containsKey("_tostring"))
+        if (containsKey("_tostring"))
             return callFromThis(
                     runtime,
                     "_tostring",
@@ -726,7 +726,7 @@ public class QObject {
     }
 
     public QObject convertToBool(Runtime runtime) throws RuntimeStriker {
-        if (table.containsKey("_tobool"))
+        if (containsKey("_tobool"))
             return callFromThis(
                     runtime,
                     "_tobool",
@@ -737,7 +737,7 @@ public class QObject {
     }
 
     public QObject convertToNumber(Runtime runtime) throws RuntimeStriker {
-        if (table.containsKey("_tonum"))
+        if (containsKey("_tonum"))
             return callFromThis(
                     runtime,
                     "_tonum",
@@ -748,7 +748,7 @@ public class QObject {
     }
 
     public QObject and(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_and"))
+        if (containsKey("_and"))
             return callFromThis(
                     runtime,
                     "_and",
@@ -759,7 +759,7 @@ public class QObject {
     }
 
     public QObject or(Runtime runtime, QObject other) throws RuntimeStriker {
-        if (table.containsKey("_or"))
+        if (containsKey("_or"))
             return callFromThis(
                     runtime,
                     "_or",
@@ -770,7 +770,7 @@ public class QObject {
     }
 
     public QObject index(Runtime runtime, QObject index) throws RuntimeStriker {
-        if (table.containsKey("_index"))
+        if (containsKey("_index"))
             return callFromThis(
                     runtime,
                     "_index",
@@ -781,7 +781,7 @@ public class QObject {
     }
 
     public QObject indexSet(Runtime runtime, QObject index, QObject value) throws RuntimeStriker {
-        if (table.containsKey("_indexSet"))
+        if (containsKey("_indexSet"))
             return callFromThis(
                     runtime,
                     "_indexSet",
@@ -792,7 +792,7 @@ public class QObject {
     }
 
     public QObject subscriptStartEnd(Runtime runtime, QObject start, QObject end) throws RuntimeStriker {
-        if (table.containsKey("_subscriptStartEnd"))
+        if (containsKey("_subscriptStartEnd"))
             return callFromThis(
                     runtime,
                     "_subscriptStartEnd",
@@ -804,7 +804,7 @@ public class QObject {
 
     public QObject subscriptStartEndStep(Runtime runtime, QObject start, QObject end, QObject step)
             throws RuntimeStriker {
-        if (table.containsKey("_subscriptStartEndStep"))
+        if (containsKey("_subscriptStartEndStep"))
             return callFromThis(
                     runtime,
                     "_subscriptStartEndStep",
@@ -815,7 +815,7 @@ public class QObject {
     }
 
     public QObject iterateStart(Runtime runtime) throws RuntimeStriker {
-        if (table.containsKey("_iterate"))
+        if (containsKey("_iterate"))
             return callFromThis(
                     runtime,
                     "_iterate",
@@ -826,7 +826,7 @@ public class QObject {
     }
 
     public QObject iterateNext(Runtime runtime) throws RuntimeStriker {
-        if (table.containsKey("_next"))
+        if (containsKey("_next"))
             return callFromThis(
                     runtime,
                     "_next",
