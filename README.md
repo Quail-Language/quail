@@ -117,6 +117,8 @@ of abstract syntax concepts, you can go straight to
 [Quail Core Docs](https://quail-language.github.io/docs/core/) and
 [Quail Library Docs](https://quail-language.github.io/docs/libs/)
 
+Also check out [examples](examples).
+
 ### License
 
 This work is licensed under GNU General Public License v3.0
