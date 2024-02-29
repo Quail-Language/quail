@@ -33,8 +33,8 @@ public class QuailLauncher {
     public static final int QUAIL_MINOR_VERSION = 0;
     public static final int QUAIL_PATCH_VERSION = 0;
     public static final String QUAIL_VERSION_STATUS = "beta";
-    public static final int QUAIL_SUBVERSION = 8;
-    public static final String QUAIL_VERSION_SUFFIX = "RC-3";
+    public static final int QUAIL_SUBVERSION = 9;
+    public static final String QUAIL_VERSION_SUFFIX = "RC-4";
 
     private HashMap<String, Object> localFlags;
 
