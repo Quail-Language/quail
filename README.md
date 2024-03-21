@@ -28,8 +28,8 @@ Quail is an easy-to-use scripting language with simple yet powerful syntax, embe
 
 Find out more on the [website](https://quail-language.github.io/)
 
-**Quail's main purposes** are developing utilities, using it as a 
-script language for bigger project and for education. 
+**Quail's main purposes** are: developing utilities, using it as a 
+script language for bigger project and using it for education. 
 
 ### Installation (automatic)
 
